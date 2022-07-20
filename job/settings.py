@@ -98,12 +98,23 @@ WSGI_APPLICATION = 'job.wsgi.application'
 # }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'somhako_3',
+#         'USER': 'postgres',
+#         'PASSWORD': 'yaalimadad',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'somhako_3',
-        'USER': 'postgres',
-        'PASSWORD': 'yaalimadad',
+        'NAME': 'somhako',
+        'USER': 'somhakouser',
+        'PASSWORD': 'somhako',
         'HOST': 'localhost',
         'PORT': '5432',
     }
