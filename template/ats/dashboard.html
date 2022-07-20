@@ -1,0 +1,215 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fontawsome icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Employer Landing Page</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css1/t1/ats_style.css' %}">
+    <style>
+        .nav-tabs .nav-link{
+            color: black;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            color: #3b82f6;
+            margin: 0;
+            border: none;
+            border-bottom: 2px solid #3b82f6;
+            }
+
+            .circle {
+                background-color:transparent;
+                border:3px solid red;    
+                height:100px;
+                border-radius:50%;
+                -moz-border-radius:50%;
+                -webkit-border-radius:50%;
+                width:100px;
+            }
+    </style>
+  </head>
+  <body>
+    <!--Nav Bar-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid border-bottom">
+            <img src="{% static 'assets/images/logo-dark.png' %}" class="logo" alt="logo">
+            <img src="{% static 'images/image 23.png' %}" alt="img23" class="img23">
+            <input class="form-control me-2 lang" type="search" placeholder="&#xF002; Search jobs, applicants, etc" aria-label="Search" style="height: 40px;width: 392px;text-align: left;font-family:Arial, FontAwesome;">
+        </div>
+    </nav>
+    <!--Container-->
+    <div class="container-fluid" style="margin-top: 72px;">
+        <div class="row">
+            <div class="col-sm-auto bg-primary text-white p-0 sticky-top" style="height: 100vh;">
+                <div class="d-flex flex-sm-column flex-row flex-nowrap bg-primary text-white align-items-center text-center sticky-top">
+                    <a href="{% url 'jobapp:dashboard' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-home"></i><br>
+                        Home
+                    </a>
+                    <a href="{% url 'jobapp:total_job_view' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-search"></i><br>
+                        Job
+                    </a>
+                    <a href="{% url 'jobapp:total_applicants' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-users"></i><br>
+                        Applicant
+                    </a>
+                    
+                    <a href="{% url 'jobapp:account' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-user"></i><br>
+                        Account
+                    </a>
+                </div>
+            </div>
+            <div class="col m-0 p-0 bg-white p-3 ps-5 pe-5">
+                <h2>Dashboard</h2>
+                
+                <div class="row mt-3 p-3">
+                    <!-- <div class="col p-3 me-3 pt-4 pb-2" style="background-color: #F4F2FF;max-width: 12%;border-radius: 15%;">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">Talent Pool</p>
+                        <h3><b>13</b></h3>
+                    </div> -->
+                    
+                        <div class="col p-3 me-5 pt-4 pb-2 ps-5" style="background-color: #F4F2FF;border-radius: 15%;">
+                            <a href="{% url 'jobapp:total_applicants' %}">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">Applicants</p>
+                        <h3><b>{{app_count}}</b></h3>
+                    </a>
+                        </div>
+                    
+                   
+                        <div class="col p-3 me-5 pt-4 pb-2 ps-5" style="background-color: #F4F2FF;border-radius: 15%;">
+                            <a href="{% url 'jobapp:applicants_short' %}">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">Shortlisted</p>
+                        <h3><b>{{shortlist_count}}</b></h3>
+                    </a>
+                        </div>
+                    
+                  
+                        <div class="col p-3 me-5 pt-4 pb-2 ps-5" style="background-color: #F4F2FF;border-radius: 15%;">
+                            <a href="{% url 'jobapp:applicants_review' %}">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">In Review</p>
+                        <h3><b>{{rev_count}}</b></h3>
+                    </a>
+                        </div>
+                    
+                    
+                        <div class="col p-3 me-5 pt-4 pb-2 ps-5" style="background-color: #F4F2FF;border-radius: 15%;">
+                            <a href="{% url 'jobapp:applicants_hire' %}">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">Hired</p>
+                        <h3><b>{{hire_count}}</b></h3>
+                    </a>
+                        </div>
+                    
+                    
+                        <div class="col p-3 me-5 pt-4 pb-2 ps-5" style="background-color: #F4F2FF;border-radius: 15%;">
+                            <a href="{% url 'jobapp:applicants_reject' %}">
+                        <p style="line-height: 25%;"><i class="fa fa-users text-black"></i></p>
+                        <p class="taghead" style="line-height: 25%;">Rejected</p>
+                        <h3><b>{{rej_count}}</b></h3>
+                    </a>
+                        </div>
+                   
+                    
+                </div>
+
+                <div class="row mt-3 p-3">
+                    <div class="col-3 p-3 me-3" style="background-color: #FFF7ED;border-radius: 5%;">
+                        <h5>Interviews Scheduled</h5>
+                        
+                        <div class="d-flex justify-content-center">
+                            <div class="p-3 pb-1 ps-5 pe-5" style="background-color: #fafafa;max-width: 50%;">
+                                <p style="line-height: 25%;">Total</p>
+                                <h3 class="text-center"><b>{{int_count}}</b></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 p-3 me-3" style="background-color: #FEFCE8;border-radius: 5%;">
+                        <h5>Recent Jobs</h5>
+                        <div class="d-flex justify-content-center">
+                            <div class="p-3 pb-1 ps-5 pe-5" style="background-color: #fafafa;max-width: 50%;">
+                               <a href="{% url 'jobapp:total_job_view' %}"> <p style="line-height: 25%;">Total</p>
+                                <h3 class="text-center"><b>{{job_count}}</b></h3>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row mt-3 p-3">
+                    <div class="col-4 p-3 me-3" style="background-color: #FFF7ED;border-radius: 5%;">
+                        <h5>Offer Analysis</h5>
+                        <div class="d-flex justify-content-center">
+                            <div class="p-3 pb-1 ps-3 pe-3 me-2" style="background-color: #fafafa;max-width: 50%;">
+                                <p style="line-height: 25%;">Total</p>
+                                <h3 class="text-center"><b>{{total_offer}}</b></h3>
+                            </div>
+                            <div class="p-3 pb-1 ps-3 pe-3 me-2" style="background-color: #fafafa;max-width: 50%;">
+                                <p style="line-height: 25%;">Accpected</p>
+                                <h3 class="text-center"><b>{{hire_count}}</b></h3>
+                            </div>
+                            <div class="p-3 pb-1 ps-3 pe-3 me-2" style="background-color: #fafafa;max-width: 50%;">
+                                <p style="line-height: 25%;">Rejected</p>
+                                <h3 class="text-center"><b>{{rej_count}}</b></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 p-3 me-3" style="background-color: #FEFCE8;border-radius: 5%;">
+                        <h5>Time</h5>
+                        <div class="d-flex justify-content-center">
+                            <div class="p-3 pb-1 ps-3 pe-3 me-2" style="background-color: #fafafa;max-width: 50%;">
+                                <p class="text-center" style="line-height: 25%;">Time To Hire</p>
+                                <h3 class="text-center"><b>15 Days</b></h3>
+                            </div>
+                            <div class="p-3 pb-1 ps-3 pe-3 me-2" style="background-color: #fafafa;max-width: 50%;">
+                                <p class="text-center" style="line-height: 25%;">Acceptance Rate</p>
+                                <h3 class="text-center"><b>15%</b></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="row mt-3 p-3">
+                    <div class="col p-3 me-3" style="max-height:400px;overflow:scroll;background-color: #F4F2FF;max-width: 350px;border-radius: 5%;">
+                        
+                        <h5>Upcoming Interviews</h5>
+                        {% for i in arr_int %}
+                        <div class="pt-1 clearfix p-3 rounded mb-3" style="background-color: #fff;">
+                            <img src="{% static 'images/image 23.png' %}" width="60px" height="80px" class="col-auto float-md-start ms-md-auto me-3 mb-4 pt-3" alt="...">
+                            <p class="taghead pt-4 mt-2 " style="line-height: 25%;">{{i.user.first_name}} {{i.user.last_name}}</p>
+                            <p class="pt-2 mt-2 " style="line-height: 25%;">{{i.job.title}}</p>
+                            <p class="pt-2 mt-2" style="line-height: 25%;">{{i.interview_date}}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col p-3 me-3" style="max-height:400px;overflow:scroll;background-color: #F4F2FF;max-width: 300px;border-radius: 5%;">
+                        <h5>Recent Jobs</h5>
+                        {% for job in jobs %}
+                        <div class="pt-1 clearfix p-3 rounded mb-3" style="background-color: #fff;">
+                            <p class="taghead pt-4 mt-2 " style="line-height: 25%;">{{job.title}}</p>
+                            <p class="pt-2 mt-2 " style="line-height: 25%;">{{job.location}}</p>
+                            <p class="pt-2 mt-2" style="line-height: 25%;">{{job.salary}}</p>
+                        </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript; -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>

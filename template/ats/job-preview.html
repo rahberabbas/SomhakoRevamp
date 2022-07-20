@@ -1,0 +1,441 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Home | Somhako - Job Listing | Somhakodev</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=" " />
+        <meta name="keywords" content="" />
+        <meta content="Somhakodev" name="author" />
+        <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+        <link rel="stylesheet" href="{% static 'assets/libs/swiper/swiper-bundle.min.css' %}">
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="{% static 'js1/jquery.cookie.js' %}"></script>
+    </head>
+    <body>
+        <div class="main-content">
+
+            <div class="page-content">
+
+                
+
+                <!-- START SHAPE -->
+                <div class="position-relative" style="z-index: 1">
+                    <div class="shape">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                            <path fill="#FFFFFF" fill-opacity="1"
+                                d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- END SHAPE -->
+
+
+                <!-- START JOB-DEATILS -->
+                <section class="jobdetailssection">
+                    <div class="container" style="padding-top :50px; padding-bottom: 50px;">
+                        {% if back == 1 %} 
+                        <a href="{% url 'jobapp:total_job_view' %}" class=""><i class="uil uil-times-circle icon bg-soft-primary rounded-circle fs-1 mb-5"></i></a>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card job-detail overflow-hidden">
+                                    <div>
+                                        <img src="{% static 'assets/images/about/img-01.jpg' %}" alt="" class="img-fluid">
+                                        <div class="job-details-compnay-profile">
+                                            <img src="{% static 'assets/images/featured-job/img-02.png' %}" alt="" class="img-fluid rounded-3 rounded-3">
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-1" id="preTitle">{{job.title}}</h5>
+                                                    <ul class="list-inline text-muted mb-0">
+                                                        <li class="list-inline-item" id="preVacancy">
+                                                            <i class="mdi mdi-account"></i> {{job.vacancy}} Vacancy
+                                                        </li>
+                                                    </ul>
+                                                </div><!--end col-->
+                                                <div class="col-lg-4">
+                                                    <ul class="list-inline mb-0 text-lg-end mt-3 mt-lg-0">
+                                                        <li class="list-inline-item">
+                                                            <div class="favorite-icon">
+                                                                <a href="javascript:void(0)"><i class="uil uil-heart-alt"></i></a>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <div class="favorite-icon">
+                                                                <a href="javascript:void(0)"><i class="uil uil-setting"></i></a>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div><!--end col-->
+                                            </div><!--end row-->    
+                                        </div>
+
+                                        <div class="mt-4" id="langInsideContainer">
+                                            <div class="row g-2">
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-start p-3">
+                                                        <p class="text-muted mb-0 fs-13">Experience</p>
+                                                        <p class="fw-medium fs-15 mb-0" id="preExp">{{job.get_experince_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Employee type</p>
+                                                        <p class="fw-medium mb-0" id="preJobType">{{job.get_job_type_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Position</p>
+                                                        <p class="fw-medium mb-0" id="prePos">{{job.get_position_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Work Place</p>
+                                                        <p class="fw-medium mb-0" id="preWorkPlace">{{job.get_work_place_display}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-end p-3">
+                                                        <p class="text-muted fs-13 mb-0">Offer Salary</p>
+                                                        <p class="fw-medium mb-0" id="preSalary">{{job.salary}}/Month</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-start p-3">
+                                                        <p class="text-muted mb-0 fs-13">Bonus</p>
+                                                        <p class="fw-medium fs-15 mb-0" id="preBonus">{{job.bonus}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Stock</p>
+                                                        <p class="fw-medium mb-0" id="preStock">{{job.stock}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Working Hour</p>
+                                                        <p class="fw-medium mb-0" id="preWorkingHour">{{job.working_hour}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">Visa</p>
+                                                        <p class="fw-medium mb-0" id="preVisa">{{job.get_visa_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-end p-3">
+                                                        <p class="text-muted fs-13 mb-0">Relocation</p>
+                                                        <p class="fw-medium mb-0" id="preRelocation">{{job.get_relocation_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-start p-3">
+                                                        <p class="text-muted mb-0 fs-13">Grade</p>
+                                                        <p class="fw-medium fs-15 mb-0" id="preGrade">{{job.get_grade_display}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="border rounded-end p-3">
+                                                        <p class="text-muted fs-13 mb-0">Total Rounds</p>
+                                                        <p class="fw-medium mb-0" id="preMaxRound">{{job.max_round_no}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% if total_lang != 0 %}
+                                            <div class="row g-2">
+                                                {% for lang in total_lang %}
+                                                <div class="col-lg-3">
+                                                    <div class="border p-3">
+                                                        <p class="text-muted fs-13 mb-0">{{lang.title}}</p>
+                                                        {% if lang.profeciency == '1' %}<p class="fw-medium mb-0" id="">Beginner</p>{% endif %}
+                                                        {% if lang.profeciency == '2' %}<p class="fw-medium mb-0" id="">Intermediate</p>{% endif %}
+                                                        {% if lang.profeciency == '3' %}<p class="fw-medium mb-0" id="">Advance</p>{% endif %}
+                                                        {% if lang.profeciency == "" %}<p class="fw-medium mb-0" id="">None</p>{% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                        </div><!--end Experience-->
+
+                                        <div class="mt-4">
+                                            <h5 class="mb-3">Job Description</h5>
+                                            <div class="job-detail-desc">
+                                                <p class="text-muted mb-0" id="preDesc">{{job.description|safe}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <h5 class="mb-3">Responsibilities</h5>
+                                            <div class="job-detail-desc mt-2" id="preRes">
+                                                {{job.responsibilities|safe}}
+                                            </div>
+                                            <div class="mt-4" id="preTag">
+                                                    {% for i in tag %}
+                                                    <span class="badge bg-primary">{{i}}</span>
+                                                    <!-- <span class="badge bg-primary">JS</span>
+                                                    <span class="badge bg-primary">Marketing</span>
+                                                    <span class="badge bg-primary">REACT</span>
+                                                    <span class="badge bg-primary">PHOTOSHOP</span> -->
+                                                    {% endfor %}
+                                                </div>
+                                        </div>
+
+                                        <div class="mt-4 pt-3">
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item mt-1">
+                                                    Share this job:
+                                                </li>
+                                                <li class="list-inline-item mt-1">
+                                                    <a href="javascript:void(0)" class="btn btn-primary btn-hover"><i class="uil uil-facebook-f"></i> Facebook</a>
+                                                </li>
+                                                <li class="list-inline-item mt-1">
+                                                    <a href="javascript:void(0)" class="btn btn-danger btn-hover"><i class="uil uil-google"></i> Google+</a>
+                                                </li>
+                                                <li class="list-inline-item mt-1">
+                                                    <a href="javascript:void(0)" class="btn btn-success btn-hover"><i class="uil uil-linkedin-alt"></i> linkedin</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!--end card-body-->
+                                </div><!--end job-detail-->
+
+                                
+
+                                <!-- <div class="text-center mt-4">
+                                    <a href="job-list.html" class="primary-link form-text">View More <i class="mdi mdi-arrow-right"></i></a>
+                                </div> -->
+
+                            </div><!--end col-->
+
+                            <div class="col-lg-4 mt-1 mt-lg-0">
+                                <!--start side-bar-->
+                                <div class="side-bar ms-lg-4">
+                                    <div class="card job-overview">
+                                        <div class="card-body p-4">
+                                            <h6 class="fs-17">Job Overview</h6>
+                                            <ul class="list-unstyled mt-4 mb-0">
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-user icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Job Title</h6>
+                                                            <p class="text-muted mb-0" id="titlePre">{{job.title}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-star-half-alt icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Experience</h6>
+                                                            <p class="text-muted mb-0" id="expPre"> {{job.get_experince_display}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-location-point icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Location</h6>
+                                                            <p class="text-muted mb-0" id="locPre"> {{job.location}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-usd-circle icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Offered Salary</h6>
+                                                            <p class="text-muted mb-0" id="salaryPre">{{job.salary}}/Year</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-graduation-cap icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Qualification</h6>
+                                                            <p class="text-muted mb-0" id="quaPre">{{job.qualification}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-building icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Role</h6>
+                                                            <p class="text-muted mb-0" id="rolePre">{{job.role}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-building icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Department</h6>
+                                                            <p class="text-muted mb-0" id="deptPre">{{job.dept}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-history icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Date Posted</h6>
+                                                            <p class="text-muted mb-0" id="postPre">{{job.timestamp}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex mt-4">
+                                                        <i class="uil uil-history icon bg-soft-primary"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Requisition Deadline</h6>
+                                                            <p class="text-muted mb-0" id="lastPre">{{job.last_date}}</p> 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="mt-3">
+                                                <!-- <form action="" method="POST" id="form1app"> -->
+                                                    <input type="hidden" name="form_type" value="form1app">
+                                                            <button data-bs-toggle="modal" class="btn btn-primary btn-hover w-100 mt-2">Apply Now <i class="uil uil-arrow-right"></i></button>                                                    
+                                                    <input type="hidden" name="form_type" value="form2book">
+                                                        <button class="btn btn-soft-warning btn-hover w-100 mt-2"><i class="uil uil-bookmark"></i> Add To Bookmark </button>
+                                                        
+                                            </div>
+                                        </div><!--end card-body-->
+                                    </div><!--end job-overview-->
+
+                                    <div class="card company-profile mt-4">
+                                        <div class="card-body p-4">
+                                            <div class="text-center">
+                                                <img src="{% static 'assets/images/featured-job/img-02.png' %}" alt="" class="img-fluid rounded-3">
+
+                                                <div class="mt-4">
+                                                    <h6 class="fs-17 mb-1" id="cnamanPre">{{job.user.company_name}}</h6>
+                                                    <p class="text-muted" id="cindustryPre">{{job.user.industry}}</p>
+                                                    <p class="text-muted">Since July 2017</p>
+                                                </div>
+                                            </div>
+                                            <ul class="list-unstyled mt-4">
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <i class="uil uil-phone-volume text-primary fs-4"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Phone</h6>
+                                                            <p class="text-muted fs-14 mb-0">+91 6391651097</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="mt-3">
+                                                    <div class="d-flex">
+                                                        <i class="uil uil-envelope text-primary fs-4"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Email</h6>
+                                                            <p class="text-muted fs-14 mb-0" id="emailPre">{{job.user.email}}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="mt-3">
+                                                    <div class="d-flex">
+                                                        <i class="uil uil-globe text-primary fs-4"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Website</h6>
+                                                            <p class="text-muted fs-14 text-break mb-0" id="urlPre"><a class="text-decoration-none text-secondary" href="{{job.url}}">{{job.url}}</a></p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="mt-3">
+                                                    <div class="d-flex">
+                                                        <i class="uil uil-map-marker text-primary fs-4"></i>
+                                                        <div class="ms-3">
+                                                            <h6 class="fs-14 mb-2">Location</h6>
+                                                            <p class="text-muted fs-14 mb-0">Oakridge Lane Richardson.</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="mt-4">
+                                                <a href="#" class="btn btn-primary btn-hover w-100 rounded"><i class="mdi mdi-eye"></i> View Profile</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <h6 class="fs-16 mb-3">Job location</h6>
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25720995.03496971!2d119.02340874855115!3d32.171031795096816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34674e0fd77f192f%3A0xf54275d47c665244!2sJapan!5e1!3m2!1sen!2sin!4v1656564848591!5m2!1sen!2sin" style="width:100%"  height="250" allowfullscreen="" loading="lazy"></iframe>
+                                    </div>
+                                </div>
+                                <!--end side-bar-->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end container-->
+                </section>
+                <!-- START JOB-DEATILS -->
+
+                <!-- START APPLY MODAL -->
+                <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body p-5">
+                                <div class="text-center mb-4">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                                    
+                                </div>
+                                <div class="position-absolute end-0 top-0 p-3">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nameControlInput" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="nameControlInput" placeholder="Enter your name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="emailControlInput2" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="emailControlInput2" placeholder="Enter your email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="messageControlTextarea" class="form-label">Message</label>
+                                    <textarea class="form-control" id="messageControlTextarea" rows="4" placeholder="Enter your message"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="inputGroupFile01">Resume Upload</label>
+                                    <input type="file" class="form-control" id="inputGroupFile01">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Send Application</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- END APPLY MODAL -->
+
+            </div>
+        </div>
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+        <script src="{% static 'assets/libs/swiper/swiper-bundle.min.js' %}"></script>
+        <script src="{% static 'assets/js/pages/switcher.init.js' %}"></script>
+        <script src="{% static 'assets/js/pages/index.init.js' %}"></script>
+        <script src="{% static 'assets/js/app.js' %}"></script>
+    </body>
+</html>
+            {% comment %}
+            
+            {% endcomment %}

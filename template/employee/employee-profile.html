@@ -1,0 +1,1591 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .lds-dual-ring.hidden {
+        display: none;
+    }
+
+    /*Add an overlay to the entire page blocking any further presses to buttons or other elements.*/
+    
+    
+    /*Spinner Styles*/
+    .lds-dual-ring {
+        display: inline-block;
+
+    }
+    .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: 20px;
+        height: 20px;
+        right: 10px;
+        top: 10px;
+        border-radius: 50%;
+        border: 6px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<!-- Modals -->
+
+<!-- New Education MODAL -->
+<div class="modal fade" id="educationAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5 class="text-muted">Education</h5>
+                        </div>
+                        <form action="#" class="auth-form">
+                            <input type="hidden" name="eduid" id="eduid" />
+                            {{ eduForm.media }}
+                            {{eduForm.as_p}}
+                            <div class="text-center">
+                                <input type="button" id="edubtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<!-- Resume -->
+<div class="modal fade" id="resumeAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div id="alertsS"></div>
+                        <div class="text-center mb-4">
+                            <h5 class="text-muted">Resume</h5>
+                        </div>
+                        <form action="#" class="auth-form" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="eduid" id="eduid" />
+                            <div class="mb-3">
+                                <label for="" class="form-label">Enter Title:</label>
+                                <input type="text" class="form-control" id="resumeTitle" name="Title" placeholder="enter title here...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Select Image :</label>
+                                <input class="form-control" type="file" name="image" id="resumeimage">
+                              </div>
+                            <div class="text-center">
+                                <input type="button" id="resumebtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+<!-- New Experience MODAL -->
+<div class="modal fade" id="experienceAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5>Experience</h5>
+                        </div>
+                        <form method="POST" class="auth-form">
+                            <input type="hidden" name="expid" id="expid" />
+                            {% csrf_token %}
+                            {{expForm.media}}
+                            {{expForm.as_p}}
+                            <div class="text-center">
+                                <input type="button" id="expbtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<!-- New Education MODAL -->
+<div class="modal fade" id="certificateAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5>Certificate</h5>
+                        </div>
+                        <form action="#" class="auth-form">
+                            <input type="hidden" name="cerid" id="cerid" />
+                            {% csrf_token %}
+                            {{cerForm.as_p}}
+                            <div class="text-center">
+                                <input type="button" id="cerbtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+<!-- New Education MODAL -->
+<div class="modal fade" id="skillsAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5>Add</h5>
+                            <p class="text-muted">Skill</p>
+                        </div>
+                        <form action="#" class="auth-form">
+                            {{sklForm.as_p}}
+                            <div class="text-center">
+                                <input type="button" id="sklbtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+<div class="modal fade" id="languageAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5>Add</h5>
+                            <p class="text-muted">Language</p>
+                        </div>
+                        <form action="#" class="auth-form">
+                            {{lngForm.as_p}}
+                            <div class="text-center">
+                                <input type="button" id="lngbtnsave" class="btn btn-primary w-100" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+<!-- End Modals -->
+
+<!-- START SIGN-UP MODAL -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div class="text-center mb-4">
+                            <h5>Sign Up</h5>
+                            <p class="text-muted">Sign Up and get access to all the features of Somhako</p>
+                        </div>
+                        <form action="#" class="auth-form">
+                            <div class="mb-3">
+                                <label for="usernameInput" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="usernameInput"
+                                    placeholder="Enter your username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                            </div>
+                            <div class="mb-4">
+                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                        id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">I agree to the <a
+                                            href="javascript:void(0)"
+                                            class="text-primary form-text text-decoration-underline">Terms and
+                                            conditions</a></label>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                            </div>
+                        </form>
+                        <div class="mt-3 text-center">
+                            <p class="mb-0">Already a member ? <a href="sign-in.html"
+                                    class="form-text text-primary text-decoration-underline"> Sign-in </a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+<!-- END SIGN-UP MODAL -->
+
+<div class="main-content" style="margin-top:100px;">
+
+    <div class="page-content">
+
+
+
+        <!-- START PROFILE -->
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card profile-sidebar me-lg-4">
+                            <div class="card-body p-4">
+                                <div class="text-center pb-4 border-bottom">
+                                    <img src="{% static 'assets/images/profile.jpg' %}" alt=""
+                                        class="avatar-lg img-thumbnail rounded-circle mb-4" />
+                                    <h5 id="fnamelname" class="mb-0">{{request.user.employee.first_name}} {{request.user.employee.last_name}}</h5>
+                                    <p class="text-muted">Developer</p>
+                                    <ul class="list-inline d-flex justify-content-center align-items-center ">
+                                        <li class="list-inline-item text-warning fs-19">
+                                            <i class="mdi mdi-star"></i>
+                                            <i class="mdi mdi-star"></i>
+                                            <i class="mdi mdi-star"></i>
+                                            <i class="mdi mdi-star"></i>
+                                            <i class="mdi mdi-star-half-full"></i>
+                                        </li>
+                                    </ul>
+                                    <ul class="candidate-detail-social-menu list-inline mb-0">
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0)"
+                                                class="social-link rounded-3 btn-soft-primary"><i
+                                                    class="uil uil-facebook-f"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0)" class="social-link rounded-3 btn-soft-info"><i
+                                                    class="uil uil-twitter-alt"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0)"
+                                                class="social-link rounded-3 btn-soft-success"><i
+                                                    class="uil uil-whatsapp"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0)"
+                                                class="social-link rounded-3 btn-soft-danger"><i
+                                                    class="uil uil-phone-alt"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end profile-->
+                                <div class="mt-4 border-bottom pb-4">
+                                    <h5 class="fs-17 fw-bold mb-3">Documents</h5>
+                                    <ul class="profile-document list-unstyled mb-0">
+                                        <li>
+                                            <div class="profile-document-list d-flex align-items-center mt-4 ">
+                                                
+                                                <div class="ms-3">
+                                                    <button class="fs-16 mb-0 btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#resumeAddModal">Add Resume</button>
+                                                   
+                                                </div>
+                                                
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="profile-document-list d-flex align-items-center mt-4 ">
+                                                {% for i in resume %}
+                                               
+                                               <h4>{{i.title}}</h4>
+                                                {% endfor %}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end document-->
+                                <div class="mt-4">
+                                    <h5 class="fs-17 fw-bold mb-3">Contacts</h5>
+                                    <div class="profile-contact">
+                                        <ul class="list-unstyled mb-0">
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label>Email</label>
+                                                    <div>
+                                                        <p class="text-muted text-break mb-0">
+                                                            {{request.user.email}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label>Phone Number</label>
+                                                    <div>
+                                                        {% if request.user.employee.mobile %}
+                                                        <p id="mobmob" class="text-muted mb-0" id="promob">{{request.user.employee.mobile}}</p>
+                                                        {% else %}
+                                                        <p id="mobmob" class="text-muted mb-0" id="promob"> 9876543210 </p>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label>Location</label>
+                                                    <div>
+                                                        <p id="locloc" class="text-muted mb-0" id="proloc">{{profile.location}}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--end contact-details-->
+                            </div>
+                            <!--end card-body-->
+                        </div>
+                        <!--end profile-sidebar-->
+                    </div>
+                    <!--end col-->
+                    <div class="col-lg-8">
+                        <div class="card profile-content-page mt-4 mt-lg-0">
+                            <ul class="profile-content-nav nav nav-pills border-bottom mb-4" id="pills-tab"
+                                role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="overview-tab" data-bs-toggle="pill"
+                                        data-bs-target="#overview" type="button" role="tab" aria-controls="overview"
+                                        aria-selected="true">
+                                        Overview
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="settings-tab" data-bs-toggle="pill"
+                                        data-bs-target="#settings" type="button" role="tab" aria-controls="settings"
+                                        aria-selected="false">
+                                        Settings
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#">
+                                    <button class="nav-link" id="settings-tab" data-bs-toggle="pill"
+                                        data-bs-target="#settings" type="button" role="tab" aria-controls="settings"
+                                        aria-selected="false">
+                                        Search Jobs
+                                    </button>
+                                </a>
+                                </li>
+                            </ul>
+                            <!--end profile-content-nav-->
+                            <div class="card-body p-4">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active oactive" id="overview" role="tabpanel"
+                                        aria-labelledby="overview-tab">
+                                        <div>
+                                            <h5  class="fs-18 fw-bold">About</h5>
+                                            <p id="biobio" class="text-muted mt-4" id="probio">
+                                                {{profile.bio|safe}}
+                                            </p>
+                                            <hr>
+                                        </div>
+                                        <div class="candidate-education-details mt-4">
+                                            <h6 class="fs-18 fw-bold mb-0" data-bs-toggle="modal"
+                                            data-bs-target="#educationAddModal">Education
+                                                <span class="float-end pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#educationAddModal"><i
+                                                        class="uil uil-plus"></i></span>
+                                            </h6>
+                                            <div id="edudata">
+                                                
+                                                {% for i in edu %}
+                                                <div class="candidate-education-content mt-4 d-flex"
+                                                    id="educationsection">
+                                                    <div class="circle flex-shrink-0 bg-soft-primary">
+                                                        {{i.title|slice:1}}
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <h6 class="fs-16 mb-1">
+                                                            {{i.title}}
+                                                            <span class="float-end pointer edu-btn-del"
+                                                                data-sid="{{i.id}}"><i class="uil uil-trash"
+                                                                    data-sid="{{i.id}}"></i></span>
+                                                            <span class="float-end pointer edu-btn-edit" data-bs-toggle="modal"
+                                                                data-bs-target="#educationAddModal" data-sid="{{i.id}}"><i
+                                                                    class="uil uil-pen" data-sid="{{i.id}}"></i></span>
+
+                                                        </h6>
+                                                        <p class="mb-2 text-muted">{{i.college}} - ({% if i.year_of_join %}
+                                                            {{i.year_of_join}} - {% if i.year_of_end %}
+                                                            {{i.year_of_end}} {% else %} Present {% endif %} {% else %}
+                                                            Present {% endif %} )</p>
+                                                        <p class="text-muted">
+                                                            {{i.edubody|safe}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <hr>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="candidate-education-details mt-4">
+                                            <h6 class="fs-18 fw-bold mb-0" data-bs-toggle="modal"
+                                            data-bs-target="#experienceAddModal">Experiences
+                                                <span class="float-end pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#experienceAddModal"><i
+                                                        class="uil uil-plus"></i></span>
+                                            </h6>
+                                            <div class="" id="expdata">
+                                                {% for i in work %}
+                                                <div class="candidate-education-content mt-4 d-flex">
+                                                    <div class="circle flex-shrink-0 bg-soft-primary">
+                                                        {{i.title|slice:1}}
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <h6 class="fs-16 mb-1">{{i.title}}
+                                                            <span class="float-end pointer exp-btn-del"
+                                                                data-sid="{{i.id}}"><i class="uil uil-trash"
+                                                                    data-sid="{{i.id}}"></i></span>
+                                                            <span class="float-end pointer exp-btn-edit" data-bs-toggle="modal"
+                                                                data-bs-target="#experienceAddModal" data-sid="{{i.id}}"><i
+                                                                    class="uil uil-pen" data-sid="{{i.id}}"></i></span>
+                                                        </h6>
+                                                        <p class="mb-2 text-muted">{{i.company}} - ({% if i.year_of_join%}
+                                                            {{i.year_of_join}} - {% if i.year_of_end %}
+                                                            {{i.year_of_end}} {% else %} Present {% endif %} {% else %}
+                                                            Present {% endif %} )</p>
+                                                        <p class="text-muted">{{i.expbody|safe}}</p>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="candidate-education-details mt-4">
+                                            <h6 class="fs-18 fw-bold mb-0" data-bs-toggle="modal"
+                                            data-bs-target="#certificateAddModal">Certificates
+                                                <span class="float-end pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#certificateAddModal"><i
+                                                        class="uil uil-plus"></i></span>
+                                            </h6>
+                                            <div class="" id="cerdata">
+                                                {% for i in cert %}
+                                                <div class="candidate-education-content mt-4 d-flex"
+                                                    id="certificatesection">
+                                                    <div class="circle flex-shrink-0 bg-soft-primary">
+                                                        {{i.title|slice:1}}
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <h6 class="fs-16 mb-1">{{i.title}}
+                                                            <span class="float-end pointer cer-btn-del"
+                                                                data-sid="{{i.id}}"><i class="uil uil-trash"
+                                                                    data-sid="{{i.id}}"></i></span>
+                                                            <span class="float-end pointer cer-btn-edit" data-bs-toggle="modal"
+                                                                data-bs-target="#certificateAddModal" data-sid="{{i.id}}"><i
+                                                                    class="uil uil-pen" data-sid="{{i.id}}"></i></span>
+                                                        </h6>
+                                                        <p class="mb-2 text-muted">{{i.company}}</p>
+                                                        <p class="text-muted">{{i.url}}</p>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <hr>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="mt-4">
+                                            <h5 class="fs-18 fw-bold" data-bs-toggle="modal"
+                                            data-bs-target="#skillsAddModal">Skills
+                                                <span class="float-end pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#skillsAddModal"><i class="uil uil-plus"></i></span>
+                                            </h5>
+                                            <div id="skldata2">
+                                                <div id="primary2">
+                                                    <p class="text-muted">Primary</p>
+                                                    {% for i in skills %}
+                                                {% if i.skill_set == "Primary" %}
+                                                {% if i.experties == "Beginner" %}
+                                                
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>
+                                                {% elif i.experties == "Intermediate" %}   
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>     
+                                                {% elif i.experties == "Advance" %} 
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>     
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
+                                                </div>
+                                                <div id="secondary2">
+                                                    <p class="text-muted">Secondary</p>
+                                                    {% for i in skills %}
+                                                
+                                                {% if i.skill_set == "Secondary" %}
+                                                {% if i.experties == "Beginner" %}
+                                                
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>
+                                                {% elif i.experties == "Intermediate" %}   
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>     
+                                                {% elif i.experties == "Advance" %} 
+                                                <span class="badge fs-13 bg-light text-dark border mt-2 pri"
+                                                    id="skillsection">{{i.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i> <span
+                                                        class="float-end pointer skl-btn-del" data-sid="{{i.id}}"><i
+                                                            class="uil uil-trash" style="color:red; margin-left:10px;"
+                                                            data-sid="{{i.id}}"></i></span></span>     
+                                                {% endif %}
+                                                        
+                                                {% endif %}
+                                            
+                                                {% endfor %}
+                                                <hr>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        <div class="mt-4">
+                                            <h5 class="fs-18 fw-bold" data-bs-toggle="modal"
+                                            data-bs-target="#languageAddModal">Spoken languages
+                                                <span class="float-end pointer" data-bs-toggle="modal"
+                                                    data-bs-target="#languageAddModal"><i
+                                                        class="uil uil-plus"></i></span>
+                                            </h5>
+                                            <div id="lngdata">
+                                                <div id="lng2">
+                                                {% for j in lng %}
+
+                                                {% if j.experties == "Beginner" %}
+                                                <span class="badge fs-13 bg-light text-dark border mt-2"
+                                                    id="languagesection">{{j.title}}<i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i> <span class="float-end pointer lng-btn-del" data-sid="{{j.id}}"><i class="uil uil-trash" style="color:red; margin-left:10px;" data-sid="{{j.id}}"></i></span></span>
+                                                
+                                                {% elif j.experties == "Intermediate" %}  
+                                                <span class="badge fs-13 bg-light text-dark border mt-2"
+                                                    id="languagesection">{{j.title}} <i
+                                                    class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                    ></i><i
+                                                    class="fa fa-star" style="color:#FFD700;"
+                                                    ></i> <span class="float-end pointer lng-btn-del" data-sid="{{j.id}}"><i class="uil uil-trash" style="color:red; margin-left:10px;" data-sid="{{j.id}}"></i></span></span> 
+                                                   
+                                                {% elif j.experties == "Advance" %} 
+                                                <span class="badge fs-13 bg-light text-dark border mt-2"
+                                                id="languagesection">{{j.title}}<i
+                                                class="fa fa-star" style="color:#FFD700; margin-left:10px;"
+                                                ></i><i
+                                                class="fa fa-star" style="color:#FFD700;"
+                                                ></i><i
+                                                class="fa fa-star" style="color:#FFD700;"
+                                                ></i> <span class="float-end pointer lng-btn-del" data-sid="{{j.id}}"><i class="uil uil-trash" style="color:red; margin-left:10px;" data-sid="{{j.id}}"></i></span></span>
+                                                   
+                                                {% endif %}
+
+                                                {% endfor %}
+                                                <hr>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <h5 class="fs-18 fw-bold">Notice Period
+                                               
+                                            </h5>
+                                            <div id="npdata">
+                                                <h3 id="npnp" class="strong fs-13  mt-2">{{profile.notice_period}} Days</h3>
+                       
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade sactive" id="settings" role="tabpanel"
+                                        aria-labelledby="settings-tab">
+                                        <form >
+                                            {% csrf_token %}
+                                            <input type="hidden" name="proid" id="proid" />
+                                            <div>
+                                                <h5 class="fs-17 fw-semibold mb-3 mb-0">My Account</h5>
+                                                <div class="text-center">
+                                                    <div class="mb-4 profile-user">
+                                                        <img src="{% static 'assets/images/profile.jpg' %}"
+                                                            class="rounded-circle img-thumbnail profile-img"
+                                                            id="profile-img" alt="">
+                                                        <div class="p-0 rounded-circle profile-photo-edit">
+                                                            <input id="profile-img-file-input" type="file"
+                                                                class="profile-img-file-input" onchange="previewImg()">
+                                                            <label for="profile-img-file-input"
+                                                                class="profile-photo-edit avatar-xs">
+                                                                <i class="uil uil-edit"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="firstName" class="form-label">First Name</label>
+                                                            <input type="text" class="form-control" id="firstName" name="first_name"
+                                                                value="{{request.user.employee.first_name}}" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="lastName" class="form-label">Last Name</label>
+                                                            <input type="text" class="form-control" id="lastName" name="last_name"
+                                                                value="{{request.user.employee.last_name}}" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="choices-single-categories"
+                                                                class="form-label">Account Type</label>
+                                                            <select class="form-select" data-trigger
+                                                                
+                                                                id="choices-single-categories"
+                                                                aria-label="Default select example" name="account_type">
+                                                                <option value="{{profile.account_type}}">{{profile.account_type}}</option>
+                                                                <option value="Accounting">Accounting</option>
+                                                                <option value="IT & Software">IT & Software</option>
+                                                                <option value="Marketing">Marketing</option>
+                                                                <option value="Banking">Banking</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="text" class="form-control" disabled id="email"
+                                                                value="{{request.user.email}}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="mobile" class="form-label">Mobile Number</label>
+                                                            <input type="text" class="form-control" id="mobile"
+                                                                value="{{request.user.employee.mobile}}" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="passing_out_year" class="form-label">Passing Out Year</label>
+                                                            <input type="text" class="form-control" id="passing_out_year" name="passing_out_year"
+                                                                value="{{profile.passing_out_year}}" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                            <!--end account-->
+                                            <div class="mt-4">
+                                                <h5 class="fs-17 fw-semibold mb-3">Profile</h5>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1"
+                                                                class="form-label">Introduce Yourself</label>
+                                                            <textarea class="form-control"
+                                                                id="exampleFormControlTextarea1"
+                                                                rows="5" value="" name="bio">{{profile.bio}}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="languages" class="form-label">Years of Experience</label>
+                                                            <select class="form-select" data-trigger
+                                                                name="years_of_experience"
+                                                                id="choices-single-experience" aria-label="Default select exam
+                                                                ple" >
+                                                                <option value="{{profile.years_of_experience}}">{{profile.years_of_experience}}</option>
+                                                                <option value="0">0</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="choices-single-location"
+                                                                class="form-label">Location</label>
+                                                            <select class="form-select" data-trigger
+                                                                name="location"
+                                                                id="choices-single-location" aria-label="Default select exam
+                                                                ple" >
+                                                                <option value="ME">Montenegro</option>
+                                                                <option value="MS">Montserrat</option>
+                                                                <option value="MA">Morocco</option>
+                                                                <option value="MZ">Mozambique</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="languages" class="form-label">Notice Period</label>
+                                                            <select class="form-select" data-trigger
+                                                                name="notice_period"
+                                                                id="notice_period" aria-label="Default select exam
+                                                                ple" >
+                                                                <option selected>{{profile.notice_period}}</option>
+                                                                <option value="30">30</option>
+                                                                <option value="60">60</option>
+                                                                <option value="90">90</option>
+                                                                <option value="120">120</option>
+                                                                <option value="150">150</option>
+                                                                <option value="180">180</option>
+                                                                <option value="210">210</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="choices-single-location"
+                                                                class="form-label"></label>
+                                                                <div class="form-check mt-3">
+                                                                    <input class="form-check-input" type="checkbox" value="True" id="s_notice_period" name="s_notice_period">
+                                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                                     Serving Notice Period
+                                                                    </label>
+                                                                  </div>
+                                                            <!-- <select class="form-select" data-trigger
+                                                                name="location"
+                                                                id="choices-single-location" aria-label="Default select exam
+                                                                ple" >
+                                                                <option value="ME">Montenegro</option>
+                                                                <option value="MS">Montserrat</option>
+                                                                <option value="MA">Morocco</option>
+                                                                <option value="MZ">Mozambique</option>
+                                                            </select> -->
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                            <!--end profile-->
+                                            <div class="mt-4">
+                                                <h5 class="fs-17 fw-semibold mb-3">Social Media</h5>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="facebook" class="form-label">Facebook</label>
+                                                            <input type="text" class="form-control" id="facebook"
+                                                                value="https://www.facebook.com" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="twitter" class="form-label">Twitter</label>
+                                                            <input type="text" class="form-control" id="twitter"
+                                                                value="https://www.twitter.com" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="linkedin" class="form-label">Linkedin</label>
+                                                            <input type="text" class="form-control" id="linkedin"
+                                                                value="https://www.linkedin.com" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="whatsapp" class="form-label">Whatsapp</label>
+                                                            <input type="text" class="form-control" id="whatsapp"
+                                                                value="https://www.whatsapp.com" />
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                            <!--end socia-media-->
+                                            
+                                            <!--end Change-password-->
+                                            <div class="mt-4 text-end">
+                                                <button type="button" data-sid="{{profile.id}}" id="profileButton" href="javascript:void(0)" class="btn btn-primary" value="Update" >Update<div id="loader" class="lds-dual-ring hidden overlay"></div></button>
+                                            </div>
+                                        </form>
+                                        <!--end form-->
+                                    </div>
+                                    <!--end tab-pane-->
+                                </div>
+                                <!--end tab-content-->
+                            </div>
+                            <!--end card-body-->
+                        </div>
+                        <!--end profile-content-page-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!-- END PROFILE -->
+
+    </div>
+
+
+    <script>
+
+        // Profile
+        $("#profileButton").click(function(){
+            console.log("clicked!!");
+            output = ""
+            let proid = $(this).attr("data-sid");
+            let fname = $("#firstName").val()
+            let lname = $("#lastName").val()
+            let account = $("#choices-single-categories").val()
+            let about = $("#exampleFormControlTextarea1").val()
+            let exp = $("#choices-single-experience").val()
+            let loc = $("#choices-single-location").val()
+            let poe = $("#passing_out_year").val()
+            let mob = $("#mobile").val()
+            let np = $("#notice_period").val()
+            let snp = $("#s_notice_period").val()
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            // console.log(fname, lname, account, about, exp, loc)
+           // mydata = {proid:proid, fname:fname, lname:lname, account:account, about:about, exp:exp, loc:loc ,csrfmiddlewaretoken: csr };
+           // console.log(mydata);
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('proid',proid);
+            fd.append('first_name',fname);
+            fd.append('last_name',lname);
+            fd.append('account_type',account);
+            fd.append('bio',about);
+            fd.append('years_of_experience',exp);
+            fd.append('location',loc);
+            fd.append('mobile',mob);
+            fd.append('passing_out_year',poe);
+            fd.append('notice_period',np);
+            fd.append('s_notice_period',snp);
+            console.log(fd)
+            $('#loader').removeClass('hidden')
+            $.ajax({
+                url: "",
+                method: "POST",
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data){
+                 //   $('#firstName').val(data["first_name"]);
+                 //   $('#lastName').val(data["last_name"]);
+                 //   $('#mobile').val(data["mobile"]);
+                 //   $('#promob').val(data["mobile"]);
+                 //   $('#passing_out_year').val(data["passing_out_year"]);
+                 //   $('#choices-single-location').val(data["location"]);
+                 //   $('#proloc').val(data["[location]"]);
+                 //   $('#choices-single-experience').val(data["years_of_experience"]);
+                 //   $('#exampleFormControlTextarea1').val(data["bio"]);
+                 //   $('#probio').val(data["bio"]);
+                 //   $('#choices-single-categories').val(data["account_type"]);
+                 //   console.log("success");
+                  //  console.log(data);
+                    
+                    let fname = $("#firstName").val()
+                    let lname = $("#lastName").val()
+                    let mob = $("#mobile").val()
+                    let bio = $("#exampleFormControlTextarea1").val()
+                    let loc = $("#choices-single-location").val()
+                    console.log(fname, lname, mob, bio, loc);
+                    $("#fnamelname").replaceWith('<h5 id="fnamelname" class="mb-0">' + fname + " " + lname +'</h5>');
+                    $("#biobio").replaceWith('<p id="biobio" class="text-muted mt-4" id="probio">' + bio +'</p>');
+                    $("#mobmob").replaceWith('<p id="mobmob" class="text-muted mb-0" id="promob">' + mob +'</p>');
+                    $("#locloc").replaceWith('<p id="locloc" class="text-muted mb-0" id="proloc">' + loc +'</p>');
+                    $("#npnp").replaceWith('<h3 id="npnp" class="strong fs-13  mt-2">'+ np +' Days</h3>');
+                    setTimeout(function() {
+                        $('#loader').addClass('hidden')
+                      }, 1000);
+                    
+                },
+                error:function(error){
+                    console.log("Erorororor");
+                }
+            })
+        })
+
+        // Experience 
+        $("#expbtnsave").click(function () {
+            let allT = true;
+            console.log("Save Button Clicked");
+            output = "";
+            let expid = $("#expid").val();
+            let exptitle = $("#expTitleID").val();
+            let expcompany = $("#expCompanyID").val();
+            let expsyear = $("#expSYearID").val();
+            let expeyear = $("#expEYearID").val();
+            let expbody = CKEDITOR.instances.id_expbody.getData();
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            if (exptitle == "") {
+                $('#expTitleID').css("border","1px solid red");
+                allT = false;
+            }
+            if (exptitle == "") {
+                $('#expCompanyID').css("border","1px solid red");
+                allT = false;
+            }
+            if (expcompany == "") {
+                $('#expSYearID').css("border","1px solid red");
+                allT = false;
+            }
+            if (expeyear == "") {
+                $('#expEYearID').css("border","1px solid red");
+                allT = false;
+            }
+            if (expbody == "") {
+                $('#cke_id_expbody').css("border","1px solid red");
+                allT = false;
+            }
+            
+            else {
+
+                mydata = {expid:expid, expTitle: exptitle, expCompany: expcompany, expsyear: expsyear, expeyear: expeyear, expbody: expbody, csrfmiddlewaretoken: csr };
+                console.log(mydata);
+                $.ajax({
+                    url: "{% url 'employee:exp_save' %}",
+                    method: "POST",
+                    data: mydata,
+                    success: function (data) {
+                        x = data.exp_data;
+                        console.log(x);
+                        if (data.status == "Save") {
+                            for (i = 0; i < x.length; i++) {
+                                output += "<div class='candidate-education-content mt-4 d-flex' id='experiencesection' > <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer exp-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer exp-btn-edit' data-bs-toggle='modal' data-bs-target='#experienceAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" + "</h6>" + "<p class='mb-2 text-muted'>" + x[i].company + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].expbody + "</p></div></div>"
+                            }
+                            $("#expdata").html(output);
+                            $("form").trigger("reset");
+                            $('#experienceAddModal').modal('hide');
+
+                        }
+                    },
+                });
+            }
+
+        })
+
+        $("#expdata").on("click", ".exp-btn-del", function () {
+            console.log("Delete Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'employee:exp_delete' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $('#expdata').empty();
+                    if (data.status == 1) {
+                        
+                        x = data.exp_data;
+                        console.log("Data Deleted Successfully");
+                      //  $(mythis).closest("div").fadeOut();
+                      
+                      for (i = 0; i < x.length; i++) {
+                        $('#expdata').append("<div class='candidate-education-content mt-4 d-flex' id='experiencesection' > <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer exp-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer exp-btn-edit' data-bs-toggle='modal' data-bs-target='#experienceAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" + "</h6>" + "<p class='mb-2 text-muted'>" + x[i].company + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].expbody + "</p></div></div>");
+                       // output += "<div class='candidate-education-content mt-4 d-flex' id='educationsection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer edu-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer edu-btn-edit' data-bs-toggle='modal' data-bs-target='#educationAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='mb-2 text-muted'>" + x[i].college + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].edubody + "</p></div></div>"
+                      }
+                    }
+                    
+                },
+            })
+        })
+
+
+        $("#expdata").on("click", ".exp-btn-edit", function () {
+            console.log("Edit Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            $.ajax({
+                url: "{% url 'employee:exp_edit' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $("#expid").val(data.id);
+                    $("#expTitleID").val(data.title);
+                    $("#expCompanyID").val(data.company);
+                    $("#expSYearID").val(data.year_of_join);
+                    $("#expEYearID").val(data.year_of_end);
+                   // $("#id_edubody").val(data.edubody);
+                   CKEDITOR.instances.id_expbody.getData();
+                   console.log(data)
+                },
+            })
+        })
+
+        // Education
+
+        
+
+
+        
+
+        $("#edubtnsave").click(function () {
+            console.log("Save Button Clicked");
+            output = "";
+            let eduid = $("#eduid").val();
+            let edutitle = $("#eduTitleID").val();
+            let educollege = $("#eduCollegeID").val();
+            let edusyear = $("#eduSYearID").val();
+            let edueyear = $("#eduEYearID").val();
+            let edubody = CKEDITOR.instances.id_edubody.getData();
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            if (edutitle == "") {
+                $('#eduTitleID').css("border","1px solid red");
+                allT = false;
+            }
+            if (educollege == "") {
+                $('#eduCollegeID').css("border","1px solid red");
+                allT = false;
+            }
+            if (edusyear == "") {
+                $('#eduSYearID').css("border","1px solid red");
+                allT = false;
+            }
+            if (edueyear == "") {
+                $('#eduEYearID').css("border","1px solid red");
+                allT = false;
+            }
+            if (edubody == "") {
+                $('#cke_id_edubody').css("border","1px solid red");
+                allT = false;
+            }
+            else {
+
+                mydata = { eduid: eduid, edutitle: edutitle, educollege: educollege, edusyear: edusyear, edueyear: edueyear, edubody: edubody, csrfmiddlewaretoken: csr };
+                console.log(mydata);
+                $.ajax({
+                    url: "{% url 'employee:edu_save' %}",
+                    method: "POST",
+                    data: mydata,
+                    success: function (data) {
+                        x = data.edu_data;
+                        console.log(x);
+                        if (data.status == "Save") {
+                            for (i = 0; i < x.length; i++) {
+                                output += "<div class='candidate-education-content mt-4 d-flex' id='educationsection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer edu-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer edu-btn-edit' data-bs-toggle='modal' data-bs-target='#educationAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='mb-2 text-muted'>" + x[i].college + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].edubody + "</p></div></div>"
+                                
+                            }
+                            $("#edudata").html(output);
+                            $("form").trigger("reset");
+                            $('#educationAddModal').modal('hide');
+
+                        }
+                    },
+                });
+            }
+
+        });
+
+        $("#edudata").on("click", ".edu-btn-del", function () {
+            console.log("Delete Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'employee:edu_delete' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $('#edudata').empty();
+                    if (data.status == 1) {
+                        
+                        x = data.edu_data;
+                        console.log("Data Deleted Successfully");
+                      //  $(mythis).closest("div").fadeOut();
+                      
+                      for (i = 0; i < x.length; i++) {
+                        $('#edudata').append("<div class='candidate-education-content mt-4 d-flex' id='educationsection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer edu-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer edu-btn-edit' data-bs-toggle='modal' data-bs-target='#educationAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='mb-2 text-muted'>" + x[i].college + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].edubody + "</p></div></div>");
+                       // output += "<div class='candidate-education-content mt-4 d-flex' id='educationsection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer edu-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer edu-btn-edit' data-bs-toggle='modal' data-bs-target='#educationAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='mb-2 text-muted'>" + x[i].college + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].edubody + "</p></div></div>"
+                        
+                    }
+                   // $("#edudata").html(output);
+                    }
+                },
+            })
+        })
+
+        $("#edudata").on("click", ".edu-btn-edit", function () {
+            console.log("Edit Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            $.ajax({
+                url: "{% url 'employee:edu_edit' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $("#eduid").val(data.id);
+                    $("#eduTitleID").val(data.title);
+                    $("#eduCollegeID").val(data.college);
+                    $("#eduSYearID").val(data.year_of_join);
+                    $("#eduEYearID").val(data.year_of_end);
+                   // $("#id_edubody").val(data.edubody);
+                   CKEDITOR.instances.id_edubody.getData();
+                },
+            })
+        })
+
+        // Certificate
+
+        $("#cerbtnsave").click(function () {
+            console.log("Save Button Clicked");
+            output = "";
+            let cerid = $("#cerid").val();
+            let certitle = $("#cerTitleID").val();
+            let cercompany = $("#cerCompanyID").val();
+            let cerurl = $("#cerURLID").val();
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            if (certitle == "") {
+                $('#cerTitleID').css("border","1px solid red");
+                allT = false;
+            }
+            
+            if (cercompany == "") {
+                $('#cerCompanyID').css("border","1px solid red");
+                allT = false;
+            }
+            if (cerurl == "") {
+                $('#cerURLID').css("border","1px solid red");
+                allT = false;
+            }
+            
+            else {
+
+                mydata = {cerid:cerid, certitle: certitle, cercompany: cercompany, cerurl: cerurl, csrfmiddlewaretoken: csr };
+                console.log(mydata);
+                $.ajax({
+                    url: "{% url 'employee:cer_save' %}",
+                    method: "POST",
+                    data: mydata,
+                    success: function (data) {
+                        x = data.cer_data;
+                        console.log(x);
+                        if (data.status == "Save") {
+                            for (i = 0; i < x.length; i++) {
+                                output += "<div class='candidate-education-content mt-4 d-flex' id='certificatesection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer cer-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer cer-btn-edit' data-bs-toggle='modal' data-bs-target='#certificateAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='text-muted'>" + x[i].url + "</p></div></div>"
+                                
+                            }
+                            $("#cerdata").html(output);
+                            $("form").trigger("reset");
+                            $('#certificateAddModal').modal('hide');
+
+                        }
+                    },
+                });
+            }
+
+        })
+
+        $("#cerdata").on("click", ".cer-btn-del", function () {
+            console.log("Delete Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'employee:cer_delete' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $('#cerdata').empty();
+                    if (data.status == 1) {
+                        
+                        x = data.cer_data;
+                        console.log("Data Deleted Successfully");
+                      //  $(mythis).closest("div").fadeOut();
+                      
+                      for (i = 0; i < x.length; i++) {
+                        $('#cerdata').append("<div class='candidate-education-content mt-4 d-flex' id='certificatesection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer cer-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer cer-btn-edit' data-bs-toggle='modal' data-bs-target='#certificateAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='text-muted'>" + x[i].url + "</p></div></div>");
+                       // output += "<div class='candidate-education-content mt-4 d-flex' id='educationsection'> <div class='circle flex-shrink-0 bg-soft-primary'>" + x[i].title.slice(0, 1) + "</div>" + "<div class='ms-4'><h6 class='fs-16 mb-1'>" + x[i].title + "<span class='float-end pointer edu-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' data-sid='" + x[i].id + "'></i></span> <span class='float-end pointer edu-btn-edit' data-bs-toggle='modal' data-bs-target='#educationAddModal' data-sid='" +x[i].id+"'><i class='uil uil-pen' data-sid='"+x[i].id+"' ></i></span>" +"</h6>" + "<p class='mb-2 text-muted'>" + x[i].college + " - (" + x[i].year_of_join + " - " + x[i].year_of_end + ")</p>" + "<p class='text-muted'>" + x[i].edubody + "</p></div></div>"
+                      }
+                    }
+                },
+            })
+        })
+
+        $("#cerdata").on("click", ".cer-btn-edit", function () {
+            console.log("Edit Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            $.ajax({
+                url: "{% url 'employee:cer_edit' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    $("#cerid").val(data.id);
+                    $("#cerTitleID").val(data.title);
+                    $("#cerCompanyID").val(data.company);
+                    $("#cerURLID").val(data.url);
+                },
+            })
+        })
+
+        // Skills
+
+        $("#sklbtnsave").click(function () {
+            console.log("Save Button Clicked");
+            output = "";
+            let skltitle = $("#sklTitleID").val();
+            let sklexperties = $("#sklexpertiesID").val();
+            let sklset = $("#sklsetID").val();
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            if (skltitle == "") {
+                $('#sklTitleID').css("border","1px solid red");
+                allT = false;
+            }
+            else {
+
+                mydata = { skltitle: skltitle,sklexperties:sklexperties, sklset:sklset, csrfmiddlewaretoken: csr };
+                console.log(mydata);
+                $.ajax({
+                    url: "{% url 'employee:skl_save' %}",
+                    method: "POST",
+                    data: mydata,
+                    success: function (data) {
+                        x = data.skl_data;
+                        console.log(x);
+                        $("#primary2").empty();
+                        $("#secondary2").empty();
+                        $("#primary2").append('<p class="text-muted">Primary</p>');
+                        $("#secondary2").append('<p class="text-muted">Secondary</p>');
+                        for(let v in x){
+                            console.log(x[v].skill_set)
+                            if(x[v].skill_set == "Primary"){
+                                if(x[v].experties == "Beginner"){
+                                    $('#primary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                                else if(x[v].experties == "Intermediate"){
+                                    $('#primary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i><i class='fa fa-star' style='color:#FFD700; '></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                                else if(x[v].experties == "Advance"){
+                                    $('#primary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i><i class='fa fa-star' style='color:#FFD700;'></i><i class='fa fa-star' style='color:#FFD700; '></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                               // $('#primary2').append("<span class='badge fs-13 bg-soft-success mt-2 pri' id='skillsection'>" + x[v].title + "<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                            //    output += "< class='badge fs-13 bg-soft-success mt-2 pri' id='skillsection'>" + x[v].title + "<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></ span>"
+                            }
+                            else{
+                                if(x[v].experties == "Beginner"){
+                                    $('#secondary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                                else if(x[v].experties == "Intermediate"){
+                                    $('#secondary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i><i class='fa fa-star' style='color:#FFD700; '></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                                else if(x[v].experties == "Advance"){
+                                    $('#secondary2').append("<span class='badge fs-13 bg-light text-dark border mt-2 pri' id='skillsection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i><i class='fa fa-star' style='color:#FFD700;'></i><i class='fa fa-star' style='color:#FFD700; '></i>" +"<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                                }
+                               // $('#secondary2').append("<span class='badge fs-13 bg-soft-success mt-2 sec' id='skillsection'>" + x[v].title + "<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>");
+                             //   output += "<span class='badge fs-13 bg-soft-success mt-2 sec' id='skillsection'>" + x[v].title + "<span class='float-end pointer skl-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>"
+                            }
+                          //  $("#skldata").html(output);
+                            $("form").trigger("reset");
+                            $('#skillsAddModal').modal('hide');
+                        }
+                       // if (data.status == "Save") {
+                       //     for (i = 0; i < x.length; i++) {
+                                
+                                
+                       //         output += "<span class='badge fs-13 bg-soft-success mt-2 pri' id='skillsection'>" + x[i].title + "<span class='float-end pointer skl-btn-del' data-sid='" + x[i].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[i].id +"'></i></span></span>"
+                               
+                                
+                                
+                         //   }
+                        //    $("#skldata").html(output);
+                       //     $("form").trigger("reset");
+                       //     $('#skillsAddModal').modal('hide');
+
+                       // }
+                    },
+                });
+            }
+
+        })
+
+
+        $("#skldata2").on("click", ".skl-btn-del", function () {
+            console.log("Delete Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'employee:skl_delete' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    if (data.status == 1) {
+                        console.log("Data Deleted Successfully");
+                        $(mythis).closest("#skillsection").fadeOut();
+                    }
+                },
+            })
+        })
+
+        // Language
+
+        $("#lngbtnsave").click(function () {
+            console.log("Save Button Clicked");
+            output = "";
+            let lngtitle = $("#lngTitleID").val();
+            let lngexperties = $("#lngexpertiesID").val();
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            if (lngtitle == "") {
+                $('#lngTitleID').css("border","1px solid red");
+                allT = false;
+            }
+            else {
+
+                mydata = { lngtitle: lngtitle, lngexperties:lngexperties ,csrfmiddlewaretoken: csr };
+                console.log(mydata);
+                $.ajax({
+                    url: "{% url 'employee:lng_save' %}",
+                    method: "POST",
+                    data: mydata,
+                    success: function (data) {
+                        x = data.lng_data;
+                        console.log(x);
+                        $('#lng2').empty();
+                        if (data.status == "Save") {
+                            for(let v in x){
+                                if(x[v].experties == "Beginner"){
+                                    $('#lng2').append("<span class='badge fs-13 bg-light text-dark border mt-2' id='languagesection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i> <span class='float-end pointer lng-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>")
+                                }
+                                else if(x[v].experties == "Intermediate"){
+                                    $('#lng2').append("<span class='badge fs-13 bg-light text-dark border mt-2' id='languagesection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i> <i class='fa fa-star' style='color:#FFD700; '></i> <span class='float-end pointer lng-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>")
+                                }
+                                else if(x[v].experties == "Advance"){
+                                    $('#lng2').append("<span class='badge fs-13 bg-light text-dark border mt-2' id='languagesection'>" + x[v].title + "<i class='fa fa-star' style='color:#FFD700; margin-left:10px;'></i> <i class='fa fa-star' style='color:#FFD700; '></i> <i class='fa fa-star' style='color:#FFD700; '></i> <span class='float-end pointer lng-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>")
+
+                                }
+                              //  $('#lng2').append("<span class='badge fs-13 bg-soft-success mt-2' id='languagesection'>" + x[v].title + "<span class='float-end pointer lng-btn-del' data-sid='" + x[v].id +"'><i class='uil uil-trash' style='color:red; margin-left:10px;' data-sid='" + x[v].id +"'></i></span></span>")
+                            }
+                           
+                           // $("#lngdata").html(output);
+                            $("form").trigger("reset");
+                            $('#languageAddModal').modal('hide');
+
+                        }
+                    },
+                });
+            }
+
+        })
+
+
+        $("#lngdata").on("click", ".lng-btn-del", function () {
+            console.log("Delete Button Clicked");
+            let id = $(this).attr("data-sid");
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            console.log(id);
+            mydata = { sid: id, csrfmiddlewaretoken: csr };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'employee:lng_delete' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    if (data.status == 1) {
+                        console.log("Data Deleted Successfully");
+                        $(mythis).closest("#languagesection").fadeOut();
+                    }
+                },
+            })
+        })
+
+        const handleAlerts = (type,text) => {
+            $("#alertsS").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="z-index:1000;"></button></div>');
+            };
+
+        $('#resumebtnsave').click(function(e){
+            e.preventDefault();
+            console.log("clicked");
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('resumeTitle',$("#resumeTitle").val());
+            var fileInput = document.getElementById('resumeimage');
+            var file = fileInput.files[0];
+            fd.append('resumeimage',file);
+            $.ajax({
+                type: 'POST',
+                url: '{% url "employee:resume_create" %}',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if (data.status == 1) {
+                        handleAlerts('success','Image Added Success');
+                        console.log("YES")
+                        window.location.reload();
+                    }
+                    else{
+                        handleAlerts('danger','Nope');
+                        console.log("NOPE")
+                    }
+                },
+                error: function(error){
+                    handleAlerts('danger', 'oops..something went wrong with AJAX');
+                    console.log("YESNOPE")
+                }
+            });
+            $(document).ready(function(){
+                $('#resumeAddModal').modal('hide');
+            });
+        });
+         
+
+    </script>
+
+    {% endblock %}
+
+
+    <!-- <span class='float-end pointer exp-btn-del' data-sid='{{i.id}}'><i class='uil uil-trash' data-sid='{{i.id}}'></i></span> <span class='float-end pointer exp-btn-edit' data-bs-toggle='modal' data-bs-target='#experienceAddModal' data-sid='{{i.id}}'><i class='uil uil-pen' data-sid='{{i.id}}' ></i></span> -->
+

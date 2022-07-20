@@ -1,0 +1,2619 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block jobListSection %}
+<link rel="stylesheet" href="{% static 'css1/style2.css' %}">
+<link rel="stylesheet" href="{% static 'css1/t1/jquery.dropdown.css' %}">
+<script src="{% static 'css1/t1/jquery.dropdown.js' %}"></script>
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/thinline.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.job-box .favorite-icon {
+    top: -15px;
+}
+.col-lg-3{
+    overflow: visible;
+    overflow-y: scroll;
+}
+#alerts .alert{
+    background-color: #1DA1F2;
+    color: white;
+}
+#alerts .alert .btn-close{
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<script>
+    let dataLoc=[],dataSki=[],dataRol=[],dataPriSki=[],dataWor=[]
+    "{% for x in location %}"
+        dataLoc.push("{{ x.name }}");
+    "{% endfor %}"
+    "{% for x in role %}"
+        dataRol.push("{{ x.name }}");
+    "{% endfor %}"
+    "{% for x in skill %}"
+        dataSki.push("{{ x.name }}");
+        if("{{ x.is_primary }}" == "True"){
+            dataPriSki.push("{{ x.name }}");
+        }
+    "{% endfor %}"
+    "{% for x in workplace %}"
+        dataWor.push("{{ x.name }}");
+    "{% endfor %}"
+    // console.log("workplace",dataWor);
+    
+</script>
+<script>
+    //function
+    var curArr = []
+    function removeCurateData(){
+        $("#curateForm")[0].reset();
+        $('.curate--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.curate--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.curate--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.curate--workplace > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.curate--skill > div.dropdown-display-label').css("border","1px solid #ccc")
+        $('.curate--categories > div.dropdown-display-label').css("border","1px solid #ccc")
+    }
+    function mov(id){
+        window.location.href='/job/'+id+'/';
+    }
+    function profA(){
+        window.location.href='/dashboard/employee-profile/';
+    }
+    function profU(){
+        window.location.href='/login/';
+    }
+</script>
+<script>
+    $(document).ready(function() { 
+        if(showCurate==-1 && $.cookie('curate')){
+            var curData = JSON.parse($.cookie('curate'));
+            curArr = curData;
+        }
+        let searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.has('role')){
+            let paramR = searchParams.get('role');
+            if(paramR.length>0){
+                paramR = paramR.split(',');
+                for (let index = 0; index < paramR.length; index++) {
+                    const newStr = paramR[index].split(' ')
+                        .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
+                        .join(' ');
+                    let f=1;
+                    $('.choices--categories > div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected').each(function(){
+                        if($(this).text()==newStr){
+                            f=0;
+                        }
+                    });
+                    if(f==1){
+                        $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                            if($(this).text()==newStr){
+                                $(this).trigger("click");
+                            }
+                        });
+                    }   
+                }
+                $("#filter").trigger("click");
+                setTimeout(function () {
+                    $("#staticBackdropCurateClose").trigger("click");
+                }, 500);  
+            } 
+        }
+        if(searchParams.has('skill')){
+            $("#staticBackdropCurate > modal-dialog > modal-content > modal-header > btn-close").trigger("click");
+            let paramS = searchParams.get('skill');
+            if(paramS.length>0){
+                paramS = paramS.split(',');
+                for (let index = 0; index < paramS.length; index++) {
+                    const newStr = paramS[index].split(' ')
+                        .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
+                        .join(' ');
+                    let f=1;
+                    $('.choices--skill > div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected').each(function(){
+                        if($(this).text()==newStr){
+                            f=0;
+                        }
+                    });
+                    if(f==1){
+                        $('.choices--skill > div.dropdown-main > ul > li[data-value="'+newStr+'"]').trigger("click");
+                    }
+                }
+                $("#filter").trigger("click");
+                setTimeout(function () {
+                    $("#staticBackdropCurateClose").trigger("click");
+                }, 500);  
+            } 
+        }
+        if(searchParams.has('search')){
+            let ps = searchParams.get('search');
+            if(ps.length>0){
+                paramS = paramS.split(',');
+                for (let index = 0; index < paramS.length; index++) {
+                    const newStr = paramS[index].split(' ')
+                        .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
+                        .join(' ');
+                    let f=1;
+                    $('.choices--skill > div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected').each(function(){
+                        if($(this).text()==newStr){
+                            f=0;
+                        }
+                    });
+                    $('.choices--categories > div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected').each(function(){
+                        if($(this).text()==newStr){
+                            f=0;
+                        }
+                    });
+                    if(f==1){
+                        $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                            if($(this).text()==newStr){
+                                $(this).trigger("click");
+                            }
+                        });
+                        $('.choices--skill > div.dropdown-main > ul > li[data-value="'+newStr+'"]').trigger("click");
+                    }   
+                }
+                $("#filter").trigger("click");
+                setTimeout(function () {
+                    $("#staticBackdropCurateClose").trigger("click");
+                }, 500);  
+            } 
+        }
+    });
+</script>
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                
+                <div class="position-absolute end-0 top-0 p-3">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="auth-content">
+                    <div class="w-100">
+                        <div id="alertsS"></div>
+                        <div class="text-center mb-4">
+                            <h5>Sign Up</h5>
+                            <p class="text-muted">Sign Up and get access to all the features of Somhako</p>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">First Name:</label>
+                                <input type="text" id="f_name" class="form-control" name="first_name" placeholder="Fast Name" required="required">
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Last Name:</label>
+                                <input type="text" id="l_name" class="form-control" name="last_name" placeholder="Last Name" required="required">
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email Address:</label>
+                                <input type="email" id="email" class="form-control" name="email" placeholder="E-mail Address" required="required">
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Password:</label>
+                                <input id="password" type="password" class="form-control" name="password1" placeholder="**" required="required">
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Confirm Password:</label>
+                                <input id="password2" type="password" class="form-control" name="password2" placeholder="**" required="required">
+                              </div>
+                              <div class="mb-3 form-check">
+                                <div class="fxt-checkbox-box">
+                                    <input id="checkbox1" type="checkbox">
+                                    <label for="checkbox1" class="ps-4">I agree with <a
+                                    class="terms-link" href="#">Terms</a> and <a class="terms-link" href="#">Privacy Policy</a></label>
+                                </div>
+                              </div>
+                              
+                              <div class="form-group">
+                                  <button type="submit" id="signup" class="fxt-btn-fill">Sign Up</button>
+                                  <p>   </p>
+                                  <div class="log" style="text-align:center ;">If you have an account You can<a href="/login/" class="fxt-switcher-text ms-2">Sign In</a></div>
+                              </div>
+                          </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+
+
+<div class="main-content">
+
+    <div class="page-content">
+        <!-- START JOB-LIST -->
+        <section class="section2">
+            
+            <div class="container">
+                <div id="alerts">
+                    
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-3 overflow-auto" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;padding: 0px 20px 0px 20px; max-height: 90vh;" >
+                        <div class="side-bar mt-5 mt-lg-0">
+                            <div class="accordion" id="accordionExample">
+                                <div class="wedget-popular-title mt-4">
+                                    <h6>Curate <i class="fa fa-plus float-end" id="plusCurate" style="cursor: pointer;padding-right: 10px;"></i></h6>
+                                    <ul class="list-inline" id="curUl" >
+                                        <!--
+                                        <li class="list-inline-item">
+                                            <div class="popular-box d-flex align-items-center" >
+                                                <div class="number flex-shrink-0 me-2" style="padding-right:10px;padding-top:5px;padding-left:10px; width:auto;cursor: pointer;">
+                                                    <h6 role="button" class="primary-link stretched-link fs-14 mb-0">Curate2</h6>
+                                                </div>
+                                                
+                                                <span><i class="uil uil-edit"></i>&nbsp;<i class="fa fa-play" ></i></span> 
+                                            </div>
+                                        </li><br> -->
+                                    </ul>
+                                </div>
+                                <div class="wedget-popular-title mt-4">
+                                    <h6>Popular</h6>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <div class="popular-box d-flex align-items-center">
+                                                <div class="number flex-shrink-0 me-2">
+                                                    20  
+                                                </div>
+                                                <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">UI/UX designer</h6></a>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <div class="popular-box d-flex align-items-center">
+                                                <div class="number flex-shrink-0 me-2">
+                                                    18  
+                                                </div>
+                                                <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">HR manager</h6></a>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <div class="popular-box d-flex align-items-center">
+                                                <div class="number flex-shrink-0 me-2">
+                                                    10  
+                                                </div>
+                                                <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">Product manager</h6></a>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <div class="popular-box d-flex align-items-center">
+                                                <div class="number flex-shrink-0 me-2">
+                                                    28  
+                                                </div>
+                                                <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">Developer</h6></a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div><!--end wedget-popular-title-->
+
+                                
+                                
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="choices--skill">
+                                        <select style="display:none"  name="" id="choices-skill" multiple>
+                                        </select>
+                                    </div>
+                                    <div class="choices--location mt-3">
+                                        <select style="display:none"  name="" id="choices-location" multiple>
+                                        </select>
+                                    </div>
+                                    <div class="choices--categories mt-3">
+                                        <select style="display:none"  name="" id="choices-categories" multiple>
+                                        </select>
+                                    </div>
+                                </form>
+
+                                <div class="accordion-item mt-3">   
+                                    <h2 class="accordion-header" id="experienceOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#experience" aria-expanded="true" aria-controls="experience">
+                                            Work experience
+                                        </button>
+                                    </h2>
+                                    <div id="experience" class="accordion-collapse collapse show" aria-labelledby="experienceOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div class="side-title">
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" name="workE" type="checkbox" value="-1" id="flexCheckChecked1" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked1">No experience</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" name="workE" type="checkbox" value="1" id="flexCheckChecked2" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked2">0-2 years</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" name="workE" type="checkbox" value="2" id="flexCheckChecked3" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked3">2-4 years</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" name="workE" type="checkbox" value="3" id="flexCheckChecked4" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked4">More than 5 years</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end accordion-item -->
+                        
+                                <div class="accordion-item mt-3">
+                                    <h2 class="accordion-header" id="jobType">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#jobtype" aria-expanded="false" aria-controls="jobtype">
+                                            Type of employment
+                                        </button>
+                                    </h2>
+                                    <div id="jobtype" class="accordion-collapse collapse" aria-labelledby="jobType"  data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div class="side-title">
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" value="1" type="checkbox" name="empType" id="flexRadioDefault6" >
+                                                    <label class="form-check-label ms-2 text-muted" for="flexRadioDefault6">
+                                                        Full time
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" value="2" type="checkbox" name="empType" id="flexRadioDefault2">
+                                                    <label class="form-check-label ms-2 text-muted" for="flexRadioDefault2">
+                                                        Part Time
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" value="3" type="checkbox" name="empType"  id="flexRadioDefault3">
+                                                    <label class="form-check-label ms-2 text-muted" for="flexRadioDefault3">
+                                                        Internship
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" value="4" type="checkbox" name="empType" id="flexRadioDefault4">
+                                                    <label class="form-check-label ms-2 text-muted" for="flexRadioDefault4">
+                                                        Contract
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end accordion-item -->
+                        
+                                <div class="accordion-item mt-3">
+                                    <h2 class="accordion-header" id="datePosted">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dateposted" aria-expanded="false" aria-controls="dateposted">
+                                            Date Posted
+                                        </button>
+                                    </h2>
+                                    <div id="dateposted" class="accordion-collapse collapse" aria-labelledby="datePosted" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div class="side-title form-check-all">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="dateP" type="checkbox" id="checkAll" value="-1" selected/>
+                                                    <label class="form-check-label ms-2 text-muted" for="checkAll">
+                                                        All
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox"  name="dateP"  value="1" id="flexCheckChecked5" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked5">
+                                                        Last Hour
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox" name="dateP" value="2" id="flexCheckChecked6" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked6">
+                                                        Last 24 hours
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox" name="dateP" value="3" id="flexCheckChecked7" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked7">
+                                                        Last 7 days
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox" name="dateP" value="4" id="flexCheckChecked8" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked8">
+                                                        Last 14 days
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input class="form-check-input" type="checkbox" name="dateP" value="5" id="flexCheckChecked9" />
+                                                    <label class="form-check-label ms-2 text-muted" for="flexCheckChecked9">
+                                                        Last 30 days
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                
+                            </div><!--end accordion-->
+                            
+                        </div><!--end side-bar-->
+                        <div class="col-lg-5 mt-3 mb-3">
+                            <button type="submit" id="filter" class="btn btn-primary w-100"><i class="uil uil-filter"></i> Fliter</button>
+                        </div><!--end col-->
+                    </div>
+
+                    <div class="col-lg-6" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; height: 90vh; overflow:scroll;padding: 0px 20px 0px 20px;">
+                            <!-- <div class="job-list-header">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="row g-2">
+                                        
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="choices--skill">
+                                                <select style="display:none"  name="" id="choices-skill" multiple>
+                                                </select>
+                                            </div>
+                                        </div
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="choices--location">
+                                                <select style="display:none"  name="" id="choices-location" multiple>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="choices--categories">
+                                                <select style="display:none"  name="" id="choices-categories" multiple>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6">
+                                            <button type="submit" id="filter" class="btn btn-primary w-100"><i class="uil uil-filter"></i> Fliter</button>
+                                        </div
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="wedget-popular-title mt-4">
+                                <h6>Popular</h6>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <div class="popular-box d-flex align-items-center">
+                                            <div class="number flex-shrink-0 me-2">
+                                                20  
+                                            </div>
+                                            <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">UI/UX designer</h6></a>
+                                        </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="popular-box d-flex align-items-center">
+                                            <div class="number flex-shrink-0 me-2">
+                                                18  
+                                            </div>
+                                            <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">HR manager</h6></a>
+                                        </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="popular-box d-flex align-items-center">
+                                            <div class="number flex-shrink-0 me-2">
+                                                10  
+                                            </div>
+                                            <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">Product manager</h6></a>
+                                        </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="popular-box d-flex align-items-center">
+                                            <div class="number flex-shrink-0 me-2">
+                                                15  
+                                            </div>
+                                            <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">Sales manager</h6></a>
+                                        </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="popular-box d-flex align-items-center">
+                                            <div class="number flex-shrink-0 me-2">
+                                                28  
+                                            </div>
+                                            <a href="javascript:void(0)" class="primary-link stretched-link"><h6 class="fs-14 mb-0">Developer</h6></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>end wedget-popular-title -->
+
+
+                            <div class="wedget-popular-title mt-4" style="text-align: center; color: #000000;">
+                                <h5>Job List</h5>
+                            
+                                </ul>
+                            </div>
+
+
+                            <div class="me-lg-6" style="box-shadow: #888d8d; height: 100vh; overflow:scroll">
+
+
+                                <!-- <div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;">
+                                    <div class=""></div>
+                                    <div class="p-4">
+                                        <div class="row" style="justify-content: space-between;">
+                                            <div class="col-md-2">
+                                                <div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img
+                                                            src="/static/assets/images/featured-job/img-07.png" alt="" class="img-fluid rounded-3"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="mb-2 mb-md-0">
+                                                    <h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">Backend</a></h5>
+                                                    <p class="text-muted fs-14 mb-0">Apple</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div><span class="badge bg-soft-success fs-13 mt-1 me-1">Full Time</span><span
+                                                        class="badge bg-soft-blue fs-13 mt-1 me-1">It &amp; Software</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-light">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-5">
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :
+                                                        </span>2-4 Yrs Exp.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :
+                                                        </span>Python</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                
+                                                <div><a href="#applyNow"  class="primary-link float-end">Banglore <i
+                                                    class="mdi mdi-map-marker text-primary me-1"></i></a></div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div>
+                                                    <p class="text-muted mb-0"> 15 min ago</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i
+                                                            class="mdi mdi-chevron-double-right"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;">
+                                    <div class=""></div>
+                                    <div class="p-4">
+                                        <div class="row" style="justify-content: space-between;">
+                                            <div class="col-md-2">
+                                                <div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img
+                                                            src="/static/assets/images/featured-job/img-03.png" alt="" class="img-fluid rounded-3"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="mb-2 mb-md-0">
+                                                    <h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">Flex Data Engineer</a></h5>
+                                                    <p class="text-muted fs-14 mb-0">Line</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div><span class="badge bg-soft-success fs-13 mt-1 me-1">Full Time</span><span
+                                                        class="badge bg-soft-blue fs-13 mt-1 me-1">It &amp; Software</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-light">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-5">
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :
+                                                        </span>2-4 Yrs Exp.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :
+                                                        </span>Python</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                <div><a href="#applyNow"  class="primary-link float-end">Banglore <i
+                                                    class="mdi mdi-map-marker text-primary me-1"></i></a></div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div>
+                                                    <p class="text-muted mb-0"> 15 min ago</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i
+                                                            class="mdi mdi-chevron-double-right"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;">
+                                    <div class=""></div>
+                                    <div class="p-4">
+                                        <div class="row" style="justify-content: space-between;">
+                                            <div class="col-md-2">
+                                                <div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img
+                                                            src="/static/assets/images/featured-job/img-04.png" alt="" class="img-fluid rounded-3"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="mb-2 mb-md-0">
+                                                    <h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">Full Stack Developer & Tester</a></h5>
+                                                    <p class="text-muted fs-14 mb-0">Uber</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div><span class="badge bg-soft-success fs-13 mt-1 me-1">Full Time</span><span
+                                                        class="badge bg-soft-blue fs-13 mt-1 me-1">It &amp; Software</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-light">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-5">
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :
+                                                        </span>2-4 Yrs Exp.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :
+                                                        </span>Python</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                
+                                                <div><a href="#applyNow"  class="primary-link float-end">Banglore <i
+                                                    class="mdi mdi-map-marker text-primary me-1"></i></a></div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div>
+                                                    <p class="text-muted mb-0"> 15 min ago</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i
+                                                            class="mdi mdi-chevron-double-right"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;">
+                                    <div class=""></div>
+                                    <div class="p-4">
+                                        <div class="row" style="justify-content: space-between;">
+                                            <div class="col-md-2">
+                                                <div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img
+                                                            src="/static/assets/images/featured-job/img-05.png" alt="" class="img-fluid rounded-3"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="mb-2 mb-md-0">
+                                                    <h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">Senior Database Architect</a></h5>
+                                                    <p class="text-muted fs-14 mb-0">Flutter</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div><span class="badge bg-soft-success fs-13 mt-1 me-1">Full Time</span><span
+                                                        class="badge bg-soft-blue fs-13 mt-1 me-1">It &amp; Software</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-light">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-5">
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :
+                                                        </span>2-4 Yrs Exp.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :
+                                                        </span>Python</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                <div><a href="#applyNow"  class="primary-link float-end">Banglore <i
+                                                    class="mdi mdi-map-marker text-primary me-1"></i></a></div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div>
+                                                    <p class="text-muted mb-0"> 15 min ago</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i
+                                                            class="mdi mdi-chevron-double-right"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;">
+                                    <div class=""></div>
+                                    <div class="p-4">
+                                        <div class="row" style="justify-content: space-between;">
+                                            <div class="col-md-2">
+                                                <div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img
+                                                            src="/static/assets/images/featured-job/img-06.png" alt="" class="img-fluid rounded-3"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="mb-2 mb-md-0">
+                                                    <h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">SDE INTERN </a></h5>
+                                                    <p class="text-muted fs-14 mb-0">Behance</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div><span class="badge bg-soft-success fs-13 mt-1 me-1">Internship</span><span
+                                                        class="badge bg-soft-blue fs-13 mt-1 me-1">It &amp; Software</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-light">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-5">
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :
+                                                        </span>2-4 Yrs Exp.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :
+                                                        </span>Python</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                <div><a href="#applyNow"  class="primary-link float-end">Banglore <i
+                                                    class="mdi mdi-map-marker text-primary me-1"></i></a></div>
+                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div>
+                                                    <p class="text-muted mb-0"> 15 min ago</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i
+                                                            class="mdi mdi-chevron-double-right"></i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div id="jobList"></div>
+                            </div>
+                        
+
+                    </div>
+                    <!-- START SIDE-BAR -->
+                    
+                    <div class="col-lg-3" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; height: 90vh; overflow:scroll;padding: 0px 20px 0px 20px;">
+                        <div class="side-bar mt-5 mt-lg-0">
+                            <div class="accordion" id="accordionExample">
+                                
+                                {% if request.user.is_authenticated %}
+                                <div class="'accordion-item" style="cursor: pointer;" onclick="profA()">
+                                    <div class="card-body p-3">
+                                        <div class="text-center pb-3 border-bottom">
+                                            <img src="/static/assets/images/profile.jpg" alt=""
+                                                class="avatar-lg img-thumbnail rounded-circle mb-4"   style="border: solid 3px #06a6e6"/>
+                                            <h5 class="mb-0">{{ user.first_name }}</h5>
+                                            <p class="text-muted">Developer</p>
+                                            <label class="text-dark">Credits</label>
+                                            <span class="badge bg-soft-success fs-13 mt-1">257 Som</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="jobType">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#profover" aria-expanded="false" aria-controls="profover">
+                                            Profile overview
+                                        </button>
+                                    </h2>
+                                    <div class="candidate-profile-overview  card-body border-top p-4" id="profover">
+                                        <ul class="list-unstyled mb-0">
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Categories</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">Accounting / Finance</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Experience</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">3 Years</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Views</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">2574</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li style="cursor: pointer;" onclick="profA()">
+                                                <h2 class="accordion-header" id="Skills">
+                                                    <h6 class="fs-17 fw-semibold mb-3">Skills</h6>
+                                                    <div>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">User Interface Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Web Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Responsive Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Mobile App Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">UI Design</span>
+                                                    </div>
+                                                </h2>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="'accordion-item" style="cursor: pointer;" onclick="profU()">
+                                    <div class="card-body p-3">
+                                        <div class="text-center pb-3 border-bottom">
+                                            <img src="/static/assets/images/profile-guest.jpg" alt=""
+                                                class="avatar-lg img-thumbnail rounded-circle mb-4"   style="border: solid 3px #06a6e6"/>
+                                            <h5 class="mb-0">Guest</h5>
+                                            <!-- <p class="text-muted">Role</p>
+                                            <label class="text-dark">Credits</label>
+                                            <span class="badge bg-soft-success fs-13 mt-1">999+ Som</span> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="accordion-item">
+                                    <h2 class="accordion-header" id="jobType">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#profover" aria-expanded="false" aria-controls="profover">
+                                            Profile overview
+                                        </button>
+                                    </h2>
+                                    <div class="candidate-profile-overview  card-body border-top p-4" id="profover">
+                                        <ul class="list-unstyled mb-0">
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Categories</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">Accounting / Finance</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Experience</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">3 Years</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex">
+                                                    <label class="text-dark">Views</label>
+                                                    <div>
+                                                        <p class="text-muted mb-0">2574</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li style="cursor: pointer;" onclick="profU()">
+                                                <h2 class="accordion-header" id="Skills">
+                                                    <h6 class="fs-17 fw-semibold mb-3">Skills</h6>
+                                                    <div>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">User Interface Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Web Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Responsive Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">Mobile App Design</span>
+                                                        <span class="badge bg-soft-success fs-13 mt-1">UI Design</span>
+                                                    </div>
+                                                </h2>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+                                {% endif %}
+
+                               
+                    <!-- END SIDE-BAR -->
+                            </div>
+                        </div>
+                    <!-- END SIDE-BAR -->
+                    </div>
+            </div>
+        </section>
+        <!-- END JOB-LIST -->
+
+        <!-- START APPLY MODAL -->
+        <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-5">
+                        <div class="text-center mb-4">
+                            <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                        </div>
+                        <div class="position-absolute end-0 top-0 p-3">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nameControlInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameControlInput" placeholder="Enter your name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailControlInput2" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="emailControlInput2" placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageControlTextarea" class="form-label">Message</label>
+                            <textarea class="form-control" id="messageControlTextarea" rows="4" placeholder="Enter your message"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="inputGroupFile01">Resume Upload</label>
+                            <input type="file" class="form-control" id="inputGroupFile01">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Application</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- END APPLY MODAL -->
+
+    </div>
+    <script>
+        let data = JSON.parse('{{ data | safe }}');
+        anim = 0;
+        for (var i in data) 
+        {   
+            
+            let a = data[i];
+            let exp="",job=""
+            // if(a.fields.experince == '1'){
+            //     exp="(0-2 Yrs Exp.)";
+            // }
+            // else if(a.fields.experince == '2'){
+            //     exp="(2-4 Yrs Exp.)";
+            // }
+            // else if(a.fields.experince == '3'){
+            //     exp="(5+ Yrs Exp.)";
+            // }
+            if(a.fields.experince == '1'){
+                exp="0-2 Yrs Exp.";
+            }
+            else if(a.fields.experince == '2'){
+                exp="2-4 Yrs Exp.";
+            }
+            else if(a.fields.experince == '3'){
+                exp="5+ Yrs Exp.";
+            }
+            else{
+                exp="No experience";
+            }
+
+            if(a.fields.job_type == '1'){
+                job="Full Time";
+            }
+            else if(a.fields.job_type == '2'){
+                job="Part Time";
+            }
+            else if(a.fields.job_type == '3'){
+                job="Internship";
+            }
+            else if(a.fields.job_type == '4'){
+                job="Contract";
+            }
+            
+            let tags = (a.fields.tags).replace(/\s*,\s*/ig, ',');
+            var tag_array = tags.split(',');
+            
+            let cate = ["It & Software","Accounting","Banking","Marketing"];
+            let classAnim="";
+            if(anim%2==0){
+                classAnim="heart";
+            }
+            else{
+                classAnim="fire";
+            }
+            anim=anim+1;
+            let path = "/"+a.pk+"/";
+            // $( "#jobList" ).append('<div class="job-box bookmark-post card mt-5"><div class="p-4"> <div class="row"><div class="col-lg-1"><a href="company-details.html"><img src="assets/images/featured-job/img-01.png" alt="" class="img-fluid rounded-3"/></a></div><div class="col-lg-10"><div class="mt-3 mt-lg-0"><h5 class="fs-17 mb-1"><a href="job-details.html" class="text-dark">'+a.fields.title+'</a><small class="text-muted fw-normal">'+exp+'</small></h5><ul class="list-inline mb-0"><li class="list-inline-item"><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i>'+a.fields.location+'</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i>'+a.fields.salary+'/ month</p></li></ul><div class="mt-2"><span class="badge bg-soft-success mt-1">'+job+'</span><span class="badge bg-soft-danger mt-1">'+cate[a.fields.category-1]+'</span></div></div></div></div><div class="favorite-icon"><div class="'+classAnim+'"></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-8"><div><ul class="list-inline mb-0"><li class="list-inline-item"><li class="list-inline-item"><i class="uil uil-tag"></i> Keywords :</li><li class="list-inline-item">'+tag_array+'</li></ul></div></div><div class="col-md-3"><div class="text-md-end"><a href="#applyNow" data-bs-toggle="modal" class="primary-link">Apply Now <i class="mdi mdi-chevron-double-right"></i></a></div></div></div></div></div>');
+
+            // $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4"><div class="row align-items-center"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-3"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">'+a.fields.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-3"><div class="d-flex mb-2"><div class="flex-shrink-0"><i class="mdi mdi-map-marker text-primary me-1"></i></div><p class="text-muted mb-0">'+a.fields.location+'</p></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+cate[a.fields.category-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-6"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience : </span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords : </span>'+tag_array+'</p></div></div><div class="col-lg-4 col-md-3 pt-3"><div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></a></div></div></div></div></div>');
+
+            "{% if request.user.is_authenticated %}"
+
+            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+a.pk+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+a.pk+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+a.pk+')" class="text-dark">'+a.fields.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[a.fields.role-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+a.fields.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" id="apply2" data-sid="'+a.pk+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+            
+            "{% else %}"
+
+            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+a.pk+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+a.pk+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+a.pk+')" class="text-dark">'+a.fields.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[a.fields.role-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+a.fields.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" data-bs-toggle="modal" data-bs-target="#signupModal" data-sid="'+a.pk+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+
+            "{% endif %}"
+        }
+
+        
+        $("input[name='workE'],input[name='empType'],input[name='dateP']").change(function(e) {
+            var skillStr = [],locStr=[],roleStr=[],workStr=[],empStr=[],dateStr=[];
+            $('.choices--skill').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                skillStr.push($(this).text());
+            });
+            $('.choices--location').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                locStr.push($(this).text());
+            });
+            $('.choices--categories').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                roleStr.push($(this).text());
+            });
+            $('input[name="workE"]:checked').each(function(){
+                workStr.push($(this).val());
+            });
+            $('input[name="empType"]:checked').each(function(){
+                empStr.push($(this).val());
+            });
+            $('input[name="dateP"]:checked').each(function(){
+                dateStr.push($(this).val());
+            });
+            if(skillStr.length == 0){
+                skillStr="0";
+            }
+            if(locStr.length == 0){
+                locStr="0";
+            }
+            if(roleStr.length == 0){
+                roleStr="0";
+            }
+            if(workStr.length == 0){
+                workStr="0";
+            }
+            if(empStr.length == 0){
+                empStr="0";
+            }
+            if(dateStr.length == 0){
+                dateStr="0";
+            }
+            $( "#jobList" ).empty();
+            $("html").animate({ scrollTop: 0 }, "medium");
+            e.preventDefault();        
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('location2',locStr);
+            fd.append('skill',skillStr);
+            fd.append('cat',roleStr);
+            fd.append('workexp',workStr);
+            fd.append('emptype',empStr);
+            fd.append('datepost',dateStr);
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    // console.log(data);
+                    $( "#jobList" ).empty();
+                    let z=0;
+                    for (var i in data) {
+                        let aa = data[i];
+                        let anim=0;
+                        for (var a in aa){
+                            let az=aa[a]; 
+                            let exp="",job=""
+                            if(az.experince == '1'){exp="(0-2 Yrs Exp.)";}
+                            else if(az.experince == '2'){
+                                exp="2-4 Yrs Exp.";
+                            }
+                            else if(az.experince == '3'){
+                                exp="5+ Yrs Exp.";
+                            }
+                            else{
+                                exp="No experience"
+                            }
+                            // if(az.experince == '1'){exp="(0-2 Yrs Exp.)";}
+                            // else if(az.experince == '2'){
+                            //     exp="(2-4 Yrs Exp.)";
+                            // }
+                            // else if(az.experince == '3'){
+                            //     exp="(5+ Yrs Exp.)";
+                            // }
+                            // else{
+                            //     exp="No experience"
+                            // }
+
+
+                            if(az.job_type == '1'){
+                                job="Full Time";
+                            }
+                            else if(az.job_type == '2'){
+                                job="Part Time";
+                            }
+                            else if(az.job_type == '3'){
+                                job="Internship";
+                            }
+                            else if(az.job_type == '4'){
+                                job="Contract";
+                            }
+                            let tags = (az.tags).replace(/\s*,\s*/ig, ',');
+                            var tag_array = tags.split(',');
+
+                            let cate = ["It & Software","Accounting","Banking","Marketing"];
+                            let classAnim="";
+                            if(anim%2==0){
+                                classAnim="heart";
+                            }
+                            else{
+                                classAnim="fire";
+                            }
+                            anim=anim+1;
+                            let path = "/"+az.id+"/";
+                            // $( "#jobList" ).append('<div class="job-box bookmark-post card mt-5"><div class="p-4"> <div class="row"><div class="col-lg-1"><a href="company-details.html"><img src="assets/images/featured-job/img-01.png" alt="" class="img-fluid rounded-3"/></a></div><div class="col-lg-10"><div class="mt-3 mt-lg-0"><h5 class="fs-17 mb-1"><a href="job-details.html" class="text-dark">'+az.title+'</a><small class="text-muted fw-normal">'+exp+'</small></h5><ul class="list-inline mb-0"><li class="list-inline-item"><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i>'+az.location+'</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i>'+az.salary+'/ month</p></li></ul><div class="mt-2"><span class="badge bg-soft-success mt-1">'+job+'</span><span class="badge bg-soft-danger mt-1">'+cate[az.category_id-1]+'</span></div></div></div></div><div class="favorite-icon"><div class="'+classAnim+'"></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-8"><div><ul class="list-inline mb-0"><li class="list-inline-item"><li class="list-inline-item"><i class="uil uil-tag"></i> Keywords :</li><li class="list-inline-item">'+tag_array+'</li></ul></div></div><div class="col-md-3"><div class="text-md-end"><a href="#applyNow" data-bs-toggle="modal" class="primary-link">Apply Now <i class="mdi mdi-chevron-double-right"></i></a></div></div></div></div></div>');
+                            
+
+                            "{% if request.user.is_authenticated %}"
+
+                            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+az.id+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+az.id+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+az.id+')" class="text-dark">'+az.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[az.role_id-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+az.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" id="apply2" data-sid="'+az.id+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+                            
+                            "{% else %}"
+
+                            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+az.id+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+az.id+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+az.id+')" class="text-dark">'+az.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[az.role_id-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+az.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" data-bs-toggle="modal" data-bs-target="#signupModal" data-sid="'+az.id+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+
+                            "{% endif %}"
+
+                        }
+                    }
+                
+                },
+                error: function(error){
+                    console.log("AJAX error");
+                }
+            });
+            });
+
+            $( "#filter" ).click(function(e) {
+            var skillStr = [],locStr=[],roleStr=[],workStr=[],empStr=[],dateStr=[];
+            $('.choices--skill').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                skillStr.push($(this).text());
+            });
+            $('.choices--location').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                locStr.push($(this).text());
+            });
+            $('.choices--categories').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+                roleStr.push($(this).text());
+            });
+            $('input[name="workE"]:checked').each(function(){
+                workStr.push($(this).val());
+            });
+            $('input[name="empType"]:checked').each(function(){
+                empStr.push($(this).val());
+            });
+            $('input[name="dateP"]:checked').each(function(){
+                dateStr.push($(this).val());
+            });
+            if(skillStr.length == 0){
+                skillStr="0";
+            }
+            if(locStr.length == 0){
+                locStr="0";
+            }
+            if(roleStr.length == 0){
+                roleStr="0";
+            }
+            if(workStr.length == 0){
+                workStr="0";
+            }
+            if(empStr.length == 0){
+                empStr="0";
+            }
+            if(dateStr.length == 0){
+                dateStr="0";
+            }
+            $( "#jobList" ).empty();
+            $("html").animate({ scrollTop: 0 }, "medium");
+            e.preventDefault();        
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('location2',locStr);
+            fd.append('skill',skillStr);
+            fd.append('cat',roleStr);
+            fd.append('workexp',workStr);
+            fd.append('emptype',empStr);
+            fd.append('datepost',dateStr);
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    $( "#jobList" ).empty();
+                    let z=0;
+                    for (var i in data) {
+                        let aa = data[i];
+                        let anim=0;
+                        for (var a in aa){
+                            let az=aa[a]; 
+                            let exp="",job=""
+                            if(az.experince == '1'){exp="(0-2 Yrs Exp.)";}
+                            else if(az.experince == '2'){
+                                exp="2-4 Yrs Exp.";
+                            }
+                            else if(az.experince == '3'){
+                                exp="5+ Yrs Exp.";
+                            }
+                            else{
+                                exp="No experience"
+                            }
+                            // if(az.experince == '1'){exp="(0-2 Yrs Exp.)";}
+                            // else if(az.experince == '2'){
+                            //     exp="(2-4 Yrs Exp.)";
+                            // }
+                            // else if(az.experince == '3'){
+                            //     exp="(5+ Yrs Exp.)";
+                            // }
+                            // else{
+                            //     exp="No experience"
+                            // }
+
+                            if(az.job_type == '1'){
+                                job="Full Time";
+                            }
+                            else if(az.job_type == '2'){
+                                job="Part Time";
+                            }
+                            else if(az.job_type == '3'){
+                                job="Internship";
+                            }
+                            else if(az.job_type == '4'){
+                                job="Contract";
+                            }
+                            let tags = (az.tags).replace(/\s*,\s*/ig, ',');
+                            var tag_array = tags.split(',');
+                            let cate = ["It & Software","Accounting","Banking","Marketing"];
+                            let classAnim="";
+                            if(anim%2==0){
+                                classAnim="heart";
+                            }
+                            else{
+                                classAnim="fire";
+                            }
+                            anim=anim+1;
+                            let path = "/"+az.id+"/";
+                            // $( "#jobList" ).append('<div class="job-box bookmark-post card mt-5"><div class="p-4"> <div class="row"><div class="col-lg-1"><a href="company-details.html"><img src="assets/images/featured-job/img-01.png" alt="" class="img-fluid rounded-3"/></a></div><div class="col-lg-10"><div class="mt-3 mt-lg-0"><h5 class="fs-17 mb-1"><a href="job-details.html" class="text-dark">'+az.title+'</a><small class="text-muted fw-normal">'+exp+'</small></h5><ul class="list-inline mb-0"><li class="list-inline-item"><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i>'+az.location+'</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i>'+az.salary+'/ month</p></li></ul><div class="mt-2"><span class="badge bg-soft-success mt-1">'+job+'</span><span class="badge bg-soft-danger mt-1">'+cate[az.category_id-1]+'</span></div></div></div></div><div class="favorite-icon"><div class="'+classAnim+'"></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-8"><div><ul class="list-inline mb-0"><li class="list-inline-item"><li class="list-inline-item"><i class="uil uil-tag"></i> Keywords :</li><li class="list-inline-item">'+tag_array+'</li></ul></div></div><div class="col-md-3"><div class="text-md-end"><a href="#applyNow" data-bs-toggle="modal" class="primary-link">Apply Now <i class="mdi mdi-chevron-double-right"></i></a></div></div></div></div></div>');
+                            // $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4"><div class=""></div><div class="p-4"><div class="row align-items-center"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a href="company-details.html"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-3"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a href="job-details.html" class="text-dark">'+az.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-3"><div class="d-flex mb-2"><div class="flex-shrink-0"><i class="mdi mdi-map-marker text-primary me-1"></i></div><p class="text-muted mb-0">'+az.location+'</p></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+cate[az.category_id-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-6"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience : </span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords : </span>'+tag_array+'</p></div></div><div class="col-lg-4 col-md-3 pt-3"><div><a href="#applyNow" data-bs-toggle="modal" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></a></div></div></div></div></div>');
+                            console.log(az);
+                            "{% if request.user.is_authenticated %}"
+
+                            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+az.id+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+az.id+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+az.id+')" class="text-dark">'+az.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[az.role_id-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+az.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" id="apply2" data-sid="'+az.id+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+                            
+                            "{% else %}"
+
+                            $( "#jobList" ).append('<div class="job-box bookmark-post card mt-4" style="border-color:#888d8d;"><div class=""></div><div class="p-4" onClick="mov('+az.id+')"><div class="row" style="justify-content: space-between;"><div class="col-md-2"><div class="text-center mb-4 mb-md-0"><a onClick="mov('+az.id+')"><img src="{% static "assets/images/featured-job/img-07.png" %}" alt="" class="img-fluid rounded-3"></a></div></div><div class="col-md-8"><div class="mb-2 mb-md-0"><h5 class="fs-18 mb-0"><a onClick="mov('+az.id+')" class="text-dark">'+az.title+'</a></h5><p class="text-muted fs-14 mb-0">Somhako Pvt. Ltd.</p></div></div><div class="col-md-2"><div><span class="badge bg-soft-success fs-13 mt-1 me-1">'+job+'</span><span class="badge bg-soft-blue fs-13 mt-1 me-1">'+dataRol[az.role_id-1]+'</span></div></div></div></div><div class="p-3 bg-light"><div class="row justify-content-between"><div class="col-md-5"><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-suitcase"></i> Experience :</span>'+exp+'</p></div><div><p class="text-muted mb-0"><span class="text-dark"><i class="uil uil-tag"></i> Keywords :</span>'+tag_array+'</p></div></div><div class="col-md-2"><div><a href="#applyNow"  class="primary-link float-end">'+az.location+' <i class="mdi mdi-map-marker text-primary me-1"></i></a></div></div><div class="col-md-2"><div class="d-flex mb-0"><div class="flex-shrink-0"><i class="uil uil-clock-three text-primary me-1"></i></div><p class="text-muted mb-0"> 15 min ago</p></div></div><div class="col-md-3"><div><span role="button" data-bs-toggle="modal" data-bs-target="#signupModal" data-sid="'+az.id+'" class="primary-link float-end">Apply Now <i class="mdi mdi-chevron-double-right"></i></span></div></div></div></div></div>');
+
+                            "{% endif %}"
+                        }
+                    }
+                
+                },
+                error: function(error){
+                    console.log("AJAX error");
+                }
+            });
+            });
+
+
+    
+    </script>
+   
+
+    <div class="modal fade" id="staticBackdropCurate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 600px;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Curate</h5>
+              <button type="button" class="btn-close" id="staticBackdropCurateClose" data-bs-dismiss="modal" aria-label="Close"></button>
+              
+
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div id="alertsCurate"></div>
+                <form action="" method="POST" id="curateForm" class="justify-content-md-center">
+                    {% csrf_token %}
+                    <div class="row justify-content-md-center">
+                        <div class="col">
+                            <label for="level" class="ui-label">Name</label>
+                            <input type="text" class="form-control" id="curateName" name="curateName" style="width:50%;padding: 5px;"/>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        
+                        <div class="col" style="padding-top: 15px;">
+                            <label for="level" class="ui-label">Level</label>
+                            <div class="radio-button justify-content-md-center">
+                                <input class="form-check-input" type="radio" name="jobLevel" id="flexRadioDefault111"
+                                    value="Fresher" checked>
+                                <label class="form-check-label" for="flexRadioDefault111">
+                                    Fresher
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="jobLevel" id="flexRadioDefault222"
+                                    value="Junior">
+                                <label class="form-check-label" for="flexRadioDefault222">
+                                    Junior
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="jobLevel" id="flexRadioDefault333"
+                                    value="Senior">
+                                <label class="form-check-label" for="flexRadioDefault333">
+                                    Senior
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="jobLevel" id="flexRadioDefault444"
+                                    value="Mid-Career">
+                                <label class="form-check-label" for="flexRadioDefault444">
+                                    Mid Career
+                                </label>
+        
+                                <input class="form-check-input" name="jobLevel" type="radio" id="flexRadioDefault555"
+                                    value="Executive">
+                                <label class="form-check-label" for="flexRadioDefault555">
+                                    Executive
+                                </label>
+                            </div>
+                        </div>                   
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="col">
+                            <label for="job" class="ui-label">Job Type</label>
+                            <div class="radio-button justify-content-md-center">
+                                <input class="form-check-input" type="radio" name="job_type" id="flexRadioDefault11"
+                                    value="Full-time" checked>
+                                <label class="form-check-label" for="flexRadioDefault11">
+                                    Full Time
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="job_type" id="flexRadioDefault22"
+                                    value="Contract" >
+                                <label class="form-check-label" for="flexRadioDefault22">
+                                    Contract
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="job_type" id="flexRadioDefault33"
+                                    value="Part-time">
+                                <label class="form-check-label" for="flexRadioDefault33">
+                                    Part-time
+                                </label>
+        
+                                <input class="form-check-input" type="radio" name="job_type" id="flexRadioDefault44"
+                                    value="Internship">
+                                <label class="form-check-label" for="flexRadioDefault44">
+                                    Internship
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                <div class="row justify-content-md-center">
+                    <div class="col">
+                        <label for="email" class="ui-label">Role</label>
+                        <div class="curate--categories">
+                            <select style="display:none"  name="" id="curate-categories" multiple>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="email" class="ui-label">Location</label>
+                        <div class="curate--location">
+                            <select style="display:none"  name="" id="curate-location" multiple>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col mt-2">
+                        <label for="email" class="ui-label">Skill</label>
+                        <div class="curate--skill">
+                            <select style="display:none"  name="" id="curate-skill" multiple>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col mt-2">
+                        <label for="email" class="ui-label">Workplace</label>
+                        <div class="curate--workplace">
+                            <select style="display:none"  name="" id="curate-workplace" multiple>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col mt-2">
+                        <div class="form-check align-items-center" >
+                            <input class="form-check-input" type="checkbox" id="isDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Set as Default
+                            </label>
+                          </div>
+                    </div>
+
+                </div>
+
+
+                <div class="subscribe">
+                    
+                    <div class="notice">
+                        <div class="notice" style="padding-top: 15px; padding-left: 2px;">
+                            <input type="checkbox" id="newsLetter">
+                            <span class="notice__copy">I agree to my email address being stored and recieve job updates on my curate. Subscribe your curate to keep up with fresh and exciting updates. We promise not to spam you!</span>
+                            
+                        </div>
+                    </div>
+
+
+
+
+
+                <div class="form-group mt-3" id="buttonRel">
+                    <button type="button" id="reljob" class="fxt-btn-fill">Find Relevant Jobs</button>
+                </div>                
+            </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $( "#plusCurate" ).click(function(e) {
+            removeCurateData()
+            $(document).ready(function(){
+                $('#staticBackdropCurate').modal('show')
+            });
+            $("#reljob").show();
+            if($("#curBtn").length > 0) {
+                $("#curBtn").remove();
+            }
+        })
+        const showCurate = "{{ showCurate }}";
+        
+        if(showCurate==-1 && $.cookie('curate')){
+            $(document).ready(function(){
+                $('#staticBackdropCurate').modal('hide')
+            });
+            var curData = JSON.parse($.cookie('curate'));
+            console.log(typeof curData);
+            $("#curUl").empty();
+            for (let index = 0; index < curData.length; index++) {
+                $("#curUl").append('<li class="list-inline-item" data-sid="'+index+'"><div class="popular-box d-flex align-items-center" ><div class="number flex-shrink-0 me-2" style="padding-right:10px;padding-top:5px;padding-left:10px; width:auto;cursor: pointer;"><h6 class="primary-link stretched-link fs-14 mb-0" id="curNameU" data-sid="'+index+'">'+curData[index].name+'</h6></div><span style="z-index: 100;"><i class="uil uil-edit" role="button" id="curShowU" data-sid="'+index+'"></i>&nbsp;<i class="fa fa-play" role="button" id="applyCurDU" data-sid="'+index+'"></i></span> </div></li><br>');
+                console.log(index);
+            }
+            // let skiDD = getCookie("skill");
+            // let locDD = getCookie("location");
+            // let rolDD = getCookie("role");
+            // if(skiDD!=""){
+            //     var arraySkiD = skiDD.split(',');
+            //     for (let index = 0; index < arraySkiD.length; index++) {
+            //         $('.choices--skill > div.dropdown-main > ul > li[data-value="'+arraySkiD[index]+'"]').trigger("click");
+            //     }
+            // }
+            // if(locDD!=""){
+            //     var arrayLocD = locDD.split(',');
+            //     for (let index = 0; index < arrayLocD.length; index++) {
+            //         $('.choices--location > div.dropdown-main > ul > li[data-value="'+arrayLocD[index]+'"]').trigger("click");
+            //     }
+            // }
+            // if(rolDD!=""){
+            //     var arrayRolD = rolDD.split(',');
+            //     for (let index = 0; index < arrayRolD.length; index++) {
+            //         $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+            //             if($(this).text()==arrayRolD[index]){
+            //                 $(this).trigger("click");
+            //             }
+            //         });
+            //     }
+            // }
+        }
+        else if(showCurate!=0){
+            $(document).ready(function(){
+                $('#staticBackdropCurate').modal('show')
+            });
+            $("#reljob").show();
+            if($("#curBtn").length > 0) {
+                $("#curBtn").remove();
+            }
+        }
+        else{
+            $(document).ready(function(){
+                $('#staticBackdropCurate').modal('hide')
+            });
+        }
+      </script>
+
+
+{% comment %}
+{%  for x in curateData %}
+{% endcomment %}
+
+<script>
+    for (let index = 0; index < dataLoc.length; index++) {
+        $("#choices-location").append("<option value='"+dataLoc[index]+"'>"+dataLoc[index]+"</option>")
+        $("#curate-location").append("<option value='"+dataLoc[index]+"'>"+dataLoc[index]+"</option>")
+    }
+    for (let index = 0; index < dataRol.length; index++) {
+        $("#choices-categories").append("<option value='"+(index+1)+"'>"+dataRol[index]+"</option>")
+        $("#curate-categories").append("<option value='"+(index+1)+"'>"+dataRol[index]+"</option>")
+    }
+    for (let index = 0; index < dataSki.length; index++) {
+        $("#choices-skill").append("<option value='"+dataSki[index]+"'>"+dataSki[index]+"</option>")
+    }
+    for (let index = 0; index < dataPriSki.length; index++) {
+        $("#curate-skill").append("<option value='"+dataPriSki[index]+"'>"+dataPriSki[index]+"</option>")
+    }
+    for (let index = 0; index < dataWor.length; index++){
+        $("#curate-workplace").append("<option value='"+dataWor[index]+"'>"+dataWor[index]+"</option>")
+    }
+
+    $('.choices--categories').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search Role">',
+    });
+    $('.choices--location').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search location">',
+    });
+    $('.choices--skill').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search skill">',
+    });
+    $('.curate--categories').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search Role">',
+    });
+    $('.curate--location').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search location">',
+    });
+    $('.curate--skill').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search skill">',
+        extendProps: []
+    });
+    $('.curate--workplace').dropdown({
+        multipleMode:'label',
+        input:'<input type="text" maxLength="20" placeholder="Search workplace">',
+        extendProps: []
+    });
+</script>
+
+<script>
+    
+
+    $( "#reljob" ).click(function(e) {
+        let t=0;
+        var skillStr = [],locStr=[],roleStr=[],workStr=[];
+        $('.curate--skill').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            skillStr.push($(this).text());
+        });
+        $('.curate--location').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            locStr.push($(this).text());
+        });
+        $('.curate--categories').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            roleStr.push($(this).text());
+        });
+        $('.curate--workplace').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            workStr.push($(this).text());
+        });
+        if(skillStr.length == 0 && roleStr.length == 0){
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid red")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid red")
+            skillStr="";
+            roleStr="";
+            t=1;
+        }
+        else{
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid #ccc")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid #ccc")
+        }
+        if(skillStr.length == 0){
+            skillStr="";
+        }
+        if(locStr.length == 0){
+            locStr="";
+        }
+        if(roleStr.length == 0){
+            roleStr="";
+        }
+        if(workStr.length == 0){
+            workStr="";
+        }
+        if(t==1){
+            return false;
+        }
+        else if(showCurate!=-1){
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('curateDataEnter',1);
+            fd.append('level',$('input[name="jobLevel"]:checked').val());
+            fd.append('job_type',$('input[name="job_type"]:checked').val());
+            fd.append('role',roleStr);
+            fd.append('location',locStr);
+            fd.append('skill',skillStr);
+            fd.append('workplace',workStr);
+            fd.append('name',$('#curateName').val());
+            fd.append('isDefault',$('#isDefault')[0].checked);
+            fd.append('newsLetter',$('#newsLetter')[0].checked);
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if(data["S"]==1){
+                        $(document).ready(function(){
+                            $('#staticBackdropCurate').modal('hide');
+                            $("html").animate({ scrollTop: 0 }, "medium");
+                        });
+                        // console.log(data);
+                        $("#curUl").empty();
+                        let dataa = data["curate"];
+                        for (var i in dataa) {
+                            let x=dataa[i]; 
+                            // console.log("i",x.id);
+                            // $("#curUl").append('<li class="list-inline-item"><button type="button" class="btn btn-primary" id="curShow" data-sid="'+x.id+'">'+x.name+'</button></li>');
+                            // $("#curUl").append('<li class="list-inline-item"><div class="popular-box d-flex     "><div class="number flex-shrink-0 me-2" style="width: 50px; cursor: pointer;"><i class="uil uil-edit"></i>&nbsp;<i class="uil uil-arrow-circle-down"></i></div><h6 role="button" id="curShow" data-sid="'+x.id+'" class="primary-link stretched-link fs-14 mb-0">'+x.name+'</h6></div></li><br>');
+                            $("#curUl").append('<li class="list-inline-item" data-sid="'+x.id+'"><div class="popular-box d-flex align-items-center" ><div class="number flex-shrink-0 me-2" style="padding-right:10px;padding-top:5px;padding-left:10px; width:auto;cursor: pointer;"><h6 class="primary-link stretched-link fs-14 mb-0" id="curName" data-sid="'+x.id+'">'+x.name+'</h6></div><span style="z-index: 100;"><i class="uil uil-edit" role="button" id="curShow" data-sid="'+x.id+'"></i>&nbsp;<i class="fa fa-play" role="button" id="applyCurD" data-sid="'+x.id+'"></i></span> </div></li><br>');
+
+                            
+                            // console.log("1",x.is_default);
+                            if(x.is_default == true){
+                                $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                                $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                                $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                                skillCD = x.skill;
+                                roleCD = x.role;
+                                locationCD = x.location;
+                                if(skillCD!=""){
+                                    var arraySkiD = skillCD.split(',');
+                                    for (let index = 0; index < arraySkiD.length; index++) {
+                                        $('.choices--skill > div.dropdown-main > ul > li[data-value="'+arraySkiD[index]+'"]').trigger("click");
+                                    }
+                                    $("#filter").trigger("click");
+                                }
+                                if(locationCD!=""){
+                                    var arrayLocD = locationCD.split(',');
+                                    for (let index = 0; index < arrayLocD.length; index++) {
+                                        $('.choices--location > div.dropdown-main > ul > li[data-value="'+arrayLocD[index]+'"]').trigger("click");
+                                    }
+                                    $("#filter").trigger("click");
+                                }
+                                if(roleCD!=""){
+                                    var arrayRolD = roleCD.split(',');
+                                    for (let index = 0; index < arrayRolD.length; index++) {
+                                        $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                                            if($(this).text()==arrayRolD[index]){
+                                                $(this).trigger("click");
+                                            }
+                                        });
+                                    }
+                                    $("#filter").trigger("click");
+                                }
+                            }
+                            else{
+                                $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                                $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                                $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                    $(this).trigger("click");
+                                });
+                            }
+                        }
+
+                        removeCurateData();
+                        $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Created.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                        setTimeout(function() { $("#alerts").empty() }, 3000);
+                    }
+                },
+                error: function(error){
+                    console.log("AJAX error");
+                }
+            });
+        }
+        else if(showCurate==-1){
+            // document.cookie = "cookieData=1";
+            // document.cookie = "level="+;
+            // document.cookie = "job_type="+;
+            // document.cookie = "role="+roleStr;
+            // document.cookie = "location="+locStr;
+            // document.cookie = "skill="+skillStr;
+            // document.cookie = "workplace="+workStr;
+            // '',;
+            // 'isDefault',;
+            // 'newsLetter',;
+
+            var curate = { 
+                level: $('input[name="jobLevel"]:checked').val(), 
+                job_type: $('input[name="job_type"]:checked').val(), 
+                role: roleStr,
+                location: locStr,
+                skill: skillStr,
+                workplace: workStr,
+                name: $('#curateName').val(),
+                isDefault: $('#isDefault')[0].checked,
+                newsLetter: $('#newsLetter')[0].checked, 
+            }
+            
+            curArr.push(curate)
+
+            $(document).ready(function(){
+                $.cookie.json = true;
+                $.cookie("curate", curArr, { expires: 1 });
+                $('#staticBackdropCurate').modal('hide');
+            });
+            
+            nonLoginCurate();
+            $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Created.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+            setTimeout(function() { $("#alerts").empty() }, 3000);
+            // if(skillStr!=""){
+            //     for (let index = 0; index < skillStr.length; index++) {
+            //         $('.choices--skill > div.dropdown-main > ul > li[data-value="'+skillStr[index]+'"]').trigger("click");
+            //     }
+            //     $("#filter").trigger("click");
+            // }
+            // if(locStr!="None"){
+            //     for (let index = 0; index < locStr.length; index++) {
+            //         $('.choices--location > div.dropdown-main > ul > li[data-value="'+locStr[index]+'"]').trigger("click");
+            //     }
+            //     $("#filter").trigger("click");
+            // }
+            // if(roleStr!="None"){
+            //     for (let index = 0; index < roleStr.length; index++) {
+            //         $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+            //             if($(this).text()==roleStr[index]){
+            //                 $(this).trigger("click");
+            //             }
+            //         });
+            //     }
+            //     $("#filter").trigger("click");
+            // }
+        }
+    });
+
+    
+    
+   
+
+
+</script>
+
+{% comment %}
+{% endfor %}
+{% endcomment %}
+
+<script>
+    
+    "{% if userCurate == 0 %}"
+    "{% else %}"
+        "{% for x in userCurate %}"
+        // console.log("{{ x.id }}");
+        // $("#curUl").append('<li class="list-inline-item"><button type="button" class="btn btn-primary" id="curShow" data-sid="{{ x.id }}">{{ x.name }}</button></li>');
+        // $("#curUl").append('<li class="list-inline-item"><div class="popular-box d-flex align-items-center"><div class="number flex-shrink-0 me-2" style="width: 50px; cursor: pointer;"><i class="uil uil-edit"></i>&nbsp;<i class="uil uil-arrow-circle-down"></i></div><h6 role="button" id="curShow" data-sid="{{ x.id }}" class="primary-link stretched-link fs-14 mb-0">{{ x.name }}</h6></div></li><br>');
+        $("#curUl").append('<li class="list-inline-item" data-sid="{{ x.id }}"><div class="popular-box d-flex align-items-center" ><div class="number flex-shrink-0 me-2" style="padding-right:10px;padding-top:5px;padding-left:10px; width:auto;cursor: pointer;"><h6 data-sid="{{ x.id }}" class="primary-link stretched-link fs-14 mb-0" id="curName">{{ x.name }}</h6></div><span style="z-index: 100;"><i class="uil uil-edit" role="button" id="curShow" data-sid="{{ x.id }}"></i>&nbsp;<i class="fa fa-play" role="button" id="applyCurD" data-sid="{{ x.id }}"></i></span> </div></li><br>');
+        console.log("{{ x.is_default }}");
+        "{% if x.is_default == True %}"
+            console.log("{{ x.is_default }}");
+
+            $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            skillCD = "{{ x.skill }}";
+            roleCD = "{{ x.role }}";
+            locationCD = "{{ x.location }}";
+            console.log(skillCD,roleCD,locationCD);
+            if(skillCD!=""){
+                var arraySkiD = skillCD.split(',');
+                for (let index = 0; index < arraySkiD.length; index++) {
+                    $('.choices--skill > div.dropdown-main > ul > li[data-value="'+arraySkiD[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(locationCD!=""){
+                var arrayLocD = locationCD.split(',');
+                for (let index = 0; index < arrayLocD.length; index++) {
+                    $('.choices--location > div.dropdown-main > ul > li[data-value="'+arrayLocD[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(roleCD!=""){
+                var arrayRolD = roleCD.split(',');
+                for (let index = 0; index < arrayRolD.length; index++) {
+                    $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                        if($(this).text()==arrayRolD[index]){
+                            $(this).trigger("click");
+                        }
+                    });
+                }
+                $("#filter").trigger("click");
+            }
+        "{% else %}"
+            // $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            //     $(this).trigger("click");
+            // });
+            // $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            //     $(this).trigger("click");
+            // });
+            // $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            //     $(this).trigger("click");
+            // });     
+        "{% endif %}"
+        "{% endfor %}"
+    "{% endif %}"
+
+    $(document).on("click", "#del", function(){
+        // console.log("Delete Button Clicked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        // console.log(id);
+        mydata = { cdid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url: "{% url 'jobapp:cur_delete' %}",
+            method: "POST",
+            data: mydata,
+            success: function (data) {
+                if (data.status == 1) {
+                    // console.log("Data Deleted Successfully");
+                    $(document).ready(function(){
+                        $('#staticBackdropCurate').modal('hide');
+                        $("li[data-sid='"+id+"']").next("br").remove();
+                        $("li[data-sid='"+id+"']").remove();
+
+                    });
+                    $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Deleted.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                    setTimeout(function() { $("#alerts").empty() }, 3000);
+                }
+                // console.log(data);
+            },
+        });
+        removeCurateData()
+    });
+
+    $(document).on("click", "#edit", function(){
+        let id = $(this).attr("data-sid");
+        // console.log("Edit Button Clicked naman");
+        let t=0;
+        var skillStr = [],locStr=[],roleStr=[],workStr=[];
+        $('.curate--skill').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            skillStr.push($(this).text());
+        });
+        $('.curate--location').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            locStr.push($(this).text());
+        });
+        $('.curate--categories').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            roleStr.push($(this).text());
+        });
+        $('.curate--workplace').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            workStr.push($(this).text());
+        });
+        if(skillStr.length == 0 && roleStr.length == 0){
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid red")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid red")
+            skillStr="";
+            roleStr="";
+            t=1;
+        }
+        else{
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid #ccc")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid #ccc")
+        }
+        if(skillStr.length == 0){
+            skillStr="";
+        }
+        if(locStr.length == 0){
+            locStr="";
+        }
+        if(roleStr.length == 0){
+            roleStr="";
+        }
+        if(workStr.length == 0){
+            workStr="";
+        }
+        if(t==1){
+            return false;
+        }
+        else{
+            let csr = $("input[name=csrfmiddlewaretoken]").val();
+            let level = $('input[name="jobLevel"]:checked').val();
+            let job_type = $('input[name="job_type"]:checked').val();
+            let name=$('#curateName').val();
+            let isDefault=$('#isDefault')[0].checked;
+            let newsLetter= $('#newsLetter')[0].checked;
+            // console.log(id);
+            mydata = {
+                roleCU:roleStr.toString(),
+                skillCU:skillStr.toString(),
+                workCU:workStr.toString(),
+                locCU:locStr.toString(),
+                ceid:id,
+                levelCU:level,
+                job_typeCU:job_type,
+                nameCU:name,
+                isDefaultCU:isDefault,
+                newsLetterCU:newsLetter,
+                csrfmiddlewaretoken: csr, 
+            };
+            mythis = this;
+            $.ajax({
+                url: "{% url 'jobapp:cur_edit' %}",
+                method: "POST",
+                data: mydata,
+                success: function (data) {
+                    if (data.status == 1) {
+                        // console.log("Data Updated Successfully");
+                        $(document).ready(function(){
+                            $('#staticBackdropCurate').modal('hide')
+                        });
+                        $("#curName[data-sid='"+id+"']").html(name);
+                    }
+                    // console.log(data);
+                },
+            });
+        }
+
+        if($(this).val()=="apply" || $("#isDefault").prop('checked') == true){
+            $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            if(skillStr!=""){
+                for (let index = 0; index < skillStr.length; index++) {
+                    $('.choices--skill > div.dropdown-main > ul > li[data-value="'+skillStr[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(locStr!="None"){
+                for (let index = 0; index < locStr.length; index++) {
+                    $('.choices--location > div.dropdown-main > ul > li[data-value="'+locStr[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(roleStr!="None"){
+                for (let index = 0; index < roleStr.length; index++) {
+                    $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                        if($(this).text()==roleStr[index]){
+                            $(this).trigger("click");
+                        }
+                    });
+                }
+                $("#filter").trigger("click");
+            }
+        }
+        removeCurateData()
+        $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Stored.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+        setTimeout(function() { $("#alerts").empty() }, 3000);
+    });
+    
+    $(document).on("click", "#curShow", function(){
+        $(document).ready(function(){
+            $('#staticBackdropCurate').modal('show')
+        });
+        let id = $(this).attr("data-sid");
+        removeCurateData();
+        $("#reljob").hide();
+        if($("#curBtn").length > 0) {
+            $("#curBtn").remove();
+        }
+        $("#buttonRel").append('<div class="row mt-2" id="curBtn"><div class="col d-flex justify-content-center"><button type="button" class="btn btn-danger" id="del" data-sid="'+id+'">Delete</button></div><div class="col d-flex justify-content-center"><button type="button" class="btn btn-primary" id="edit" data-sid="'+id+'">Save</button></div><div class="col d-flex justify-content-center"><button type="button" class="btn btn-primary" id="edit" data-sid="'+id+'" value="apply">Apply</button></div></div>')
+
+        
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        // console.log(id);
+        mydata = { cvid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url: "{% url 'jobapp:cur_view' %}",
+            method: "POST",
+            data: mydata,
+            success: function (data) {
+                // console.log(data);
+                if (data.status == 1) {
+                    let dataa = data["curate"];
+                    for (var i in dataa) {
+                        let x=dataa[i]; 
+                        if(x.id==id){
+                            $("#curateName").val(x.name);
+                            // console.log(x.is_default);
+                            // console.log(x.news_letter);
+                            if(x.is_default == true){
+                                $("#isDefault").prop("checked", true);
+                            }
+                            else{
+                                $("#isDefault").prop("checked", false);
+                            }
+                            if(x.news_letter == true){
+                                $("#newsLetter").prop("checked", true);
+                            }
+                            else{
+                                $("#newsLetter").prop("checked", false);
+                            }
+
+                            $("input[name=jobLevel][value='"+x.level+"']").prop("checked",true);
+                            $("input[name=job_type][value='"+x.job_type+"']").prop("checked",true);
+
+                            let skillCD = x.skill
+                            let roleCD = x.role
+                            let locationCD = x.location
+                            let workCD = x.workplace
+                            if(skillCD!=""){
+                                var arraySkiD = skillCD.split(',');
+                                for (let index = 0; index < arraySkiD.length; index++) {
+                                    $('.curate--skill > div.dropdown-main > ul > li[data-value="'+arraySkiD[index]+'"]').trigger("click");
+                                }
+                            }
+                            if(locationCD!=""){
+                                var arrayLocD = locationCD.split(',');
+                                for (let index = 0; index < arrayLocD.length; index++) {
+                                    $('.curate--location > div.dropdown-main > ul > li[data-value="'+arrayLocD[index]+'"]').trigger("click");
+                                }
+                            }
+                            if(roleCD!=""){
+                                var arrayRolD = roleCD.split(',');
+                                for (let index = 0; index < arrayRolD.length; index++) {
+                                    $('.curate--categories > div.dropdown-main > ul > li').each(function(){
+                                        if($(this).text()==arrayRolD[index]){
+                                            $(this).trigger("click");
+                                        }
+                                    });
+                                }
+                            }
+                            if(workCD!=""){
+                                var arrayWorkD = workCD.split(',');
+                                for (let index = 0; index < arrayWorkD.length; index++) {
+                                    $('.curate--workplace > div.dropdown-main > ul > li[data-value="'+arrayWorkD[index]+'"]').trigger("click");
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            },
+        })
+    });
+    $(document).on("click", "#apply2", function(e){
+        // console.log("apply clicked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        // console.log(id);
+        mydata = { id: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url: "{% url 'jobapp:can_aply' %}",
+            method: "POST",
+            data: mydata,
+            success: function (data) {
+                if (data.status == 1) {
+                    $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Success Applied.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                }
+                else if(data.status == -1){
+                    $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Profile Not Completed.</strong><a href="/dashboard/employee-profile/" class="link">Go</a><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                }
+                else{
+                    $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Already Applied.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                }
+                setTimeout(function() { $("#alerts").empty() }, 3000);
+            },
+        });
+    });
+    $(document).on("click", "#applyCurD", function(){
+        // console.log("apply curate direct clicked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        // console.log(id);
+        mydata = { cvid: id, csrfmiddlewaretoken: csr };
+        mythis = this;
+        $.ajax({
+            url: "{% url 'jobapp:cur_view' %}",
+            method: "POST",
+            data: mydata,
+            success: function (data) {
+                // console.log(data);
+                if (data.status == 1) {
+                    let dataa = data["curate"];
+                    for (var i in dataa) {
+                        let x=dataa[i]; 
+                        if(x.id==id){
+                            $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                $(this).trigger("click");
+                            });
+                            $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                $(this).trigger("click");
+                            });
+                            $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                                $(this).trigger("click");
+                            });
+                            let skillCD = x.skill
+                            let roleCD = x.role
+                            let locationCD = x.location
+                            if(skillCD!=""){
+                                var arraySkiD = skillCD.split(',');
+                                for (let index = 0; index < arraySkiD.length; index++) {
+                                    $('.choices--skill > div.dropdown-main > ul > li[data-value="'+arraySkiD[index]+'"]').trigger("click");
+                                }
+                                $("#filter").trigger("click");
+                            }
+                            if(locationCD!=""){
+                                var arrayLocD = locationCD.split(',');
+                                for (let index = 0; index < arrayLocD.length; index++) {
+                                    $('.choices--location > div.dropdown-main > ul > li[data-value="'+arrayLocD[index]+'"]').trigger("click");
+                                }
+                                $("#filter").trigger("click");
+                            }
+                            if(roleCD!=""){
+                                var arrayRolD = roleCD.split(',');
+                                for (let index = 0; index < arrayRolD.length; index++) {
+                                    $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                                        if($(this).text()==arrayRolD[index]){
+                                            $(this).trigger("click");
+                                        }
+                                    });
+                                }
+                                $("#filter").trigger("click");
+                            }
+                            $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Applied.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+                            setTimeout(function() { $("#alerts").empty() }, 3000);
+                        }
+                        else{
+                            console.log("no id match");
+                        }
+                    }
+                }
+            },
+        })
+    });
+
+    //non login user
+    function nonLoginCurate(){
+        $("#curUl").empty();
+        for (let index = 0; index < curArr.length; index++) {
+            $("#curUl").append('<li class="list-inline-item" data-sid="'+index+'"><div class="popular-box d-flex align-items-center" ><div class="number flex-shrink-0 me-2" style="padding-right:10px;padding-top:5px;padding-left:10px; width:auto;cursor: pointer;"><h6 class="primary-link stretched-link fs-14 mb-0" id="curNameU" data-sid="'+index+'">'+curArr[index].name+'</h6></div><span style="z-index: 100;"><i class="uil uil-edit" role="button" id="curShowU" data-sid="'+index+'"></i>&nbsp;<i class="fa fa-play" role="button" id="applyCurDU" data-sid="'+index+'"></i></span> </div></li><br>');
+        }
+    }
+
+    $(document).on("click", "#curShowU", function(){
+        $(document).ready(function(){
+            $('#staticBackdropCurate').modal('show')
+        });
+        let id = $(this).attr("data-sid");
+        removeCurateData();
+        $("#reljob").hide();
+        if($("#curBtn").length > 0) {
+            $("#curBtn").remove();
+        }
+        $("#buttonRel").append('<div class="row mt-2" id="curBtn"><div class="col d-flex justify-content-center"><button type="button" class="btn btn-danger" id="delU" data-sid="'+id+'">Delete</button></div><div class="col d-flex justify-content-center"><button type="button" class="btn btn-primary" id="editU" data-sid="'+id+'">Save</button></div><div class="col d-flex justify-content-center"><button type="button" class="btn btn-primary" id="editU" data-sid="'+id+'" value="apply">Apply</button></div></div>')
+        let x = curArr[id];
+        $("#curateName").val(x.name);
+        $("#isDefault").prop("checked", x.is_default);
+        $("#newsLetter").prop("checked", x.news_letter);
+        $("input[name=jobLevel][value='"+x.level+"']").prop("checked",true);
+        $("input[name=job_type][value='"+x.job_type+"']").prop("checked",true);
+        let skillStr = x.skill
+        let roleStr = x.role
+        let locStr = x.location
+        let workStr = x.workplace
+        if(skillStr!=""){
+            for (let index = 0; index < skillStr.length; index++) {
+                $('.curate--skill > div.dropdown-main > ul > li[data-value="'+skillStr[index]+'"]').trigger("click");
+            }
+        }
+        if(locStr!="None"){
+            for (let index = 0; index < locStr.length; index++) {
+                $('.curate--location > div.dropdown-main > ul > li[data-value="'+locStr[index]+'"]').trigger("click");
+            }
+        }
+        if(roleStr!="None"){
+            for (let index = 0; index < roleStr.length; index++) {
+                $('.curate--categories > div.dropdown-main > ul > li').each(function(){
+                    if($(this).text()==roleStr[index]){
+                        $(this).trigger("click");
+                    }
+                });
+            }
+        }
+        if(workStr!="None"){
+            for (let index = 0; index < workStr.length; index++) {
+                $('.curate--workplace > div.dropdown-main > ul > li[data-value="'+workStr[index]+'"]').trigger("click");
+            }
+        }
+       
+    });
+
+    $(document).on("click", "#applyCurDU", function(){
+        let id = $(this).attr("data-sid");
+        console.log(curArr[id]);
+        skillStr=curArr[id].skill;
+        locStr=curArr[id].location;
+        roleStr=curArr[id].role;
+        $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+            $(this).trigger("click");
+        });
+        if(skillStr!=""){
+            for (let index = 0; index < skillStr.length; index++) {
+                $('.choices--skill > div.dropdown-main > ul > li[data-value="'+skillStr[index]+'"]').trigger("click");
+            }
+            $("#filter").trigger("click");
+        }
+        if(locStr!="None"){
+            for (let index = 0; index < locStr.length; index++) {
+                $('.choices--location > div.dropdown-main > ul > li[data-value="'+locStr[index]+'"]').trigger("click");
+            }
+            $("#filter").trigger("click");
+        }
+        if(roleStr!="None"){
+            for (let index = 0; index < roleStr.length; index++) {
+                $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                    if($(this).text()==roleStr[index]){
+                        $(this).trigger("click");
+                    }
+                });
+            }
+            $("#filter").trigger("click");
+        }
+        $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Applied.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+        setTimeout(function() { $("#alerts").empty() }, 3000);
+    });
+
+    $(document).on("click", "#delU", function(){
+        let id = $(this).attr("data-sid");
+        curArr.splice(id, 1);
+        $(document).ready(function(){
+            $('#staticBackdropCurate').modal('hide');
+            $("li[data-sid='"+id+"']").remove();
+            $.removeCookie('curate');
+            removeCurateData();
+            console.log(curArr.length);
+            if(curArr.length > 0){
+                $.cookie.json = true;
+                $.cookie("curate", curArr, { expires: 1 });
+                nonLoginCurate();   
+            }
+            else{
+                console.log("in");
+                setTimeout(function() { $("#plusCurate").trigger("click"); }, 1000);
+            }
+        });
+        $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Delete.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+        setTimeout(function() { $("#alerts").empty() }, 3000);
+    });
+
+    $(document).on("click", "#editU", function(){
+        let id = $(this).attr("data-sid");
+        console.log(id);
+        console.log(curArr);
+
+        let t=0;
+        var skillStr = [],locStr=[],roleStr=[],workStr=[];
+        $('.curate--skill').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            skillStr.push($(this).text());
+        });
+        $('.curate--location').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            locStr.push($(this).text());
+        });
+        $('.curate--categories').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            roleStr.push($(this).text());
+        });
+        $('.curate--workplace').find("div.dropdown-display-label > div.dropdown-chose-list > span.dropdown-selected ").each(function(){
+            workStr.push($(this).text());
+        });
+        if(skillStr.length == 0 && roleStr.length == 0){
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid red")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid red")
+            skillStr="";
+            roleStr="";
+            t=1;
+        }
+        else{
+            $('.curate--skill > div.dropdown-display-label').css("border","1px solid #ccc")
+            $('.curate--categories > div.dropdown-display-label').css("border","1px solid #ccc")
+        }
+        if(skillStr.length == 0){
+            skillStr="";
+        }
+        if(locStr.length == 0){
+            locStr="";
+        }
+        if(roleStr.length == 0){
+            roleStr="";
+        }
+        if(workStr.length == 0){
+            workStr="";
+        }
+        if(t==1){
+            return false;
+        }
+        else{
+            $(document).ready(function(){
+            $('#staticBackdropCurate').modal('hide');
+            });
+            let x = curArr[id];
+            x.name=$("#curateName").val();
+            x.is_default=$('#isDefault').prop('checked');
+            x.news_letter=$('#newsLetter').prop('checked');
+            x.level=$('input[name="jobLevel"]:checked').val();
+            x.job_type=$('input[name="job_type"]:checked').val();
+            x.skill=skillStr
+            x.role=roleStr
+            x.location=locStr
+            x.workplace=workStr 
+            $.cookie.json = true;
+            $.cookie("curate", curArr, { expires: 1 });
+            nonLoginCurate();
+        }
+
+        if($(this).val()=="apply" || $("#isDefault").prop('checked') == true){
+            $('.choices--categories > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--location > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            $('.choices--skill > div.dropdown-main > ul > li.dropdown-chose').each(function(){
+                $(this).trigger("click");
+            });
+            if(skillStr!=""){
+                for (let index = 0; index < skillStr.length; index++) {
+                    $('.choices--skill > div.dropdown-main > ul > li[data-value="'+skillStr[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(locStr!="None"){
+                for (let index = 0; index < locStr.length; index++) {
+                    $('.choices--location > div.dropdown-main > ul > li[data-value="'+locStr[index]+'"]').trigger("click");
+                }
+                $("#filter").trigger("click");
+            }
+            if(roleStr!="None"){
+                for (let index = 0; index < roleStr.length; index++) {
+                    $('.choices--categories > div.dropdown-main > ul > li').each(function(){
+                        if($(this).text()==roleStr[index]){
+                            $(this).trigger("click");
+                        }
+                    });
+                }
+                $("#filter").trigger("click");
+            }
+        }
+        removeCurateData()
+        $("#alerts").append('<div class="alert alert-primary alert-dismissible fade show" role="alert" style="width: fit-content;position: absolute;right: 0;z-index: 100;"><strong>Curate Successfully Stored.</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+        setTimeout(function() { $("#alerts").empty() }, 3000);
+    });
+
+</script>
+
+<!--signup for unauth-->
+<script>
+    function isEmail(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email);
+    }
+    function checkLower(value){
+      return /[a-z]/.test(value);
+    }
+    function checkUpper(value){
+      return /[A-Z]/.test(value);
+    }
+    function checkDigit(value){
+      return /[0-9]/.test(value);
+    }
+    function checkCh(value){
+      var regex = /[^\w\s]/gi;
+      return regex.test(value);
+    }
+    function escapeRegExp(str) {
+      return str.replace(/[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&");
+      }
+
+      function fuzzyComparison(str, mask) {
+          var regex = '^' + escapeRegExp(mask).replace(/\*/, '.*') + '$';
+          var r = new RegExp(regex);
+
+          return r.test(str);
+      }
+    $("#password2").keyup(function(){
+      if($("#password").val()!==$("#password2").val()){
+          $("#password2").css("border","1px solid red");
+      }
+      else{
+          $("#password2").css("border","none");
+      }
+    });
+    $("#password").keyup(function(){
+      $("#password").css("border","none");
+    });
+    $("#f_name").keyup(function(){
+      $("#f_name").css("border","none");
+    });
+    $("#l_name").keyup(function(){
+      $("#l_name").css("border","none");
+    });
+    $("#email").keyup(function(){
+      $("#email").css("border","none");
+    });
+    const handleAlerts = (type,text) => {
+      $("#alertsS").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="z-index:1000;"></button></div>');
+    };
+    
+    $( "#signup" ).click(function(e) {
+      $("html").animate({ scrollTop: 0 }, "medium");
+      e.preventDefault();        
+      const csrf = document.getElementsByName('csrfmiddlewaretoken');
+      let allT = true;
+      let a1 = $("#password").val();
+      a1=a1.toLowerCase().replace(/\s/g,'');
+      let a2 = $("#f_name").val();
+      a2=a2.toLowerCase().replace(/\s/g,'');
+      let a3 = $("#l_name").val();
+      a3=a3.toLowerCase().replace(/\s/g,'');
+      let a4 = $("#email").val();
+      a4=a4.toLowerCase().replace(/\s/g,'');
+      $("#alerts").empty();
+      $("#f_name").css("border","none");
+      $("#l_name").css("border","none");
+      $("#email").css("border","none");
+      $("#password").css("border","none");
+      $("#password2").css("border","none");
+
+      if($("#f_name").val()==""){
+          $("#f_name").css("border","1px solid red");
+          allT = false;
+      }
+
+      if($("#l_name").val()==""){
+          $("#l_name").css("border","1px solid red");
+          allT = false;
+      }
+
+      if($("#email").val()==""){
+          $("#email").css("border","1px solid red");
+          allT = false;
+      }
+      else if( !isEmail($("#email").val())) 
+      { 
+          handleAlerts("danger","Email Not Validate");
+          $("#email").css("border","1px solid red");
+          allT = false;
+      }
+
+      if($("#password").val()=="" || $("#password2").val()==""){
+          $("#password").css("border","1px solid red");
+          $("#password2").css("border","1px solid red");
+          allT = false;
+      }
+      else if(($("#password").val()).length<=8){
+          handleAlerts("danger","Password Contain Atleast 8 Characters");
+          $("#password").css("border","1px solid red");
+          allT = false;
+      }
+      else if( !checkCh($("#password").val()) || !checkDigit($("#password").val()) || !checkLower($("#password").val()) || !checkUpper($("#password").val())) 
+      { 
+          handleAlerts("danger","Password Have Atleast One Special Characters , One Digit , One Uppercase & One Lowercase Letter");
+          $("#password").css("border","1px solid red");
+          allT = false;
+      }
+      else if(a1.includes(a2) || a1.includes(a3) || a1.includes(a4)){
+          handleAlerts("danger","Password Didn't contain your Name, Email!");
+          $("#password").css("border","1px solid red");
+          allT = false;
+      }
+      else if($("#checkbox1").prop('checked') !== true){
+          handleAlerts("danger","Grants our terms & conditions");
+          allT = false;
+      }
+      
+      if(allT){
+          const fd = new FormData();
+          fd.append('csrfmiddlewaretoken',csrf[0].value);
+          fd.append('first_name',$("#f_name").val());
+          fd.append('last_name',$("#l_name").val());
+          fd.append('email',$("#email").val());
+          fd.append('password1',$("#password").val());
+          fd.append('password2',$("#password2").val());
+
+
+          $.ajax({
+              type: 'POST',
+              url: '/employee/register/',
+              data: fd,
+              cache: false,
+              contentType: false,
+              processData: false,
+              enctype: 'multipart/form-data',
+              success: function(data) {
+                  if(`${data.msg}` === "Succefully Sign Up"){
+                      handleAlerts('success', `${data.msg}`);
+                      setTimeout(function(){
+                          window.location.href = '/dashboard/employee/';
+                      }, 2000);
+                  }
+                  else{
+                      handleAlerts('danger', `${data.msg}`);
+                  }
+              },
+              error: function(error){
+                  handleAlerts('danger', 'oops..something went wrong with AJAX');
+              }
+          });
+          
+      }
+      setTimeout(function(){
+          $("#alerts").empty();
+      }, 5000);
+      });
+
+</script>
+
+{% endblock %}

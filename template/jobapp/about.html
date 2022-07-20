@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    
+
+    
+
+            <!-- Navbar End -->
+
+
+            <!-- START SIGN-UP MODAL -->
+            <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-5">
+                            <div class="position-absolute end-0 top-0 p-3">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="auth-content">
+                                <div class="w-100">
+                                    <div class="text-center mb-4">
+                                        <h5>Sign Up</h5>
+                                        <p class="text-muted">Sign Up and get access to all the features of Somhako</p>
+                                    </div>
+                                    <form action="#" class="auth-form">
+                                        <div class="mb-3">
+                                            <label for="usernameInput" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="usernameInput" placeholder="Enter your username">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="passwordInput" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="emailInput" placeholder="Enter your email">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emailInput" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">I agree to the <a href="javascript:void(0)" class="text-primary form-text text-decoration-underline">Terms and conditions</a></label>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                                        </div>
+                                    </form>
+                                    <div class="mt-3 text-center">
+                                        <p class="mb-0">Already a member ? <a href="sign-in.html" class="form-text text-primary text-decoration-underline"> Sign-in </a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end modal-body-->
+                    </div><!--end modal-content-->
+                </div><!--end modal-dialog-->
+            </div>
+            <!-- END SIGN-UP MODAL -->
+
+            <div class="main-content">
+
+                <div class="page-content">
+
+                    
+
+                    <!-- START ABOUT -->
+                    <section class="section1">
+                        <div class="container">
+                            <div class="row align-items-center g-0">
+                                <div class="col-lg-6">
+                                    <div class="section-title me-lg-5">
+                                        <h6 class="sub-title">About Us</h6>
+                                        <h2 class="title mb-4">Why <span class="text-warning fw-bold">10,000+</span> People Trust On Somhako?</h2>
+
+                                        <p class="text-muted">Start working with Somhako that can provide everything you need to generate awareness, drive traffic, connect. Dummy text is text that is used in the publishing industry or by web designers to occupy the space which will later be filled with 'real' content.</p>
+                                        
+                                        <div class="row mt-4 pt-2">
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled about-list text-muted mb-0 mb-md-3">
+                                                    <li> Digital Marketing Solutions</li>
+                                                    <li> Our Talented & Experienced Marketing Agency</li>
+                                                    <li> Creative Design</li>
+                                                    <li> New jobs Innovation</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled about-list text-muted">
+                                                    <li> Create Resume</li>
+                                                    <li> 5000+ Companies</li>
+                                                    <li> Our Blog</li>
+                                                    <li> and more...</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                                <a href="javascript:void(0)" class="btn btn-primary btn-hover">Learn More <i class="uil uil-angle-right-b align-middle"></i></a>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-6">
+                                <div class="about-img mt-4 mt-lg-0">
+                                    <img src="{% static 'assets/images/about/img-01.jpg' %}" alt="" class="img-fluid rounded">
+                                </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!-- END ABOUT -->
+
+                    <!-- COUNTER START -->
+                    <section class="section bg-light">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="counter-box mt-3">
+                                        <div class="counters text-center">
+                                            <h5 class="counter mb-0">10,000+</h5>
+                                            <h6 class="fs-16 mt-3">Available Jobs</h6>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="counter-box mt-3">
+                                        <div class="counters text-center">
+                                            <h5 class="counter mb-0">7500+</h5>
+                                            <h6 class="fs-16 mt-3">Applications</h6>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="counter-box mt-3">
+                                        <div class="counters text-center">
+                                            <h5 class="counter mb-0">8.85K</h5>
+                                            <h6 class="fs-16 mt-3">Positive Feedback</h6>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="counter-box mt-3">
+                                        <div class="counters text-center">
+                                            <h5 class="counter mb-0">9875</h5>
+                                            <h6 class="fs-16 mt-3">Members</h6>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!-- COUNTER END -->
+
+                    <!-- START feature -->
+                    <section class="section">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-7">
+                                    <div class="section-title text-center mb-5">
+                                        <h3 class="title mb-4">Key Features</h3>
+                                        <p class="para-desc text-muted mx-auto">Start working with Somhako that can provide everything you need to generate awareness, drive traffic, connect.</p>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-object-ungroup"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Manage Job Ads</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-telegram-alt"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Create CV</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-lock-access"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Privacy Policy</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-user-md"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Recruiter Profiles</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-airplay"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Display Jobs</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-rocket"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">For Agencies</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-history"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Quick Support</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-bookmark"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Bookmark Jobs</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                                <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                    <div class="about-feature p-3 d-flex align-items-center rounded-3">
+                                        <div class="featrue-icon flex-shrink-0">
+                                            <i class="uim uim-graph-bar"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-18 mb-0">Real-time Analytics</h6>
+                                        </div>
+                                    </div><!--about-feature-->
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!-- END feature -->
+
+                    <!--START CTA-->
+                    <section class="section bg-light">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="section-title text-center">
+                                    <h3 class="title mb-4 pb-2">See everything about your employee at one place.</h3>
+                                    <p class="para-desc text-muted mx-auto">Start working with Somhako that can provide everything you need to generate awareness, drive traffic, connect.</p>
+                                    <div class="mt-4">
+                                        <a href="javascript:void(0)" class="btn btn-outline-primary btn-hover ms-sm-1 mt-2"><i class="uil uil-rocket me-1"></i> Get Started Now</a>
+                                    </div>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!--END CTA-->
+
+                    
+
+                </div>
+                <!-- End Page-content -->
+
+                <!-- START SUBSCRIBE -->
+                {% endblock %}

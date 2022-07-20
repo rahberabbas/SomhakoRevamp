@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load get_total_applicant %}
+{% block body %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link
+  href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900'
+  rel='stylesheet' type='text/css'>
+
+<section class="pt-5"></section>
+<div class="container jobContainer">
+  <div class="row">
+    <!--Job Search-->
+    <div class="col-lg-9 mt-5">
+      <h1>Hello {{request.user.employee.first_name}} {{request.user.employee.last_name }},<a type="button"
+          href="{% url 'employee:employee-profile' %}" class="btn btn-primary bttn mx-3"><i
+            class="fa fa-eye"></i>&nbsp;View Your Profile</a><a href="{% url 'employee:employee-profile' %}" type="button" class="btn btn-primary bttn">Your
+              Account</a></h1>
+      <div class="container searchContainer p-4 mb-5">
+        <h3>Profile Completeness</h3>
+        
+        {% if profile.location is None or profile.account_type is None %}
+        <h4 class="pt-3 pb-3">Your profile is 20% complete. Do the following to make a great profile.</h4>
+        <h4><i class="fa fa-check unchecked"></i>Add your Profile Informations&nbsp;<a href="{% url 'employee:employee-profile' %}" class="arrowlink"><i
+          class="fa fa-long-arrow-right"></i></a></h4>
+          <h4><i class="fa fa-check unchecked"></i>Add your Education, Experience and Certificates&nbsp;<a href="{% url 'employee:employee-profile' %}" class="arrowlink"><i
+            class="fa fa-long-arrow-right"></i></a></h4>
+        {% else %}
+       
+        <h4 class="pt-3 pb-3">Your profile is 100% complete.</h4>
+        {% endif %}
+        <!-- <h4><i class="fa fa-check checked"></i>Add your profile photo</h4>
+        <h4><i class="fa fa-check checked"></i>Upload your resume</h4>
+        <h4><i class="fa fa-check unchecked"></i>Add your job preferences&nbsp;<a href="#" class="arrowlink"><i
+              class="fa fa-long-arrow-right"></i></a></h4> -->
+      </div>
+      <div class="container searchContainer p-4 mb-5">
+        <h3>Great Going!</h3>
+        <div class="d-flex align-items-center ">
+          <a href="{% url 'jobapp:job_applied' %}">
+          <div class="d-inline-block boxx mr-5">
+            <div class="boxxHeader mt-3 pt-3">{{length}}</div>
+            <div class="boxxContent">Jobs Applied</div>
+          </div>
+        </a>
+          <div class="d-inline-block boxx ms-3">
+            <div class="boxxHeader mt-3 pt-3">353</div>
+            <div class="boxxContent">Jobs Viewed</div>
+          </div>
+        </div>
+      </div>
+      
+
+    </div>
+    <!--Popular tags & category-->
+
+  </div>
+</div>
+
+<style>
+  body {
+    background: #fafafa;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  input,
+  option,
+  select {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #71717a;
+  }
+
+  .container-fluid {
+    position: absolute;
+    height: 72px;
+    left: 0px;
+    top: 0px;
+    background: #fafafa;
+  }
+
+  .logo {
+    position: absolute;
+    left: 2.36%;
+    right: 85.38%;
+    top: 15.28%;
+    bottom: 15.28%;
+    width: 176.47px;
+    height: 50px;
+  }
+
+  .img23 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 48px;
+    border-radius: 50px;
+  }
+
+  .lang {
+    position: absolute;
+    right: 120px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border: none;
+    background-color: #fafafa;
+    color: #71717a;
+  }
+
+  .tren {
+    position: absolute;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    right: 208px;
+    color: #71717a;
+    text-decoration: none;
+  }
+
+  h1 {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 150%;
+    color: #18181B;
+  }
+
+  p {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #71717a;
+    text-align: justify;
+  }
+
+  h3 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 150%;
+    color: #18181B;
+  }
+
+  .container-fluid {
+    background: #ffffff;
+  }
+
+  .jobContainer {
+    margin-top: 60px;
+  }
+
+  .filterHeader {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 150%;
+    color: #18181b;
+  }
+
+  .taghead {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #3f3f46;
+  }
+
+  .tagsContainer {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  .searchContainer {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  .mb-6 {
+    margin-bottom: calc(1rem * 5);
+  }
+
+  .bttn {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #FFFFFF;
+    float: right;
+  }
+
+  h4 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 150%;
+    color: #000000;
+  }
+
+  .checked {
+    padding: 5px;
+    margin-right: 10px;
+    background: #1AC887;
+    border-radius: 25px;
+    color: #FFFFFF;
+  }
+
+  .unchecked {
+    padding: 5px;
+    margin-right: 10px;
+    background: #868686;
+    border-radius: 25px;
+    color: #FFFFFF;
+  }
+
+  .arrowlink {
+    text-decoration: none;
+    color: #000000;
+    width: 10px;
+  }
+
+  .boxx {
+    width: 160px;
+    height: 166px;
+    background: #BFDBFE;
+    border-radius: 20px;
+  }
+
+  .boxxHeader {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 150%;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+  }
+
+  .boxxContent {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+  }
+
+  .boxxContent2 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    color: #71717A;
+  }
+
+  .end1 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 150%;
+    color: #A1A1AA;
+  }
+
+  .header2 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    color: #000000;
+  }
+
+  .header3 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 150%;
+    color: #000000;
+  }
+
+  .content2 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 150%;
+    color: #52525B;
+  }
+
+  .follow {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #FFFFFF;
+    background: #FB923C;
+    border-radius: 4px;
+  }
+
+  .followAll {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #FFFFFF;
+    border-radius: 4px;
+  }
+
+  .preferB {
+    background: #FFFFFF;
+    border: 1px solid #3B82F6;
+    box-sizing: border-box;
+    border-radius: 37px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #3B82F6;
+  }
+
+  .ab {
+    width: auto;
+    height: auto;
+    max-width: 946px;
+    background: #ffffff;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 30px;
+    margin-top: 60px;
+  }
+
+  .uploadR {
+    background: #E4E4E7;
+    border-radius: 4px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000000;
+    margin-top: calc(1rem * 9);
+  }
+
+  .in {
+    max-width: 351px;
+  }
+
+  .in2 {
+    max-width: 250px;
+  }
+
+  label {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #71717A;
+  }
+</style>
+
+{% endblock %}

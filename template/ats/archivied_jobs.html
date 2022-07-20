@@ -1,0 +1,271 @@
+{% load static %}
+{% load get_total_applicant %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fontawsome icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Candidate Landing Page</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css1/t1/ats_style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .nav-tabs .nav-link{
+            color: black;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            color: #3b82f6;
+            margin: 0;
+            border: none;
+            border-bottom: 2px solid #3b82f6;
+            }
+
+            .circle {
+                background-color:transparent;
+                border:3px solid red;    
+                height:100px;
+                border-radius:50%;
+                -moz-border-radius:50%;
+                -webkit-border-radius:50%;
+                width:100px;
+            }
+    </style>
+  </head>
+  <body>
+
+    <!-- Close Job Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Close Job</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you sure to Close the Job?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              {% for i in jobs %}
+              <a type="button" href="{% url 'jobapp:close_job' i.id %}" class="btn btn-danger">Close Job</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Modal End -->
+    <!--Nav Bar-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid border-bottom">
+            <img src="{% static 'assets/images/logo-dark.png' %}" class="logo" alt="logo">
+            <img src="{% static 'images/image 23.png' %}" alt="img23" class="img23">
+            <input class="form-control me-2 lang" type="search" placeholder="&#xF002; Search jobs, applicants, etc" aria-label="Search" style="height: 40px;width: 392px;text-align: left;font-family:Arial, FontAwesome;">
+        </div>
+    </nav>
+    <!--Container-->
+    <div class="container-fluid" style="margin-top: 72px;">
+        <div class="row">
+            <div class="col-sm-auto bg-primary text-white p-0 sticky-top" style="height: 100vh;">
+                <div class="d-flex flex-sm-column flex-row flex-nowrap bg-primary text-white align-items-center text-center sticky-top">
+                    <a href="{% url 'jobapp:dashboard' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-home"></i><br>
+                        Home
+                    </a>
+                    <a href="{% url 'jobapp:total_job_view' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-search"></i><br>
+                        Job
+                    </a>
+                    <a href="{% url 'jobapp:total_applicants' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-users"></i><br>
+                        Applicant
+                    </a>
+                    <a href="{% url 'jobapp:account' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-user"></i><br>
+                        Account
+                    </a>
+                </div>
+            </div>
+            <div class="col-2 p-0 m-0 text-center pt-3 sticky-top" style="background-color: #EFF6FF;height: 100vh;">
+                <h2>Jobs</h2>
+                <a href="{% url 'jobapp:job_post_view' %}" class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center pt-2">Post New Job</p></a>
+                <a href="{% url 'jobapp:total_job_view' %}" class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center">Active Jobs</p></a>
+                <!-- <p class="text-primary text-center pt-2">Active Jobs</p> -->
+                <a href="{% url 'jobapp:archivied_job_view' %}" class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-primary text-center">Archieved Jobs</p></a>
+            </div>
+            <div class="col m-0 p-0 bg-white">
+                <!-- <input class="form-control m-3" type="search" placeholder="&#xF002; Search..." aria-label="Search" style="height: 24px;width:auto;text-align: left;font-family:Arial, FontAwesome;">
+                <hr> -->
+                <div class="row p-3">
+                    <div id="alertsS"></div>
+                    <div class="col col-lg-4">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                        <select name="" class="form-control" id="choices-dept">
+                            <option value="" selected>Select Department</option>
+                            {% if total_dept != '0' %}
+                            {% for dept in total_dept %}
+                            <option value="{{dept.id}}">{{dept.title}}</option>
+                            {% endfor %}
+                            {% endif %}
+                            
+                        </select>
+                        </form>
+                    </div>
+                </div>
+                <h2 class="p-3" id="jcount">{{jobs.count}} Archieved Jobs</h2>
+                <div class="row p-3" id="jobContainer">
+                    {% for i in jobs %}
+                    <div class="col m-3">
+                        <input type="hidden" data-id="{{i.id}}" name="sid" id="sid">
+                        <div class="p-3" style="height: 311px;width:224px;background-color: #F4F2FF;">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                            <div class="dropdown">
+                                <a class="text-dark text-decoration-none" href="{% url 'jobapp:naman3' i.id %}">{{i.title}}</a> 
+                                <button class="btn dropdown-toggle float-end" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li><a class="btn dropdown-item" href="{% url 'jobapp:archieve_job' i.id %}" >Republished</a></li>
+                                  <li><a class="dropdown-item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="close_job">Close Job</a></li>
+                                </ul>
+                           
+                              </div>
+                            </form>
+                        </p>
+                        <a href="{% url 'jobapp:naman3' i.id %}">
+                        <svg viewbox="0 0 10 10" style="overflow: hidden;">
+                            <defs>
+                              <circle id="circle" cx="5" cy="5" r="4" stroke-width="0.5" fill="transparent" />
+                            </defs>
+                            
+                            <text x="50%" y="50%" font-size=".15rem" dominant-baseline="middle" text-anchor="middle">
+                                {% get_total_applicant total_applicants i %}
+                            </text> 
+                           
+                            <use xlink:href="#circle" stroke="#FB923C" stroke-dasharray="0,2.09,8.38,10" />
+                            <use xlink:href="#circle" stroke="#4ADE80" stroke-dasharray="0,10.47,8.38,30" />
+                            <use xlink:href="#circle" stroke="#FACC15" stroke-dasharray="2.09,16.75,6.3" />
+                        </svg>
+                        <p style="line-height: auto;">{{i.location}}!{{i.get_job_type_display}}|{{i.get_position_display}}</p>
+                        <p style="line-height: 25%;">Published <i class="fa fa-share-alt float-end"></i></p>
+                        </div>
+                    </a>
+                    </div>
+                
+                    {% endfor %}
+                    
+                    
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript; -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+        const handleAlerts = (type,text) => {
+        $("#alertsS").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="z-index:1000;"></button></div>');
+        };
+    </script>
+    <script>
+        function movN2(id){
+            window.location.href='/employer/job/'+id+'/applicants/';
+        }
+        function movN23(id){
+            window.location.href='/archieve_job/'+id+'/';
+        }
+        function movN24(id){
+            window.location.href='/close_job/'+id+'/';
+        }
+       $("#shareBtn").on("click", function (e) {
+            let id = $(this).attr("data-sid");
+            console.log(id);
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val("http://127.0.0.1:8000/job/"+id+"/").select();
+            document.execCommand("copy");
+            $temp.remove();
+            $("#shareBtn").filter('[data-sid="'+id+'"]').attr("data-bs-original-title","Copied");
+       });
+       $('#choices-dept').on('change', function() {
+            // alert( this.value );
+            val = this.value;
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('deptData',val);
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if (data.status == 1) {
+                        handleAlerts('success','Search Successfully');
+                        console.log(data)
+                        $("#jobContainer").empty();
+                        let counter=0;
+                        for(var i in data.data2){
+                            counter=counter+1;
+                            let a = data.data2[i]
+                            let t_app = "";
+                            for(var j in data.total_applicant){
+                                let x = data.total_applicant[j]
+                                if(j==a.id){
+                                    t_app=x
+                                }
+                                
+                            }
+                            $("#jobContainer").append('<div class="col m-3"><input type="hidden" data-id="'+a.id+'" name="sid" id="sid"><div class="p-3" style="height: 311px;width:224px;background-color: #F4F2FF;"><form action="" method="POST">{% csrf_token %}<div class="dropdown"><a class="text-dark text-decoration-none" onClick="movN2('+a.id+')">'+a.title+'</a> <button class="btn dropdown-toggle float-end" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"><li><a class="btn dropdown-item" onClick="movN23('+a.id+')" >Republished</a></li><li><a class="dropdown-item" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="close_job">Close Job</a></li></ul></div></form></p><a onClick="movN2('+a.id+')"><svg viewbox="0 0 10 10" style="overflow: hidden;"><defs><circle id="circle" cx="5" cy="5" r="4" stroke-width="0.5" fill="transparent" /></defs><text x="50%" y="50%" font-size=".15rem" dominant-baseline="middle" text-anchor="middle">'+t_app+'</text><use xlink:href="#circle" stroke="#FB923C" stroke-dasharray="0,2.09,8.38,10" /><use xlink:href="#circle" stroke="#4ADE80" stroke-dasharray="0,10.47,8.38,30" /><use xlink:href="#circle" stroke="#FACC15" stroke-dasharray="2.09,16.75,6.3" /></svg><p style="line-height: auto;">'+a.location+'!'+a.job_type+'|'+a.position+'</p></a><p style="line-height: 25%;">Published <i id="shareBtn" role="button" data-sid="'+a.id+'" class="fa fa-share-alt float-end" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy to clipboard"></i></p></div></div>');
+                        }
+                        $("#jcount").text(counter+" Archieved jobs")
+                    }
+                    else{
+                        handleAlerts('danger','Search Not get');
+                    }
+                },
+                error: function(error){
+                    handleAlerts('danger', 'oops..something went wrong with AJAX');
+                }
+            });
+            
+        });
+    
+        
+
+
+    </script>
+  </body>
+</html>
+
+<!-- $("#archive_job").on("click", function (e) {
+    e.preventDefault();
+    console.log("Delete Button Clicked");
+    let id = $(this).attr("data-id");
+    let csr = $("input[name=csrfmiddlewaretoken]").val();
+    mydata = { id: id, csrfmiddlewaretoken: csr };
+    console.log(id)
+    $.ajax({
+        url: "{% url 'employee:cer_edit' %}",
+        method: "POST",
+        data: mydata,
+        success: function (data) {
+            $("#cerid").val(data.id);
+            $("#cerTitleID").val(data.title);
+            $("#cerCompanyID").val(data.company);
+            $("#cerURLID").val(data.url);
+        },
+    })
+}) -->

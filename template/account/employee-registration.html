@@ -1,0 +1,317 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Somhako</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css1/bootstrap.min.css' %}">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'css1/fontawesome-all.min.css' %}">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="{% static 'font/flaticon.css' %}">
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css1/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+
+    <div id="preloader" class="preloader">
+      <div class='inner'>
+          <div class='line1'></div>
+          <div class='line2'></div>
+          <div class='line3'></div>
+      </div>
+  </div>
+  <section class="fxt-template-animation fxt-template-layout34" data-bg-image="{% static 'elements/bg1.png' %}">
+      <div class="fxt-shape">
+          <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+              
+          </div>
+      </div>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-7">
+                  <div class="fxt-column-wrap justify-content-between">
+                      <div class="fxt-animated-img">
+                          <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                              <img src="{% static 'figure/bg34-1.png' %}" alt="Animated Image">
+                          </div>
+                      </div>
+                      <div class="fxt-transformX-L-50 fxt-transition-delay-3">
+                          <a href="{% comment url 'jobapp:home' %} {% endcomment %}" class="fxt-logo"><img src="{% static 'assets/images/logo-light.png' %}" alt="Logo"></a>
+                      </div>
+                      <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                          <div class="fxt-middle-content">
+                              
+                          </div>
+                      </div>
+                      <div class="fxt-transformX-L-50 fxt-transition-delay-7">
+                          <!-- <div class="fxt-qr-code">
+                              
+                          </div> -->
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-4">
+                  <div class="justify-content-center fxtry3">
+                      <h1 class="fxt-main-title pt-2 mt-2">Sign Up</h1>
+                      <div id="alerts">
+
+                      </div>
+                      {% if msg %}
+
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>{{msg}}</strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                      
+                      {% endif %}
+                      <div class="fxt-form">
+                          <form method="POST">
+                            {% csrf_token %}
+                              <div class="form-group">
+                                  <input type="text" id="f_name" class="form-control" name="first_name" placeholder="Fast Name" required="required">
+                              </div>
+                              <div class="form-group">
+                                  <input type="text" id="l_name" class="form-control" name="last_name" placeholder="Last Name" required="required">
+                              </div>
+                              <div class="form-group">
+                                  <input type="email" id="email" class="form-control" name="email" placeholder="E-mail Address" required="required">
+                              </div>
+                              <div class="form-group">
+                                  <input id="password" type="password" class="form-control" name="password1" placeholder="********" required="required">
+                                  <i toggle="#password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                              </div>
+                              <div class="form-group">
+                                <input id="password2" type="password" class="form-control" name="password2" placeholder="********" required="required">
+                                <i toggle="#password2" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                            </div>
+                              <div class="form-group">
+                                  <div class="fxt-checkbox-box">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1" class="ps-4">I agree with <a
+                                      class="terms-link" href="#">Terms</a> and <a class="terms-link" href="#">Privacy Policy</a></label>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <button type="submit" id="signup" class="fxt-btn-fill">Sign Up</button>
+                                  <p>   </p>
+                                  <div class="log" style="text-align:center ;">If you have an account You can<a href="/login/" class="fxt-switcher-text ms-2">Sign In</a></div>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="fxt-style-line">
+                          <span>Or Continus with</span>
+                      </div>
+                      <ul class="fxt-socials">
+                          <li class="fxt-google">
+                              <a href="#" title="google"><i class="fab fa-google-plus-g"></i></a>
+                          </li>
+                          <li class="fxt-apple">
+                              <a href="#" title="apple"><i class="fab fa-apple"></i></a>
+                          </li>
+                          <li class="fxt-facebook">
+                              <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <script>
+      function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+      }
+      function checkLower(value){
+        return /[a-z]/.test(value);
+      }
+      function checkUpper(value){
+        return /[A-Z]/.test(value);
+      }
+      function checkDigit(value){
+        return /[0-9]/.test(value);
+      }
+      function checkCh(value){
+        var regex = /[^\w\s]/gi;
+        return regex.test(value);
+      }
+      function escapeRegExp(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&");
+        }
+
+        function fuzzyComparison(str, mask) {
+            var regex = '^' + escapeRegExp(mask).replace(/\*/, '.*') + '$';
+            var r = new RegExp(regex);
+
+            return r.test(str);
+        }
+      $("#password2").keyup(function(){
+        if($("#password").val()!==$("#password2").val()){
+            $("#password2").css("border","1px solid red");
+        }
+        else{
+            $("#password2").css("border","none");
+        }
+      });
+      $("#password").keyup(function(){
+        $("#password").css("border","none");
+      });
+      $("#f_name").keyup(function(){
+        $("#f_name").css("border","none");
+      });
+      $("#l_name").keyup(function(){
+        $("#l_name").css("border","none");
+      });
+      $("#email").keyup(function(){
+        $("#email").css("border","none");
+      });
+      const handleAlerts = (type,text) => {
+        $("#alerts").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+      };
+      
+      $( "#signup" ).click(function(e) {
+        $("html").animate({ scrollTop: 0 }, "medium");
+        e.preventDefault();        
+        const csrf = document.getElementsByName('csrfmiddlewaretoken');
+        let allT = true;
+        let a1 = $("#password").val();
+        a1=a1.toLowerCase().replace(/\s/g,'');
+        let a2 = $("#f_name").val();
+        a2=a2.toLowerCase().replace(/\s/g,'');
+        let a3 = $("#l_name").val();
+        a3=a3.toLowerCase().replace(/\s/g,'');
+        let a4 = $("#email").val();
+        a4=a4.toLowerCase().replace(/\s/g,'');
+        $("#alerts").empty();
+        $("#f_name").css("border","none");
+        $("#l_name").css("border","none");
+        $("#email").css("border","none");
+        $("#password").css("border","none");
+        $("#password2").css("border","none");
+
+        if($("#f_name").val()==""){
+            $("#f_name").css("border","1px solid red");
+            allT = false;
+        }
+
+        if($("#l_name").val()==""){
+            $("#l_name").css("border","1px solid red");
+            allT = false;
+        }
+
+        if($("#email").val()==""){
+            $("#email").css("border","1px solid red");
+            allT = false;
+        }
+        else if( !isEmail($("#email").val())) 
+        { 
+            handleAlerts("danger","Email Not Validate");
+            $("#email").css("border","1px solid red");
+            allT = false;
+        }
+
+        if($("#password").val()=="" || $("#password2").val()==""){
+            $("#password").css("border","1px solid red");
+            $("#password2").css("border","1px solid red");
+            allT = false;
+        }
+        else if(($("#password").val()).length<=8){
+            handleAlerts("danger","Password Contain Atleast 8 Characters");
+            $("#password").css("border","1px solid red");
+            allT = false;
+        }
+        else if( !checkCh($("#password").val()) || !checkDigit($("#password").val()) || !checkLower($("#password").val()) || !checkUpper($("#password").val())) 
+        { 
+            handleAlerts("danger","Password Have Atleast One Special Characters , One Digit , One Uppercase & One Lowercase Letter");
+            $("#password").css("border","1px solid red");
+            allT = false;
+        }
+        else if(a1.includes(a2) || a1.includes(a3) || a1.includes(a4)){
+            handleAlerts("danger","Password Didn't contain your Name, Email!");
+            $("#password").css("border","1px solid red");
+            allT = false;
+        }
+        else if($("#checkbox1").prop('checked') !== true){
+            handleAlerts("danger","Grants our terms & conditions");
+            allT = false;
+        }
+        
+        if(allT){
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('first_name',$("#f_name").val());
+            fd.append('last_name',$("#l_name").val());
+            fd.append('email',$("#email").val());
+            fd.append('password1',$("#password").val());
+            fd.append('password2',$("#password2").val());
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/employee/register/',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if(`${data.msg}` === "Succefully Sign Up"){
+                        handleAlerts('success', `${data.msg}`);
+                        setTimeout(function(){
+                            window.location.href = '/dashboard/employee/';
+                        }, 2000);
+                    }
+                    else{
+                        handleAlerts('danger', `${data.msg}`);
+                    }
+                },
+                error: function(error){
+                    handleAlerts('danger', 'oops..something went wrong with AJAX');
+                }
+            });
+            
+        }
+        setTimeout(function(){
+            $("#alerts").empty();
+        }, 5000);
+        });
+
+  </script>
+
+
+
+
+   
+    <!-- jquery-->
+    <script src="{% static 'js1/jquery-3.5.0.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js1/bootstrap.min.js' %}"></script>
+    <!-- Imagesloaded js -->
+    <script src="{% static 'js1/imagesloaded.pkgd.min.js' %}"></script>
+    <!-- Validator js -->
+    <script src="{% static 'js1/validator.min.js' %}"></script>
+    <!-- Custom Js -->
+    <script src="{% static 'js1/main.js' %}"></script>
+
+</body>
+
+</html>

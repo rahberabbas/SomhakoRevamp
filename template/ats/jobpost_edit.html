@@ -1,0 +1,853 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fontawsome icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Candidate Landing Page</title>
+    <link
+        href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900'
+        rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css1/t1/ats_style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+    <style>
+        .nav-tabs .nav-link {
+            color: black;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #3b82f6;
+            margin: 0;
+            border: none;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .circle {
+            background-color: transparent;
+            border: 3px solid red;
+            height: 100px;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--Nav Bar-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid border-bottom">
+            <img src="{% static 'assets/images/logo-dark.png' %}" class="logo" alt="logo">
+            <img src="{% static 'images/image 23.png' %}" alt="img23" class="img23">
+            <input class="form-control me-2 lang" type="search" placeholder="&#xF002; Search jobs, applicants, etc"
+                aria-label="Search" style="height: 40px;width: 392px;text-align: left;font-family:Arial, FontAwesome;">
+        </div>
+    </nav>
+    <!--Container-->
+    <div class="container-fluid" style="margin-top: 72px;">
+        <div class="row">
+            <div class="col-sm-auto bg-primary text-white p-0 sticky-top" style="height: 100vh;">
+                <div
+                    class="d-flex flex-sm-column flex-row flex-nowrap bg-primary text-white align-items-center text-center sticky-top">
+                    <a href="{% url 'jobapp:dashboard' %}" style="font-size: .75rem;"
+                        class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-home"></i><br>
+                        Home
+                    </a>
+                    <a href="{% url 'jobapp:total_job_view' %}" style="font-size: .75rem;"
+                        class="d-block p-2 text-white  text-decoration-none" title=""
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-search"></i><br>
+                        Job
+                    </a>
+                    <a href="{% url 'jobapp:total_applicants' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-users"></i><br>
+                        Applicant
+                    </a>
+                    
+                    <a href="" style="font-size: .75rem;"
+                        class="d-block p-2 text-white text-opacity-75 text-decoration-none" title=""
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-user"></i><br>
+                        Account
+                    </a>
+                </div>
+            </div>
+            <div class="col-2 p-0 m-0 text-center pt-3 sticky-top" style="background-color: #EFF6FF;height: 100vh;">
+                <h2>Jobs</h2>
+                <a href="{% url 'jobapp:job_post_view' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none">
+                    <p class="text-primary text-center pt-2">Post New Job</p>
+                </a>
+                <a href="{% url 'jobapp:total_job_view' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none">
+                    <p class="text-center">Active Jobs</p>
+                </a>
+                <p class="text-center">Archvied Jobs</p>
+            </div>
+   
+            <div class="col m-0 p-0 bg-white p-3 ps-5 pe-5 mb-3">
+                <div id="alertsS"></div>
+                <h2>Edit a new job</h2>
+                
+                <form action="" method="POST">
+                    {% csrf_token %} 
+                    {% for job in jobs %}
+                <h3># {{ job.id }} <button type="button" class="btn btn-primary btn-sm float-end" id="updateJob">Update</button>
+                </h3>
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Basic
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" style="background-color: #F4F2FF;">
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Job Title</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Role</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="text" class="form-control mt-4 mb-4" id="title" name="title" value="{{ job.title }}"
+                                    placeholder="Enter the job title">
+                            </div>
+                            <div class="col">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="role" name="role">
+                                    <option value="" selected>Choose a role</option>
+                                    <option value="1">Software Engineer</option>
+                                    <option value="2">Marketting</option>
+                                    <option value="3">Sales</option>
+                                    <option value="4">Hr</option>
+                                    <option value="5">Professor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Department</span>
+                            </div>
+                            <div class="col">
+                                <span class=""></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="jdept" name="jdept">
+                                    <option value="" selected>Choose a department</option>
+                                    {% for i in dept %}
+                                    <option value="{{i.id}}">{{i.title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <span class="">Job Description</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mt-4 mb-4">
+                                <textarea type="text" class="" id="description" name="description"
+                                    placeholder="Enter the job title">{{ job.description|safe }}</textarea>
+                                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <span class="">Responsiblities</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mt-4 mb-4">
+                                <textarea type="text" class="" id="responsibilities"
+                                    name="responsibilities" placeholder="Enter the job title">{{ job.responsibilities|safe }}</textarea>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col me-5">
+                                <span class="">Qualification Detail</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Skill & Experience</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5 mt-4 mb-4">
+                                <textarea type="text" class="" id="qualification_details"
+                                    name="qualification_details" placeholder="Enter the job title">{{ job.qualification_details|safe }}</textarea>
+                            </div>
+                            <div class="col mt-4 mb-4">
+                                <textarea type="text" class="" id="skill_experience"
+                                    name="skill_experience" placeholder="Enter the job title">{{ job.skill_experience|safe }}</textarea>
+                            </div>
+                        </div> -->
+                        <script>
+                            CKEDITOR.replace('description', {
+                                on: {
+                                    instanceReady: function (ev) {
+                                        this.dataProcessor.writer.setRules('p', {
+                                            breakAfterClose: false
+                                        });
+                                    }
+                                }
+                            });
+                            CKEDITOR.replace('responsibilities', {
+                                on: {
+                                    instanceReady: function (ev) {
+                                        this.dataProcessor.writer.setRules('p', {
+                                            breakAfterClose: false
+                                        });
+                                    }
+                                }
+                            });
+                              //  CKEDITOR.replace( 'description' );
+                               // CKEDITOR.replace( 'responsibilities' );
+                                // CKEDITOR.replace( 'qualification_details' );
+                                // CKEDITOR.replace( 'skill_experience' );
+                        </script>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Skill & Level
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" style="background-color: #F4F2FF;">
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Skill</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Job Type</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="skill">
+                                    <option value="" selected>Choose a skill</option>
+                                    <option value="Python">Python</option>
+                                    <option value="Seo">Seo</option>
+                                    <option value="Django">Django</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="job_type" name="job_type">
+                                    <option value="" selected>Choose a job type</option>
+                                    <option value="1">Full time</option>
+                                    <option value="2">Part time</option>
+                                    <option value="3">Internship</option>
+                                    <option value="4">Contract</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Experience Level / Position</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Experience In Years</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="position" name="position">
+                                    <option value="" selected>Choose an experience level</option>
+                                    <option value="1">Fresher</option>
+                                    <option value="2">Junior</option>
+                                    <option value="3">Senior</option>
+                                    <option value="4">Mid Carrer</option>
+                                    <option value="5">Executive</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="experince" name="experince">
+                                    <option value="" selected>Choose experience in years</option>
+                                    <option value="1">0-2 Yrs</option>
+                                    <option value="2">2-4 Yrs</option>
+                                    <option value="3">5+ Yrs</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Grade Level</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Total Rounds</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="grade">
+                                    <option value="" selected>Enter a grade level</option>
+                                    <option value="1">High Distinction (85% or above)</option>
+                                    <option value="2">Distinction (75 to 84%)</option>
+                                    <option value="3">Credit (65 to 74%)</option>
+                                    <option value="4">Pass (50 to 64%)</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="number" min="0" class="form-control mt-4 mb-4" id="max_round_no"
+                                    name="max_round_no" placeholder="Enter a total round" value="{{ job.max_round_no }}">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Location & Timing
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" style="background-color: #F4F2FF;">
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Location</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Workplace</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="location" name="location">
+                                    <option value="" selected>Choose a company location</option>
+                                    <option value="HYD">HYD</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Gujrat">Gujrat</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="work_place" name="work_place">
+                                    <option value="" selected>Choose a Workplace</option>
+                                    <option value="1">Remote</option>
+                                    <option value="2">Hybrid</option>
+                                    <option value="3">On-Site</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col  me-5">
+                                <span class="">Working Hours</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Requisition Deadline</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="text" class="form-control mt-4 mb-4" id="working_hour" name="working_hour" value="{{ job.working_hour }}"
+                                    placeholder="Enter a total working hours">
+                            </div>
+                            <div class="col">
+                                <input type="date" class="form-control mt-4 mb-4" id="last_date" name="last_date" value="{{ job.last_date|date:"Y-m-d" }}"
+                                    placeholder="Enter a last date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Benefits
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" style="background-color: #F4F2FF;">
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Salary</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Bonus</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="text" class="form-control mt-4 mb-4" id="salary" name="salary" value="{{ job.salary }}"
+                                    placeholder="Enter Salary">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control mt-4 mb-4" id="bonus" name="bonus" value="{{ job.bonus }}"
+                                    placeholder="Enter bonus">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Stock Options</span>
+                            </div>
+                            <div class="col">
+                                <span class=""></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="text" class="form-control mt-4 mb-4" id="stock" name="stock" value="{{ job.stock }}"
+                                    placeholder="Enter equity percentage or shares">
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">VISA Sponsorship</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Paid Relocation</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="visa" name="visa">
+                                    <option value="" selected>Are you offering VISA sponsorship?</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="relocation" name="relocation">
+                                    <option value="" selected>Are you offering VISA sponsorship?</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Language <i role="button" class="fa fa-plus float-end me-3 fs-6 pt-1" data-bs-toggle="modal" data-bs-target="#languageAddModal"></i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" id="langContainer" style="background-color: #F4F2FF;">
+                        <!-- <div class="row">
+                            <div class="col me-5"><h4 class="form-control mt-4 mb-4">English</h4></div>
+                            <div class="col me-5">
+                                <div class="form-check-inline mt-4 mb-4">
+                                    <select class="form-select text-secondary" id="langPro">
+                                        <option value="" selected>Choose a language Profeciency</option>
+                                        <option value="1">Beginner</option>
+                                        <option value="2">Intermediate</option>
+                                        <option value="3">Advance</option>
+                                    </select> 
+                                </div>
+                                <div class="form-check-inline float-end mt-4 mb-4">
+                                    <i role="button" class="fa fa-close me-3 fs-6 pt-2"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5"><h4 class="form-control mt-4 mb-4">English</h4></div>
+                            <div class="col me-5">
+                                <div class="form-check-inline mt-4 mb-4">
+                                    <select class="form-select text-secondary" id="langPro">
+                                        <option value="" selected>Choose a language Profeciency</option>
+                                        <option value="1">Beginner</option>
+                                        <option value="2">Intermediate</option>
+                                        <option value="3">Advance</option>
+                                    </select> 
+                                </div>
+                                <div class="form-check-inline float-end mt-4 mb-4">
+                                    <i role="button" class="fa fa-close me-3 fs-6 pt-2"></i>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- <div class="row">
+                            <div class="col">
+                                <span class="">English Language</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Japanese Language</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="dept">
+                                    <option value="" selected>Choose a English language level</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="col me-5">
+                                <select class="form-select mt-4 mb-4 text-secondary" id="dept">
+                                    <option value="" selected>Choose a Japanese language level</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col taghead p-3" style="background-color: #BFDBFE;">
+                        Other
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-3" style="background-color: #F4F2FF;">
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Tags / Keywords</span>
+                            </div>
+                            <div class="col">
+                                <span class="">URL</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="text" class="form-control mt-4 mb-4" id="tags" name="tags" value="{{ job.tags }}"
+                                    placeholder="Enter a tags" title="comma sprerated tags">
+                            </div>
+                            <div class="col">
+                                <input type="url" class="form-control mt-4 mb-4" id="url" name="url" value="{{ job.url }}"
+                                    placeholder="Enter an url">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <span class="">Vacancy</span>
+                            </div>
+                            <div class="col">
+                                <span class="">Qualification</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col me-5">
+                                <input type="number" min="1" class="form-control mt-4 mb-4" id="vacancy" name="vacancy" value="{{ job.vacancy }}"
+                                    placeholder="Enter a total vacancy">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control mt-4 mb-4" id="qualification" value="{{ job.qualification }}"
+                                    name="qualification" placeholder="Enter an qualification">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $('#role option[value="{{ job.role_id }}"]').prop('selected', true);
+                    $('#jdept option[value="{{ job.dept_id }}"]').prop('selected', true);
+                    $('#skill option[value="{{ job.skill }}"]').prop('selected', true);
+                    $('#job_type option[value="{{ job.job_type }}"]').prop('selected', true);
+                    $('#position option[value="{{ job.position }}"]').prop('selected', true);
+                    $('#experince option[value="{{ job.experince }}"]').prop('selected', true);
+                    $('#grade option[value="{{ job.grade }}"]').prop('selected', true);
+                    $('#visa option[value="{{ job.visa }}"]').prop('selected', true);
+                    $('#relocation option[value="{{ job.relocation }}"]').prop('selected', true);
+                    $('#location option[value="{{ job.location }}"]').prop('selected', true);
+                    $('#work_place option[value="{{ job.work_place }}"]').prop('selected', true);
+                </script>
+                {% endfor %}
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+    </div>
+    <div class="modal fade" id="languageAddModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-5">
+                    <div class="position-absolute end-0 top-0 p-3">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="auth-content">
+                        <div class="w-100">
+                            <div class="text-center mb-4">
+                                <h5>Add</h5>
+                            </div>
+                            <form action="" method="post">
+                            <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Language Title :</label>
+                            <input type="text" class="form-control" id="langTitle" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Language Profeciency :</label>
+                            <select class="form-select mt-4 mb-4 text-secondary" id="langPro" name="langPro">
+                                <option value="" selected>Choose a language Profeciency</option>
+                                <option value="1">Beginner</option>
+                                <option value="2">Intermediate</option>
+                                <option value="3">Advance</option>
+                            </select>
+                            </div>
+                            <div class="text-center">
+                                <input type="submit" id="lngbtnsave" class="btn btn-primary w-100" value="submit" />
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--end modal-body-->
+            </div>
+            <!--end modal-content-->
+        </div>
+        <!--end modal-dialog-->
+    </div>
+    <!-- Optional JavaScript; -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+        "{% if total_lang != 0 %}"
+        let title2 ="";
+        let langPro="";
+        let langCCC="";
+        "{% for lang in total_lang %}"
+            title2 = "{{lang.title}}";
+            langPro = "{{lang.profeciency}}";
+            console.log(title2);
+            console.log(langPro);
+            
+            if(langPro=="1"){
+                langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title2+' language Profeciency</option><option value="1" selected>Beginner</option><option value="2">Intermediate</option><option value="3">Advance</option></select>';
+            }
+            else if(langPro=="2"){
+                langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title2+' language Profeciency</option><option value="1">Beginner</option><option value="2" selected>Intermediate</option><option value="3">Advance</option></select>';
+            }
+            else if(langPro=="3"){
+                langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title2+' language Profeciency</option><option value="1">Beginner</option><option value="2">Intermediate</option><option value="3" selected>Advance</option></select>';
+            }
+            // console.log(langCCC);
+            $("#langContainer").append('<div class="row" id='+title2+'><div class="col me-5"><h4 class="form-control mt-4 mb-4 ltitle">'+title2+'</h4></div><div class="col me-5"><div class="form-check-inline mt-4 mb-4">'+langCCC+'</div><div class="form-check-inline float-end mt-4 mb-4"><i role="button" id="dellang" data-sid="'+title2+'" class="fa fa-close me-3 fs-6 pt-2"></i></div></div></div>');
+        "{% endfor %}"
+        "{% else %}"
+        console.log("No Lang");
+        "{% endif %}"
+    </script>
+
+    <script>
+        function parse2(str) {
+            // Damn pesky carriage returns...
+            str = str.replace("\r\n", "<br>", str);
+            str = str.replace("\r", "<br>", str);
+        
+            // JSON requires new line characters be escaped
+            str = str.replace("\n", "<br>", str);
+            return str;
+        }
+        const handleAlerts = (type,text) => {
+        $("#alertsS").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="z-index:1000;"></button></div>');
+        };
+         $( "#updateJob" ).click(function(e) {
+            $("html").animate({ scrollTop: 0 }, "medium");
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('title',$("input[name='title']").val());
+            fd.append('role',$('#role').find(":selected").val());
+            fd.append('dept',$('#jdept').find(":selected").val());
+            fd.append('description',parse2(CKEDITOR.instances.description.getData()));
+            fd.append('responsibilities',parse2(CKEDITOR.instances.responsibilities.getData()));
+            // fd.append('qualification_details',CKEDITOR.instances.qualification_details.getData());
+            // fd.append('skill_experience',CKEDITOR.instances.skill_experience.getData());
+            fd.append('job_type',$('#job_type').find(":selected").val());
+            fd.append('position',$('#position').find(":selected").val());
+            fd.append('experince',$('#experince').find(":selected").val());
+            fd.append('max_round_no',$("input[name='max_round_no']").val());
+            fd.append('location',$('#location').find(":selected").val());
+            fd.append('work_place',$('#work_place').find(":selected").val());
+            fd.append('last_date',$("input[name='last_date']").val());
+            fd.append('salary',$("input[name='salary']").val());
+            fd.append('tags',$("input[name='tags']").val());
+            fd.append('url',$("input[name='url']").val());
+            fd.append('vacancy',$("input[name='vacancy']").val());
+            fd.append('qualification',$("input[name='qualification']").val());
+            fd.append('grade',$('#grade').find(":selected").val());
+            fd.append('skill',$('#skill').find(":selected").val());
+            fd.append('bonus',$("input[name='bonus']").val());
+            fd.append('stock',$("input[name='stock']").val());
+            fd.append('visa',$('#visa').find(":selected").val());
+            fd.append('relocation',$('#relocation').find(":selected").val());
+            fd.append('working_hour',$("input[name='working_hour']").val());
+
+
+
+            for (var pair of fd.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+
+
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if (data.status == 1) {
+                        handleAlerts('success','Job Posted Success');
+                        setTimeout(function(){
+                          window.location.href = '/dashboard/employer/jobs/';
+                      }, 1000);
+                    }
+                    else{
+                        handleAlerts('danger','Job Not Posted');
+                    }
+                },
+                error: function(error){
+                    handleAlerts('danger', 'oops..something went wrong with AJAX');
+                }
+            });
+         });
+
+         $( "#saveJob" ).click(function(e) {
+            $("html").animate({ scrollTop: 0 }, "medium");
+            const csrf = document.getElementsByName('csrfmiddlewaretoken');
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken',csrf[0].value);
+            fd.append('saveJob',1);
+            fd.append('title',$("input[name='title']").val());
+            fd.append('role',$('#role').find(":selected").val());
+            fd.append('description',$("textarea[name='description']").val());
+            fd.append('responsibilities',$("textarea[name='responsibilities']").val());
+            // fd.append('qualification_details',$("textarea[name='qualification_details']").val());
+            // fd.append('skill_experience',$("textarea[name='skill_experience']").val());
+            fd.append('job_type',$('#job_type').find(":selected").val());
+            fd.append('position',$('#position').find(":selected").val());
+            fd.append('experince',$('#experince').find(":selected").val());
+            fd.append('max_round_no',$("input[name='max_round_no']").val());
+            fd.append('location',$('#location').find(":selected").val());
+            fd.append('work_place',$('#work_place').find(":selected").val());
+            fd.append('last_date',$("input[name='last_date']").val());
+            fd.append('salary',$("input[name='salary']").val());
+            fd.append('tags',$("input[name='tags']").val());
+            fd.append('url',$("input[name='url']").val());
+            fd.append('vacancy',$("input[name='vacancy']").val());
+            fd.append('qualification',$("input[name='qualification']").val());
+            fd.append('grade',$('#grade').find(":selected").val());
+            fd.append('skill',$('#skill').find(":selected").val());
+            fd.append('bonus',$("input[name='bonus']").val());
+            fd.append('stock',$("input[name='stock']").val());
+            fd.append('visa',$('#visa').find(":selected").val());
+            fd.append('relocation',$('#relocation').find(":selected").val());
+            fd.append('working_hour',$("input[name='working_hour']").val());
+            
+            let i=1;
+            $('#langContainer > div.row').each(function() {
+                let title = $(this).find('.ltitle').text();
+                let prolevel = $(this).find(".langPro2 :selected").val();
+                fd.append('langT'+i,title);
+                fd.append('langP'+i,prolevel);
+                i=i+1;
+            });
+
+
+
+            for (var pair of fd.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '',
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    if (data.status == 1) {
+                        handleAlerts('success','Job Saved Success');
+                        setTimeout(function(){
+                          window.location.href = '/dashboard/employer/jobs/';
+                      }, 1000);
+                    }
+                    else{
+                        handleAlerts('danger','Job Not Saved');
+                    }
+                    console.log('data',data);
+                },
+                error: function(error){
+                    handleAlerts('danger', 'oops..something went wrong with AJAX');
+                }
+            });
+         });
+    
+         $("#lngbtnsave").click(function(e) {
+            e.preventDefault();
+
+            let totalLen = $("#langContainer").children().length;
+            console.log(totalLen);
+            if(totalLen==4){
+                $("html").animate({ scrollTop: 0 }, "medium");
+                $(document).ready(function(){
+                    $('#languageAddModal').modal('hide');
+                });
+                handleAlerts('danger','Max 4 lang');
+                $("#langTitle").val('');
+                $('#langPro').val("");
+
+                return false;
+            }
+            else{
+                let title = $("#langTitle").val();
+                let langPro = $('#langPro').find(":selected").val();
+                let langCCC="";
+                if(langPro=="1"){
+                    langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title+' language Profeciency</option><option value="1" selected>Beginner</option><option value="2">Intermediate</option><option value="3">Advance</option></select>';
+                }
+                else if(langPro=="2"){
+                    langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title+' language Profeciency</option><option value="1">Beginner</option><option value="2" selected>Intermediate</option><option value="3">Advance</option></select>';
+                }
+                else if(langPro=="3"){
+                    langCCC='<select class="form-select text-secondary langPro2"><option value="">Choose a '+title+' language Profeciency</option><option value="1">Beginner</option><option value="2">Intermediate</option><option value="3" selected>Advance</option></select>';
+                }
+                // console.log(langCCC);
+                $("#langContainer").append('<div class="row" id='+title+'><div class="col me-5"><h4 class="form-control mt-4 mb-4 ltitle">'+title+'</h4></div><div class="col me-5"><div class="form-check-inline mt-4 mb-4">'+langCCC+'</div><div class="form-check-inline float-end mt-4 mb-4"><i role="button" id="dellang" data-sid="'+title+'" class="fa fa-close me-3 fs-6 pt-2"></i></div></div></div>');
+                $(document).ready(function(){
+                    $('#languageAddModal').modal('hide');
+                });
+                $("#langTitle").val('');
+                $('#langPro').val("");
+                return false;
+            }
+         });
+        
+         $(document).on("click", "#dellang", function(){
+            let id = $(this).attr("data-sid");
+            // console.log(id);
+            $("#langContainer > div#"+id).remove();
+         });
+    </script>
+</body>
+
+</html>

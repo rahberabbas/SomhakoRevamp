@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+
+
+            
+            <div class="main-content">
+
+                <div class="page-content">
+
+
+                    <!-- START SHAPE -->
+                    <div class="position-relative" style="z-index: 1">
+                        <div class="shape">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                                <path fill="#FFFFFF" fill-opacity="1"
+                                    d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- END SHAPE -->
+
+
+                    <!-- START BOOKMARKS -->
+                    <section class="section" style="margin-top: 100px;">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <div>
+                                        <h6 class="fs-16 mb-0"> Bookmarks Jobs </h6>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-4">
+                                    <div class="candidate-list-widgets">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="selection-widget mt-3 mt-lg-0">
+                                                    <select class="form-select" data-trigger name="choices-single-filter-orderby" id="choices-single-filter-orderby" aria-label="Default select example">
+                                                        <option value="df">Default</option>
+                                                        <option value="ne">Newest</option>
+                                                        <option value="od">Oldest</option>
+                                                        <option value="rd">Random</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="selection-widget mt-3 mt-lg-0">
+                                                    <select class="form-select" data-trigger name="choices-candidate-page" id="choices-candidate-page" aria-label="Default select example">
+                                                        <option value="df">All</option>
+                                                        <option value="ne">Last 2 Month</option>
+                                                        <option value="ne">Last 6 Month</option>
+                                                        <option value="ne">Last 12 Month</option>
+                                                        <option value="ne">Last 2 Year</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </div><!--end candidate-list-widgets-->
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="bookmark_data">
+                                    {% for i in bookmark %}
+                                    <div class="job-box card mt-4">
+                                        <div class="card-body p-4">
+                                            <div class="row">
+                                                <div class="col-lg-1">
+                                                    <a href="company-details.html"><img src="{% static 'assets/images/featured-job/img-01.png' %}" alt="" class="img-fluid rounded-3"></a>
+                                                </div><!--end col-->
+                                                <div class="col-lg-9">
+                                                    <div class="mt-3 mt-lg-0">
+                                                        <h5 class="fs-17 mb-1"><a href="#" class="text-dark">{{i.job.title}}</a> <small class="text-muted fw-normal">(2-4 Yrs Exp.)</small></h5>
+                                                        <ul class="list-inline mb-0">
+                                                            <li class="list-inline-item">
+                                                                <p class="text-muted fs-14 mb-0">{{i.job.company_name}}</p>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i> {{i.job.location}}</p>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i> ₹{{i.job.salary}} / month</p>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="mt-2">
+                                                            <span class="badge bg-soft-danger mt-1">{{i.job.get_job_type_display}}</span>
+                                                            <span class="badge bg-soft-warning mt-1">Urgent</span>
+                                                        </div>
+                                                    </div>
+                                                </div><!--end col-->
+                                                <div class="col-lg-2 align-self-center">
+                                                    <form action="">
+                                                    <ul class="list-inline mt-3 mb-0">
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="View">
+                                                            <a href="#"  class="avatar-sm bg-soft-success d-inline-block text-center rounded-circle fs-18">
+                                                                <i class="mdi mdi-eye"></i>
+                                                            </a>
+                                                        </li>
+                                                        
+                                                            {% csrf_token %}
+                                                            
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                            <a href="javascript:void(0)" id="delbtnbook" data-id="{{i.id}}" class="avatar-sm bg-soft-danger d-inline-block text-center rounded-circle fs-18">
+                                                                <i class="uil uil-trash-alt"></i>
+                                                            </a>
+                                                        </li>
+                                                    
+                                                    </ul></form>
+                                                </div>
+                                            </div><!--end row-->
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                    <!--end job-box-->
+                                   
+                                </div><!--end col-->    
+                            </div><!--end row-->
+
+                            <!-- <div class="row">
+                                <div class="col-lg-12 mt-4 pt-2">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination job-pagination mb-0 justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                                                    <i class="mdi mdi-chevron-double-left fs-15"></i>
+                                                </a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:void(0)">4</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="javascript:void(0)">
+                                                    <i class="mdi mdi-chevron-double-right fs-15"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div> -->
+                        </div><!--end container-->
+                    </section>
+                    <!-- START BOOKMARKS -->
+
+                    
+
+                </div>
+                <!-- End Page-content -->
+
+                <script>
+                    $(document).on('click','#delbtnbook', function(e){
+                        e.preventDefault()
+                        console.log('clicked')
+                        let id = $(this).attr("data-id")
+                        console.log(id)
+                        let csr = $("input[name=csrfmiddlewaretoken]").val();
+                        mydata = {sid: id, csrfmiddlewaretoken: csr}
+                        mythis = this;
+                        $.ajax({
+                            url: "{% url 'jobapp:bookmark_delete' %}",
+                            method: "POST",
+                            data: mydata,
+                            success: function(data){
+                                x = data.arr
+                                y = data.book_mark
+
+                                
+
+                                if(data.status == 1){
+                                    
+                                    console.log("Deleted")
+                                    $('#bookmark_data').empty();
+                                    for(v in x){
+                                        for (z in y){
+                                            if(y[z].job_id == x[v].id){
+                                                let exp="",job=""
+                                                if(v.experince == '1'){exp="(0-2 Yrs Exp.)";}
+                                                else if(x[v].experince == '2'){
+                                                    exp="2-4 Yrs Exp.";
+                                                }
+                                                else if(x[v].experince == '3'){
+                                                    exp="5+ Yrs Exp.";
+                                                }
+                                                else{
+                                                    exp="No experience"
+                                                }
+                                                
+        
+                                                if(x[v].job_type == '1'){
+                                                    job="Full Time";
+                                                }
+                                                else if(x[v].job_type == '2'){
+                                                    job="Part Time";
+                                                }
+                                                else if(x[v].job_type == '3'){
+                                                    job="Internship";
+                                                }
+                                                else if(x[v].job_type == '4'){
+                                                    job="Contract";
+                                                }
+                                                console.log(x[v]);
+                                                $('#bookmark_data').append('<div class="job-box card mt-4"><div class="card-body p-4"><div class="row"><div class="col-lg-1"><a href="company-details.html"><img src="" alt="" class="img-fluid rounded-3"></a></div><div class="col-lg-9"><div class="mt-3 mt-lg-0"><h5 class="fs-17 mb-1"><a href="" class="text-dark">'+x[v].title+'</a> <small class="text-muted fw-normal">'+ exp +'</small></h5><ul class="list-inline mb-0"><li class="list-inline-item"><p class="text-muted fs-14 mb-0">'+ x[v].company_name+'</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i> {{i.job.location}}</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i> ₹'+ x[v].salary +' / month</p></li></ul><div class="mt-2"><span class="badge bg-soft-danger mt-1">'+ job +'</span><span class="badge bg-soft-warning mt-1">Urgent</span></div></div></div><div class="col-lg-2 align-self-center"><form action=""><ul class="list-inline mt-3 mb-0"><li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="View"><a href=""  class="avatar-sm bg-soft-success d-inline-block text-center rounded-circle fs-18"><i class="mdi mdi-eye"></i></a></li>{% csrf_token %}<li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><a href="javascript:void(0)" id="delbtnbook" data-id="'+ y[z].id +'" class="avatar-sm bg-soft-danger d-inline-block text-center rounded-circle fs-18"><i class="uil uil-trash-alt"></i></a></li></ul></form></div></div></div></div>');
+                                            }
+                                        
+                                    }
+                                    }
+
+                                }
+                                else{
+                                    console.log("Error")
+                                }
+                            }
+                        })
+                    })
+                </script>
+{% endblock  %}
+
+
+
+
+
+
+<!-- <div class="job-box card mt-4"><div class="card-body p-4"><div class="row"><div class="col-lg-1"><a href="company-details.html"><img src="{% static 'assets/images/featured-job/img-01.png' %}" alt="" class="img-fluid rounded-3"></a></div><div class="col-lg-9"><div class="mt-3 mt-lg-0"><h5 class="fs-17 mb-1"><a href="{% url 'jobapp:single-job' i.job.id %}" class="text-dark">{{i.job.title}}</a> <small class="text-muted fw-normal">(2-4 Yrs Exp.)</small></h5><ul class="list-inline mb-0"><li class="list-inline-item"><p class="text-muted fs-14 mb-0">{{i.job.company_name}}</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="mdi mdi-map-marker"></i> {{i.job.location}}</p></li><li class="list-inline-item"><p class="text-muted fs-14 mb-0"><i class="uil uil-wallet"></i> ₹{{i.job.salary}} / month</p></li></ul><div class="mt-2"><span class="badge bg-soft-danger mt-1">{{i.job.get_job_type_display}}</span><span class="badge bg-soft-warning mt-1">Urgent</span></div></div></div><div class="col-lg-2 align-self-center"><form action=""><ul class="list-inline mt-3 mb-0"><li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="View"><a href="{% url 'jobapp:single-job' i.job.id %}"  class="avatar-sm bg-soft-success d-inline-block text-center rounded-circle fs-18"><i class="mdi mdi-eye"></i></a></li>{% csrf_token %}<li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><a href="javascript:void(0)" id="delbtnbook" data-id="{{i.id}}" class="avatar-sm bg-soft-danger d-inline-block text-center rounded-circle fs-18"><i class="uil uil-trash-alt"></i></a></li></ul></form></div></div></div></div> -->

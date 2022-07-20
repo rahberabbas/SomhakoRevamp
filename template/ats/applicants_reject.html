@@ -1,0 +1,155 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fontawsome icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Candidate Landing Page</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css1/t1/ats_style.css' %}">
+    <style>
+        .nav-tabs .nav-link{
+            color: black;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            color: #3b82f6;
+            margin: 0;
+            border: none;
+            border-bottom: 2px solid #3b82f6;
+            }
+
+            .circle {
+                background-color:transparent;
+                border:3px solid red;    
+                height:100px;
+                border-radius:50%;
+                -moz-border-radius:50%;
+                -webkit-border-radius:50%;
+                width:100px;
+            }
+    </style>
+  </head>
+  <body>
+    <!--Nav Bar-->
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container-fluid border-bottom">
+            <img src="{% static 'assets/images/logo-dark.png' %}" class="logo" alt="logo">
+            <img src="{% static 'images/image 23.png' %}" alt="img23" class="img23">
+            <input class="form-control me-2 lang" type="search" placeholder="&#xF002; Search jobs, applicants, etc" aria-label="Search" style="height: 40px;width: 392px;text-align: left;font-family:Arial, FontAwesome;">
+        </div>
+    </nav>
+    <!--Container-->
+    <div class="container-fluid" style="margin-top: 72px;">
+        <div class="row">
+            <div class="col-sm-auto bg-primary text-white p-0 sticky-top" style="height: 100vh;">
+                <div class="d-flex flex-sm-column flex-row flex-nowrap bg-primary text-white align-items-center text-center sticky-top">
+                    <a href="{% url 'jobapp:dashboard' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-home"></i><br>
+                        Home
+                    </a>
+                    <a href="{% url 'jobapp:total_job_view' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-search"></i><br>
+                        Job
+                    </a>
+                    <a href="{% url 'jobapp:total_applicants' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-users"></i><br>
+                        Applicant
+                    </a>
+                    <a href="{% url 'jobapp:account' %}" style="font-size: .75rem;" class="d-block p-2 text-white text-opacity-75 text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <i class="fa fa-user"></i><br>
+                        Account
+                    </a>
+                </div>
+            </div>
+            <div class="col-2 p-0 m-0 text-center pt-3 sticky-top" style="background-color: #EFF6FF;height: 100vh;">
+                <h2>Applicants</h2>
+                <a href="{% url 'jobapp:total_applicants' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center pt-2">Active Applicants</p></a>
+                <a href="{% url 'jobapp:applicants_short' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center ">Shortlist Applicants</p></a>
+                <a href="{% url 'jobapp:applicants_hire' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center ">Hired Applicants</p></a>
+                <a href="{% url 'jobapp:applicant_hold' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-center ">On Hold Applicants</p></a>
+                <a href="{% url 'jobapp:applicants_reject' %}"
+                    class="d-block p-2 text-white text-opacity-75 text-decoration-none"><p class="text-primary text-center ">Rejected Applicants</p></a>
+                
+            </div>
+            
+            <div class="col m-0 p-0 bg-white p-3 ps-5 pe-5">
+                <h3>Rejected Applicant</h3>
+                <div class="row border p-3 m-1">
+                    <div class="col col-lg-3">
+                        <form action="" method="GET">
+                            <select name="applicantFilter" class="form-control"   id="choices-location" onchange="this.form.submit()">
+                                <option value="">Choose an status</option>
+                                <option value="0">All Applicants</option>
+                                <option value="1">In-Review</option>
+                                <option value="2">Shortlist</option>
+                                <option value="3">In-Progress</option>
+                                <option value="4">On-Hold</option>
+                                <option value="5">Completed</option>
+                                <option value="6">Rejected</option>
+                            </select>
+                        </form>
+                        </div>
+                    <div class="col col">
+                        <input class="form-control me-2 float-end" type="search" placeholder="&#xF002; Search..." aria-label="Search" style="height: 40px;width: 392px;text-align: left;font-family:Arial, FontAwesome;">
+                    </div>
+                </div>
+                
+                <table class="table table-light table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Final Status</th>
+                        <th scope="col">Profile</th>
+                        <th scope="col">More</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in arr %}
+                      <tr>
+                        
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{i.user.employee.first_name}} {{i.user.employee.last_name}}</td>
+                        <td>{{i.job.title}}</td>
+                        <td>{{i.get_status_display}}</td>
+
+                        <td>{{i.get_final_status_display}}</td>
+                        <td><a type="button" href="{% url 'jobapp:candidate_profile_view' i.id %}" class="btn btn-primary btn-sm">click</a></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary border-0 bg-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" >
+                                    <i class="fa fa-ellipsis-v text-dark"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li><a class="dropdown-item" href="{% url 'jobapp:applicant_short_list' i.id %}">Shortlist</a></li>
+                                 
+                                  <li><a class="dropdown-item" href="{% url 'jobapp:applicant_in_progress' i.id %}">In Progress</a></li>
+                                  
+                                  <li><a class="dropdown-item" href="{% url 'jobapp:applicant_rejectd' i.id %}">Reject</a></li>
+                                </ul>
+                              </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript; -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>

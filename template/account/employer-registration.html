@@ -1,0 +1,383 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+        
+        
+        <meta charset="utf-8" />
+        <title>Sign Up - Employer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=" " />
+        <meta name="keywords" content="" />
+        <meta content="Somhakodev" name="author" />
+
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+
+        <!-- Bootstrap Css -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+        <!--Custom Css-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    </head>
+
+    <body>
+         <!--start page Loader -->
+         <div id="preloader">
+            <div id="status">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                  </ul>
+            </div>
+        </div>
+        <!--end page Loader -->
+
+        <!-- Begin page -->
+        <div>
+
+            
+            <div class="main-content">
+
+                <div class="page-content">
+
+                    <!-- START SIGN-UP -->
+                    <section class="bg-auth p-1">
+                        <div class="container">
+                            <div id="alerts"></div>
+                            <div class="row justify-content-center">
+                                <div class="col-xl-10 col-lg-12">
+                                    <div class="card auth-box">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6 text-center">
+                                                <div class="card-body p-0">
+                                                    <a href="index.html">
+                                                        <img src="{% static 'assets/images/logo-light.png' %}" alt="" class="logo-light">
+                                                        
+                                                    </a>
+                                                    <div class="mt-5">
+                                                        <img src="{% static 'assets/images/auth/sign-up.png' %}" alt="" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="auth-content card-body p-3 text-white">
+                                                    <div class="w-100">
+                                                        <div class="text-center">
+                                                            <h5>Employer Sign up</h5>
+                                                            <!-- <p class="text-white-70">Sign Up and get access to all the features of Somhako</p> -->
+                                                        </div>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="usernameInput" class="form-label">Company name</label>
+                                                                <input type="text" class="form-control" id="c_name" placeholder="Enter your Company name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="nameInput" class="form-label">Name</label>
+                                                                <input type="text" class="form-control" id="f_name" placeholder="Enter your name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="passwordInput" class="form-label">Company Email</label>
+                                                                <input type="email" class="form-control" id="email" placeholder="Enter your company email">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="emailInput" class="form-label">Password</label>
+                                                                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="emailInput" class="form-label">Confirm Password</label>
+                                                                <input type="password" class="form-control" id="password2" placeholder="Enter your password">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="emailInput" class="form-label">Company Strength</label>
+                                                                <select class="form-select form-control" aria-label="Default select example" id="cstrength">
+                                                                    <option selected value="0">Select Strength</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                  </select>
+                                                            </div>
+
+                                                            
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="acc_type" value="corporate">
+                                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                                    Corporate Account
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="acc_type" value="agency" checked>
+                                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                                    Agency Account
+                                                                </label>
+                                                            </div>
+
+
+                                                            
+
+
+
+
+                                                            <div class="mb-3">
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox1">
+                                                                    <label class="form-check-label" for="flexCheckDefault">I agree to the <a href="javascript:void(0)" class="text-white text-decoration-underline">Terms and conditions</a></label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-center">
+                                                                <button type="submit" id="signup" class="btn btn-white btn-hover w-100">Sign Up</button>
+                                                            </div>
+                                                        </form>
+                                                        <div class="mt-2 text-center">
+                                                            <p class="mb-0">Already a member ? <a href="sign-in.html" class="fw-medium text-white text-decoration-underline"> Sign In </a></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </div><!--end auth-box-->
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!-- END SIGN-UP -->
+                    
+                </div>
+                <!-- End Page-content -->
+
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Style switcher -->
+        <div id="style-switcher" onclick="toggleSwitcher()" style="left: -165px;">
+            <div>
+                <h6>Select your color</h6>
+                <ul class="pattern list-unstyled mb-0">
+                    <li>
+                        <a class="color-list color1" href="javascript: void(0);" onclick="setColorGreen()"></a>
+                    </li>
+                    <li>
+                        <a class="color-list color2" href="javascript: void(0);" onclick="setColor('blue')"></a>
+                    </li>
+                    <li>
+                        <a class="color-list color3" href="javascript: void(0);" onclick="setColor('green')"></a>
+                    </li>
+                </ul>
+                <div class="mt-3">
+                    <h6>Light/dark Layout</h6>
+                    <div class="text-center mt-3">
+                        <!-- light-dark mode -->
+                        <a href="javascript: void(0);" id="mode" class="mode-btn text-white rounded-3">
+                            <i class="uil uil-brightness mode-dark mx-auto"></i>
+                            <i class="uil uil-moon mode-light"></i>
+                        </a>
+                        <!-- END light-dark Mode -->
+                    </div>
+                </div>
+            </div>
+            <div class="bottom d-none d-md-block" >
+                <a href="javascript: void(0);" class="settings rounded-end"><i class="mdi mdi-cog mdi-spin"></i></a>
+            </div>
+        </div>
+        <!-- end switcher-->
+
+        <!--start back-to-top-->
+        <button onclick="topFunction()" id="back-to-top">
+            <i class="mdi mdi-arrow-up"></i>
+        </button>
+        <!--end back-to-top-->
+        <script>
+            function isEmail(email) {
+              var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+              return regex.test(email);
+            }
+            function checkLower(value){
+              return /[a-z]/.test(value);
+            }
+            function checkUpper(value){
+              return /[A-Z]/.test(value);
+            }
+            function checkDigit(value){
+              return /[0-9]/.test(value);
+            }
+            function checkCh(value){
+              var regex = /[^\w\s]/gi;
+              return regex.test(value);
+            }
+            function escapeRegExp(str) {
+            return str.replace(/[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&");
+            }
+    
+            function fuzzyComparison(str, mask) {
+                var regex = '^' + escapeRegExp(mask).replace(/\*/, '.*') + '$';
+                var r = new RegExp(regex);
+    
+                return r.test(str);
+            }
+
+            $("#password2").keyup(function(){
+              if($("#password").val()!==$("#password2").val()){
+                  $("#password2").css("border","1px solid red");
+              }
+              else{
+                  $("#password2").css("border","none");
+              }
+            });
+            $("#password").keyup(function(){
+              $("#password").css("border","none");
+            });
+            $("#f_name").keyup(function(){
+              $("#f_name").css("border","none");
+            });
+            $("#c_name").keyup(function(){
+              $("#c_name").css("border","none");
+            });
+            $("#email").keyup(function(){
+              $("#email").css("border","none");
+            });
+            const handleAlerts = (type,text) => {
+              $("#alerts").append('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert"><strong>'+text+'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            };
+            
+            $( "#signup" ).click(function(e) {
+            
+              $("html").animate({ scrollTop: 0 }, "medium");
+              e.preventDefault();        
+              const csrf = document.getElementsByName('csrfmiddlewaretoken');
+              let allT = true;
+              let a1 = $("#password").val();
+              a1=a1.toLowerCase().replace(/\s/g,'');
+              let a2 = $("#f_name").val();
+              a2=a2.toLowerCase().replace(/\s/g,'');
+              let a3 = $("#c_name").val();
+              a3=a3.toLowerCase().replace(/\s/g,'');
+              let a4 = $("#email").val();
+              a4=a4.toLowerCase().replace(/\s/g,'');
+              let a5 = $("#cstrength > option").filter(":selected").val();
+              $("#alerts").empty();
+              $("#f_name").css("border","none");
+              $("#c_name").css("border","none");
+              $("#email").css("border","none");
+              $("#password").css("border","none");
+              $("#password2").css("border","none");
+      
+              if($("#f_name").val()==""){
+                  $("#f_name").css("border","1px solid red");
+                  allT = false;
+              }
+      
+              if($("#c_name").val()==""){
+                  $("#c_name").css("border","1px solid red");
+                  allT = false;
+              }
+      
+              if($("#email").val()==""){
+                  $("#email").css("border","1px solid red");
+                  allT = false;
+              }
+              else if( !isEmail($("#email").val())) 
+              { 
+                  handleAlerts("danger","Email Not Validate");
+                  $("#email").css("border","1px solid red");
+                  allT = false;
+              }
+      
+              if($("#password").val()=="" || $("#password2").val()==""){
+                  $("#password").css("border","1px solid red");
+                  $("#password2").css("border","1px solid red");
+                  allT = false;
+              }
+              else if(($("#password").val()).length<=8){
+                  handleAlerts("danger","Password Contain Atleast 8 Characters");
+                  $("#password").css("border","1px solid red");
+                  allT = false;
+              }
+              else if( !checkCh($("#password").val()) || !checkDigit($("#password").val()) || !checkLower($("#password").val()) || !checkUpper($("#password").val())) 
+              { 
+                  handleAlerts("danger","Password Have Atleast One Special Characters , One Digit , One Uppercase & One Lowercase Letter");
+                  $("#password").css("border","1px solid red");
+                  allT = false;
+              }
+              else if(a1.includes(a2) || a1.includes(a4)){//|| a1.includes(a3)
+                  handleAlerts("danger","Password Didn't contain your Name, Email!");
+                  $("#password").css("border","1px solid red");
+                  allT = false;
+              }
+              else if(a5==0){
+                  handleAlerts("danger","Select Company Strength");
+                  allT = false;
+              }
+              else if($("#checkbox1").prop('checked') !== true){
+                  handleAlerts("danger","Grants our terms & conditions");
+                  allT = false;
+              }
+              
+            //   return false;
+              if(allT){
+                  const fd = new FormData();
+                  fd.append('csrfmiddlewaretoken',csrf[0].value);
+                  fd.append('name',$("#f_name").val());
+                  fd.append('company_name',$("#c_name").val());
+                  fd.append('email',$("#email").val());
+                  fd.append('password1',$("#password").val());
+                  fd.append('password2',$("#password2").val());
+                  fd.append('organizationStrength',$("#cstrength > option").filter(":selected").val());
+                  fd.append('organizationType',$("input[name=acc_type]:checked").val());
+      
+      
+                  $.ajax({
+                      type: 'POST',
+                      url: '/employer/register/',
+                      data: fd,
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      enctype: 'multipart/form-data',
+                      success: function(data) {
+                          if(`${data.msg}` === "Succefully Sign Up"){
+                              handleAlerts('success', `${data.msg}`);
+                              setTimeout(function(){
+                                  window.location.href = '/dashboard/employer/';
+                              }, 2000);
+                          }
+                          else{
+                              handleAlerts('danger', `${data.msg}`);
+                          }
+                      },
+                      error: function(error){
+                          handleAlerts('danger', 'oops..something went wrong with AJAX');
+                      }
+                  });
+                  
+              }
+              setTimeout(function(){
+                  $("#alerts").empty();
+              }, 5000);
+              });
+      
+        </script>
+
+        <!-- JAVASCRIPT -->
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+        <!-- Switcher Js -->
+        <script src="{% static 'assets/js/pages/switcher.init.js' %}"></script>
+
+    </body>
+</html>
